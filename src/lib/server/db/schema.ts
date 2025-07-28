@@ -1,18 +1,22 @@
-import { pgTable, serial, integer, text, timestamp } from 'drizzle-orm/pg-core';
+import { relations } from "drizzle-orm";
+import { pgTable, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
 
-export const user = pgTable('user', {
-	id: text('id').primaryKey(),
-	age: integer('age'),
-	username: text('username').notNull().unique(),
-	passwordHash: text('password_hash').notNull()
+export const userTable = pgTable("user", {
+	id: uuid("id").primaryKey().defaultRandom(),
+	username: varchar("username", {length: 24}).notNull().unique(),
+	password: text("password").notNull()
 });
+export const userRelations = relations(userTable, ({many}) => ({
+	sessions: many(sessionTable)
+}));
+export type User = typeof userTable.$inferSelect;
 
-export const session = pgTable('session', {
-	id: text('id').primaryKey(),
-	userId: text('user_id').notNull().references(() => user.id),
-	expiresAt: timestamp('expires_at', { withTimezone: true, mode: 'date' }).notNull()
+export const sessionTable = pgTable("session", {
+	id: uuid().primaryKey().defaultRandom(),
+	userId: uuid("user_id").notNull().references(() => userTable.id),
+	expiresAt: timestamp("expires_at", {withTimezone: true, mode: "date"}).notNull()
 });
-
-export type Session = typeof session.$inferSelect;
-
-export type User = typeof user.$inferSelect;
+export const sessionRelations = relations(sessionTable, ({one}) => ({
+	user: one(userTable, {fields: [sessionTable.userId], references: [userTable.id]})
+}));
+export type Session = typeof sessionTable.$inferSelect;
