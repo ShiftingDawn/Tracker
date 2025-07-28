@@ -9,7 +9,7 @@
 	let { form }: { form: ActionData } = $props();
 </script>
 
-<Section title="Sign in" w="sm">
+<Section title="Sign up" w="sm">
 	<div class="flex flex-col gap-4">
 		<p style="color: red">{form?.message ?? ""}</p>
 		<form method="post" use:enhance class="flex flex-col gap-2">
@@ -19,7 +19,7 @@
 				minlength={3}
 				maxlength={24}
 				required
-				autocomplete="username"
+				autocomplete="off"
 				autocapitalize="off"
 			/>
 			<Input
@@ -28,16 +28,23 @@
 				type="password"
 				minlength={8}
 				required
-				autocomplete="current-password"
+				autocomplete="off"
+				autocapitalize="off"
+			/>
+			<Input
+				label="Confirm password"
+				name="password2"
+				type="password"
+				minlength={8}
+				required
+				autocomplete="off"
 				autocapitalize="off"
 			/>
 			<div class="text-center">
-				<Button type="submit">Sign in</Button>
+				<Button type="submit">Sign up</Button>
 			</div>
 		</form>
 		<Divider>OR</Divider>
-		<Button href="/signup" variant="outline"
-			>Don&apos;t have an account?</Button
-		>
+		<Button href="/signin" variant="outline">Already have an account?</Button>
 	</div>
 </Section>

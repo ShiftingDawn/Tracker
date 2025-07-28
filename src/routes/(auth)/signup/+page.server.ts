@@ -2,8 +2,7 @@ import * as auth from "$lib/server/auth";
 import { db } from "$lib/server/db";
 import { userTable } from "$lib/server/db/schema";
 import { fail, redirect } from "@sveltejs/kit";
-import { compareSync } from "bcrypt";
-import { eq } from "drizzle-orm";
+import { hashSync } from "bcrypt";
 import type { Actions, PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async (event) => {
@@ -18,21 +17,25 @@ export const actions: Actions = {
     const formData = await event.request.formData();
     const username = formData.get("username");
     const password = formData.get("password");
+    const password2 = formData.get("password2");
 
     if (!validateUsername(username)) {
-      return fail(400, { message: "Invalid username (min 3, max 24 characters, alphanumeric only)", });
+      return fail(400, { message: "Invalid username", });
     }
     if (!validatePassword(password)) {
-      return fail(400, { message: "Invalid password (min 8, max 255 characters)", });
+      return fail(400, { message: "Invalid password", });
     }
-
-    const user = await db.query.userTable.findFirst({where: eq(userTable.username, username),});
-    if (!user || !compareSync(password, user.password)) {
-      return fail(400, { message: "Incorrect username or password", });
+    if (password !== password2 ) {
+      return fail(400, { message: "Passwords do not match", });
     }
-
-    const session = await auth.createSession(event, user.id);
-    auth.setSessionTokenCookie(event, session.id, session.expiresAt);
+    try {
+      const [user,] = await db.insert(userTable).values({ username, password: hashSync(password, 12), }).returning();
+      const session = await auth.createSession(event, user.id);
+      auth.setSessionTokenCookie(event, session.id, session.expiresAt);
+    } catch(error) {
+      console.error(error);
+      return fail(500, { message: "An error has occurred", });
+    }
     return redirect(302, "/");
   },
 };
