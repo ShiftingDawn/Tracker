@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Logo from "$lib/logo.svelte";
   import "../app.css";
 
   let { children, data } = $props();
@@ -6,13 +7,14 @@
 
 <header>
   <nav
-    class="sticky top-0 w-full h-16 backdrop-blur-xs border-b border-primary flex items-center justify-between text-primary mb-4"
+    class="sticky top-0 w-full h-16 backdrop-blur-sm flex items-center justify-between text-primary mb-4 bg-white/1"
   >
     <a
       href="/"
       aria-label="homepage"
-      class="mx-4 px-4 py-1 text-xl font-bold tracking-widest uppercase bg-primary/10 rounded-full"
+      class="flex items-center gap-2 mx-4 px-4 py-1 text-xl font-bold tracking-widest uppercase bg-primary/10 rounded-full"
     >
+      <div class="w-8 h-8"><Logo /></div>
       Tracker
     </a>
     {#if data.isLoggedIn}

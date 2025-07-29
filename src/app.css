@@ -9,7 +9,12 @@ html,
 body {
   width: 100%;
   height: 100%;
-  background-color: var(--color-neutral-100);
+  background-color: #020202;
+  background-image:
+    linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000),
+    linear-gradient(-45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000);
+  background-size: min(10vw, 100px) min(10vw, 100px);
+  background-repeat: repeat;
 }
 
 :focus-visible:not(.outline-none) {
