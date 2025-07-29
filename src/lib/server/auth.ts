@@ -6,7 +6,7 @@ import { sessionTable, type Session, type User } from "./db/schema";
 import { getRequestEvent } from "$app/server";
 
 const SESSION_COOKIE_NAME = "sid";
-const SESSION_MAX_AGE = 3600 * 24 * 28;
+const SESSION_MAX_AGE = 3600 * 24 * 28 * 1000;
 
 export function getSessionId(event: RequestEvent): string|null {
   return event.cookies.get(SESSION_COOKIE_NAME) ?? null;
@@ -66,10 +66,11 @@ async function destroySession(sessionId: string) {
   await db.delete(sessionTable).where(eq(sessionTable.id, sessionId));
 }
 
-export function requireAuth(): ServerSession {
-  const event = getRequestEvent();
-  if (!event.locals.session) {
+type RequireAuthResult = {user: User, session: Session} | never;
+export function requireAuth(event?: RequestEvent): RequireAuthResult {
+  const e = event ?? getRequestEvent();
+  if (!e.locals.session) {
     return redirect(302, "/signin");
   }
-  return {user: event.locals.user, session: event.locals.session,};
+  return {user: e.locals.user, session: e.locals.session,};
 }
