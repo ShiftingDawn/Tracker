@@ -8,7 +8,7 @@ export const userTable = pgTable("user", {
 });
 export const userRelations = relations(userTable, ({many,}) => ({
   sessions: many(sessionTable),
-  //
+  games: many(gameTable),
 }));
 export type User = typeof userTable.$inferSelect;
 
@@ -22,3 +22,15 @@ export const sessionRelations = relations(sessionTable, ({one,}) => ({
   //
 }));
 export type Session = typeof sessionTable.$inferSelect;
+
+export const gameTable = pgTable("game", {
+  id: uuid().primaryKey().defaultRandom(),
+  name: varchar("name", {length: 64,}).unique().notNull(),
+  icon: uuid().notNull().defaultRandom(),
+  creatorId: uuid("creator_id").notNull().references(() => userTable.id),
+});
+export const gameRelations = relations(gameTable, ({one,}) => ({
+  creator: one(userTable, {fields: [gameTable.creatorId,], references: [userTable.id,],}),
+  //
+}));
+export type Game = typeof gameTable.$inferSelect;

@@ -5,6 +5,10 @@
   let { children, data } = $props();
 </script>
 
+<svelte:head>
+  <title>Tracker</title>
+</svelte:head>
+
 <header>
   <nav
     class="sticky top-0 w-full h-16 backdrop-blur-sm flex items-center justify-between text-primary mb-4 bg-white/1"

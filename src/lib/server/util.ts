@@ -1,0 +1,20 @@
+export function getError(holder: unknown): string | undefined {
+  if (holder === null || holder === undefined) {
+    return undefined;
+  }
+  if (typeof holder === "string") {
+    return holder as string;
+  }
+  if (Array.isArray(holder) && holder.length > 0) {
+    return holder[0] as string;
+  }
+  if (typeof holder === "object" && "errors" in holder) {
+    return getError(holder.errors);
+  }
+  return undefined;
+}
+
+export function isImage(file: Blob): boolean {
+  const t = file.type;
+  return t === "image/png" || t === "image/jpeg";
+}
