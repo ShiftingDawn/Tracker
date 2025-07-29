@@ -2,7 +2,7 @@ import { requireAuth } from "$lib/server/auth";
 import { db } from "$lib/server/db";
 import { gameTable } from "$lib/server/db/schema";
 import { writeFile } from "$lib/server/fileservices";
-import { getError, isImage } from "$lib/server/util";
+import { getError, getScaledSizes, isImage } from "$lib/server/util";
 import { fail, redirect, type Actions } from "@sveltejs/kit";
 import sharp, { type ResizeOptions } from "sharp";
 import z from "zod";
@@ -58,12 +58,3 @@ const schema = zfd.formData({
   name: zfd.text(z.string().min(3).max(64)),
   icon: zfd.file(),
 });
-
-async function getScaledSizes(size: number, img: ReturnType<typeof sharp>): Promise<ResizeOptions> {
-  const meta = await img.metadata();
-  const scale = Math.min(size / meta.width, size / meta.height);
-  return {
-    width: Math.floor(meta.width * scale),
-    height: Math.floor(meta.height * scale),
-  };
-}

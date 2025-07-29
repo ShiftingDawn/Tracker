@@ -1,3 +1,6 @@
+import type { ResizeOptions } from "sharp";
+import type sharp from "sharp";
+
 export function getError(holder: unknown): string | undefined {
   if (holder === null || holder === undefined) {
     return undefined;
@@ -17,4 +20,13 @@ export function getError(holder: unknown): string | undefined {
 export function isImage(file: Blob): boolean {
   const t = file.type;
   return t === "image/png" || t === "image/jpeg";
+}
+
+export async function getScaledSizes(size: number, img: ReturnType<typeof sharp>): Promise<ResizeOptions> {
+  const meta = await img.metadata();
+  const scale = Math.min(size / meta.width, size / meta.height);
+  return {
+    width: Math.floor(meta.width * scale),
+    height: Math.floor(meta.height * scale),
+  };
 }

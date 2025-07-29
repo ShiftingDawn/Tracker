@@ -3,6 +3,7 @@
 @theme inline {
   --color-primary: var(--color-teal-700);
   --color-primary-fg: var(--color-neutral-50);
+  --color-primary-alt: color-mix(in oklab, var(--color-primary) 20%, transparent);
 
   --color-error: var(--color-red-400);
   --color-error-fg: var(--color-red-700);

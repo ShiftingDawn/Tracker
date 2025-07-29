@@ -14,6 +14,7 @@
           "bg-primary text-primary-fg rounded-full shadow-md hover:scale-102 active:scale-98 active:shadow-none data-disabled:bg-primary/10",
         outline:
           "border-2 border-primary rounded-full text-primary text-center hover:bg-primary/10 data-disabled:border-primary/50 data-disabled:bg-transparent",
+        text: "text-primary font-bold hover:bg-primary-alt rounded-full data-disabled:bg-transparent",
       },
     },
     defaultVariants: { variant: "default" },

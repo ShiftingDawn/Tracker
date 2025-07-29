@@ -28,9 +28,25 @@ export const gameTable = pgTable("game", {
   name: varchar("name", {length: 64,}).unique().notNull(),
   icon: uuid().notNull().defaultRandom(),
   creatorId: uuid("creator_id").notNull().references(() => userTable.id),
+  createdAt: timestamp("created_at", {withTimezone: true, mode: "date",}).notNull().defaultNow(),
 });
-export const gameRelations = relations(gameTable, ({one,}) => ({
+export const gameRelations = relations(gameTable, ({one, many,}) => ({
   creator: one(userTable, {fields: [gameTable.creatorId,], references: [userTable.id,],}),
-  //
+  categories: many(gameBoardCategoryTable),
 }));
 export type Game = typeof gameTable.$inferSelect;
+
+export const gameBoardCategoryTable = pgTable("game_board_category", {
+  id: uuid().primaryKey().defaultRandom(),
+  name: varchar("name", {length: 64,}).unique().notNull(),
+  description: varchar("description", {length: 255,}).unique().notNull(),
+  icon: uuid().defaultRandom(),
+  gameId: uuid("game_id").notNull().references(() => gameTable.id),
+  creatorId: uuid("creator_id").notNull().references(() => userTable.id),
+  createdAt: timestamp("created_at", {withTimezone: true, mode: "date",}).notNull().defaultNow(),
+});
+export const gameBoardCategoryRelations = relations(gameBoardCategoryTable, ({one,}) => ({
+  game: one(gameTable, {fields: [gameBoardCategoryTable.gameId,], references: [gameTable.id,],}),
+  creator: one(userTable, {fields: [gameBoardCategoryTable.creatorId,], references: [userTable.id,],}),
+}));
+export type GameBoardCategory = typeof gameBoardCategoryTable.$inferSelect;
