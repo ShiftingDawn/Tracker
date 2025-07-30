@@ -45,7 +45,9 @@
           {title}
         </div>
       {/if}
-      {@render actions?.()}
+      <div class="flex flex-row gap-2 w-full">
+        {@render actions?.()}
+      </div>
     </div>
   {/if}
   <div class="rounded-2xl bg-surface-alt p-2 inset-shadow">

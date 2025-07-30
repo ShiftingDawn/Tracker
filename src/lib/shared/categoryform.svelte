@@ -47,6 +47,16 @@
       autocapitalize="off"
       defaultValue={existing?.name}
     />
+    <Select label="Section" name="section">
+      {#each Object.entries(sections) as section (section[0])}
+        <option
+          value={section[0]}
+          selected={existing && section[0] === existing.sectionId}
+        >
+          {section[1]}
+        </option>
+      {/each}
+    </Select>
     <Input
       label="Description (optional)"
       name="description"
@@ -67,16 +77,6 @@
       class="px-0 py-0 file:bg-primary file:text-primary-fg file:rounded-lg file:px-2 file:py-1 hover:file:bg-primary/70 file:cursor-pointer"
       onchange={validateFile}
     />
-    <Select label="Section" name="section">
-      {#each Object.entries(sections) as section (section[0])}
-        <option
-          value={section[0]}
-          selected={existing && section[0] === existing.sectionId}
-        >
-          {section[1]}
-        </option>
-      {/each}
-    </Select>
     <div class="text-center">
       <Button type="submit">Submit</Button>
     </div>
