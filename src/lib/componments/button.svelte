@@ -7,7 +7,7 @@
   import { tv, type VariantProps } from "tailwind-variants";
 
   const button = tv({
-    base: "transition-all px-4 py-1 data-disabled:shadow-none data-disabled:text-primary/50 data-disabled:cursor-not-allowed",
+    base: "cursor-default transition-all px-4 py-1 data-disabled:shadow-none data-disabled:text-primary/50 data-disabled:cursor-not-allowed",
     variants: {
       variant: {
         default:

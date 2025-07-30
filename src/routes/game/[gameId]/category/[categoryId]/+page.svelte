@@ -14,6 +14,12 @@
       Back to {data.game.name}
     </Button>
     {#if data.isOwner}
+      <Button
+        variant="outline"
+        href={`/game/${data.game.id}/category/${data.category.id}/delete`}
+      >
+        Delete
+      </Button>
       <Button href={`/game/${data.game.id}/category/${data.category.id}/edit`}>
         Edit
       </Button>
