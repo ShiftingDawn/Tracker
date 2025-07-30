@@ -8,4 +8,7 @@
 <Categoryform
   title={`Edit category: ${data.category.name}`}
   existing={data.category}
+  sections={Object.fromEntries(
+    Object.entries(data.sections).map(([k, v]) => [v.id, v.name]),
+  )}
 />

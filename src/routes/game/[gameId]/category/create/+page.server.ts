@@ -1,10 +1,10 @@
 import { requireAuth } from "$lib/server/auth";
 import { db } from "$lib/server/db";
-import { gameBoardCategoryTable, gameTable } from "$lib/server/db/schema";
+import { gameBoardCategoryTable, gameBoardSectionTable, gameTable } from "$lib/server/db/schema";
 import { writeFile } from "$lib/server/fileservices";
 import { getError, getScaledSizes } from "$lib/server/util";
 import { error, fail, redirect, type Actions } from "@sveltejs/kit";
-import { and, eq } from "drizzle-orm";
+import { and, asc, eq } from "drizzle-orm";
 import sharp from "sharp";
 import z from "zod";
 import { zfd } from "zod-form-data";
@@ -14,7 +14,11 @@ export const load: PageServerLoad = async (event) => {
   const {user,} = requireAuth(event);
   const game = await db.query.gameTable.findFirst({where: and(eq(gameTable.id, event.params.gameId), eq(gameTable.creatorId, user.id)),});
   if (!game) error(404);
-  return {game,};
+  const sections = await db.query.gameBoardSectionTable.findMany({
+    where: eq(gameBoardSectionTable.gameId, event.params.gameId),
+    orderBy: asc(gameBoardSectionTable.order),
+  });
+  return {game, sections,};
 };
 
 export const actions: Actions = {
@@ -40,7 +44,7 @@ export const actions: Actions = {
         const [category,] = await tx.insert(gameBoardCategoryTable).values({
           name: data.name,
           description: data.description || null,
-          gameId: event.params.gameId!,
+          sectionId: data.section,
           icon: img ? undefined : null,
           creatorId: user.id,
         }).returning();
@@ -58,6 +62,7 @@ export const actions: Actions = {
 const schema = zfd.formData({
   name: zfd.text(z.string().min(3).max(64)),
   description: zfd.text(z.string().max(255).optional()),
+  section: zfd.text(z.uuidv4()),
   icon: zfd.file(z.instanceof(File).optional()),
 });
 

@@ -5,4 +5,9 @@
   const { data }: PageProps = $props();
 </script>
 
-<Categoryform title={`Add category to ${data.game.name}`} />
+<Categoryform
+  title={`Add category to ${data.game.name}`}
+  sections={Object.fromEntries(
+    Object.entries(data.sections).map(([k, v]) => [v.id, v.name]),
+  )}
+/>

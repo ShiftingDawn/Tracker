@@ -3,6 +3,7 @@
   import Button from "$lib/componments/button.svelte";
   import Input from "$lib/componments/input.svelte";
   import Section from "$lib/componments/section.svelte";
+  import Select from "$lib/componments/select.svelte";
   import type { GameBoardCategory } from "$lib/server/db/schema";
   import type { ChangeEventHandler } from "svelte/elements";
 
@@ -21,9 +22,11 @@
   const {
     title,
     existing,
+    sections,
   }: {
     title: string;
     existing?: GameBoardCategory;
+    sections: Record<string, string>;
   } = $props();
 </script>
 
@@ -64,6 +67,16 @@
       class="px-0 py-0 file:bg-primary file:text-primary-fg file:rounded-lg file:px-2 file:py-1 hover:file:bg-primary/70 file:cursor-pointer"
       onchange={validateFile}
     />
+    <Select label="Section" name="section">
+      {#each Object.entries(sections) as section (section[0])}
+        <option
+          value={section[0]}
+          selected={existing && section[0] === existing.sectionId}
+        >
+          {section[1]}
+        </option>
+      {/each}
+    </Select>
     <div class="text-center">
       <Button type="submit">Submit</Button>
     </div>

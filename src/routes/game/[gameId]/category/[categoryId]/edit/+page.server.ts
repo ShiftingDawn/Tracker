@@ -1,10 +1,10 @@
 import { requireAuth } from "$lib/server/auth";
 import { db } from "$lib/server/db";
-import { gameBoardCategoryTable } from "$lib/server/db/schema";
+import { gameBoardCategoryTable, gameBoardSectionTable } from "$lib/server/db/schema";
 import { deleteFile, writeFile } from "$lib/server/fileservices";
 import { getError, getScaledSizes } from "$lib/server/util";
 import { error, fail, redirect, type Actions } from "@sveltejs/kit";
-import { and, eq, sql } from "drizzle-orm";
+import { and, asc, eq, sql } from "drizzle-orm";
 import sharp from "sharp";
 import z from "zod";
 import { zfd } from "zod-form-data";
@@ -15,12 +15,21 @@ export const load: PageServerLoad = async (event) => {
   const category = await db.query.gameBoardCategoryTable.findFirst({
     where: and(
       eq(gameBoardCategoryTable.id, event.params.categoryId),
-      eq(gameBoardCategoryTable.gameId, event.params.gameId),
       eq(gameBoardCategoryTable.creatorId, user.id)
     ),
+    with: {
+      section: {
+      //@ts-expect-error "where" does not exist on type
+        where: eq(gameBoardSectionTable.gameId, event.params.gameId),
+      },
+    },
   });
   if (!category) error(404);
-  return {category,};
+  const sections = await db.query.gameBoardSectionTable.findMany({
+    where: eq(gameBoardSectionTable.gameId, event.params.gameId),
+    orderBy: asc(gameBoardSectionTable.order),
+  });
+  return {category, sections,};
 };
 
 export const actions: Actions = {
@@ -42,9 +51,14 @@ export const actions: Actions = {
     const category = await db.query.gameBoardCategoryTable.findFirst({
       where: and(
         eq(gameBoardCategoryTable.id, event.params.categoryId!),
-        eq(gameBoardCategoryTable.gameId, event.params.gameId!),
         eq(gameBoardCategoryTable.creatorId, user.id)
       ),
+      with: {
+        section: {
+          //@ts-expect-error "where" does not exist on type
+          where: eq(gameBoardSectionTable.gameId, event.params.gameId),
+        },
+      },
     });
     if (!category) error(404);
     try {
@@ -53,6 +67,7 @@ export const actions: Actions = {
       const [updated,] = await db.update(gameBoardCategoryTable).set({
         name: data.name,
         description: data.description || null,
+        sectionId: data.section,
         icon: img ? sql`gen_random_uuid()` : undefined,
       }).where(eq(gameBoardCategoryTable.id, category.id)).returning();
       if (img) {
@@ -70,6 +85,7 @@ export const actions: Actions = {
 const schema = zfd.formData({
   name: zfd.text(z.string().min(3).max(64)),
   description: zfd.text(z.string().max(255).optional()),
+  section: zfd.text(z.uuidv4()),
   icon: zfd.file(z.instanceof(File).optional()),
 });
 
