@@ -1,5 +1,6 @@
 <script lang="ts">
   import Section from "$lib/componments/section.svelte";
+  import Subtext from "$lib/componments/subtext.svelte";
   import type { PageProps } from "./$types";
 
   const { data }: PageProps = $props();
@@ -33,7 +34,11 @@
                 />
               </div>
               <div>
-                <strong>{game.name}</strong>
+                <p class="font-bold">{game.name}</p>
+                <Subtext>
+                  Contains {game.categoryCount}
+                  {game.categoryCount === 1 ? "category" : "categories"}
+                </Subtext>
               </div>
             </a>
           </li>
