@@ -5,4 +5,7 @@
   const { data }: PageProps = $props();
 </script>
 
-<Categoryform title={`Add category to ${data.game.name}`} />
+<Categoryform
+  title={`Edit category: ${data.category.name}`}
+  existing={data.category}
+/>

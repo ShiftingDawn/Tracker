@@ -44,7 +44,10 @@
                 <div class="h-[64px]" aria-hidden="true"></div>
               {/if}
               <div class="flex flex-col">
-                <h2 class="font-bold">{category.name}</h2>
+                <p class="font-bold">{category.name}</p>
+                {#if category.description}
+                  <p>{category.description}</p>
+                {/if}
                 <Subtext>Added by {category.creator.username}</Subtext>
               </div>
             </a>

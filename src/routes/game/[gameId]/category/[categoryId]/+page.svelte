@@ -13,6 +13,11 @@
     <Button href={`/game/${data.game.id}`} variant="text">
       Back to {data.game.name}
     </Button>
+    {#if data.isOwner}
+      <Button href={`/game/${data.game.id}/category/${data.category.id}/edit`}>
+        Edit
+      </Button>
+    {/if}
   {/snippet}
   <div class="flex gap-4">
     {#if data.category.icon}

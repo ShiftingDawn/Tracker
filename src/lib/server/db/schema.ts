@@ -39,7 +39,7 @@ export type Game = typeof gameTable.$inferSelect;
 export const gameBoardCategoryTable = pgTable("game_board_category", {
   id: uuid().primaryKey().defaultRandom(),
   name: varchar("name", {length: 64,}).unique().notNull(),
-  description: varchar("description", {length: 255,}).unique().notNull(),
+  description: varchar("description", {length: 255,}),
   icon: uuid().defaultRandom(),
   gameId: uuid("game_id").notNull().references(() => gameTable.id),
   creatorId: uuid("creator_id").notNull().references(() => userTable.id),

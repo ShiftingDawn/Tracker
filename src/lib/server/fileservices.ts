@@ -1,4 +1,4 @@
-import { readFile as readFileFromDisk, writeFile as writeFileToDisk } from "node:fs/promises";
+import { unlink as deleteFromDisk, readFile as readFileFromDisk, writeFile as writeFileToDisk } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -13,4 +13,8 @@ export async function writeFile(uuid: string, data: Buffer) {
 
 export async function readFile(uuid: string) {
   return await readFileFromDisk(getFilePath(uuid));
+}
+
+export async function deleteFile(uuid: string) {
+  await deleteFromDisk(getFilePath(uuid));
 }

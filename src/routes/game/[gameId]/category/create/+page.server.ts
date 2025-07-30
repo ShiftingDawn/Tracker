@@ -39,7 +39,7 @@ export const actions: Actions = {
       categoryId = await db.transaction(async tx => {
         const [category,] = await tx.insert(gameBoardCategoryTable).values({
           name: data.name,
-          description: data.description,
+          description: data.description || null,
           gameId: event.params.gameId!,
           icon: img ? undefined : null,
           creatorId: user.id,
@@ -57,7 +57,7 @@ export const actions: Actions = {
 
 const schema = zfd.formData({
   name: zfd.text(z.string().min(3).max(64)),
-  description: zfd.text(z.string().min(3).max(255)),
+  description: zfd.text(z.string().max(255).optional()),
   icon: zfd.file(z.instanceof(File).optional()),
 });
 
