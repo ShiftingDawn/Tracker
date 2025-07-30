@@ -12,30 +12,34 @@
   );
 
   $effect(() => {
-    if (form?.id && !sections.includes(form.id)) {
+    if (form?.type === "add" && form.id && !sections.includes(form.id)) {
       sections.push(form.id);
+    } else if (form?.type === "rem" && form.id && sections.includes(form.id)) {
+      const index = sections.indexOf(form.id);
+      sections.splice(index, 1);
     }
   });
-  const moveUp = (id: string) => {
+
+  function moveUp(id: string) {
     const index = sections.indexOf(id);
     if (index === 0) return;
     const cur = sections[index - 1];
     sections[index - 1] = id;
     sections[index] = cur;
-  };
-  const moveDown = (id: string) => {
+  }
+  function moveDown(id: string) {
     const index = sections.indexOf(id);
     if (index === sections.length - 1) return;
     const cur = sections[index + 1];
     sections[index + 1] = id;
     sections[index] = cur;
-  };
+  }
 </script>
 
 <Section w="md" title={`Edit sections for ${data.game.name}`}>
   {#snippet actions()}
     <form method="post" use:enhance action="?/save">
-      {#each sections as sectionId, index (sectionId)}
+      {#each sections as sectionId (sectionId)}
         <input type="hidden" name="order" value={sectionId} />
       {/each}
       <Button type="submit">Save</Button>
@@ -43,11 +47,18 @@
   {/snippet}
   <ol class="divide-y divide-primary">
     {#each sections as sectionId, index (sectionId)}
+      {@const section = data.game.sections.find((s) => s.id === sectionId)!}
       <li>
         <div class="flex gap-2 py-1">
           <span class="w-full">
-            {data.game.sections.find((s) => s.id === sectionId)!.name}
+            {section.name} ({section.categories.length})
           </span>
+          <form method="post" use:enhance action="?/removesection">
+            <input type="hidden" name="id" value={sectionId} />
+            <Button type="submit" disabled={section.categories.length > 0}>
+              Delete
+            </Button>
+          </form>
           <Button onclick={() => moveUp(sectionId)} disabled={index === 0}>
             UP
           </Button>
