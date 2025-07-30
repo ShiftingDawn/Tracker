@@ -53,10 +53,12 @@ export const actions: Actions = {
       const [updated,] = await db.update(gameBoardCategoryTable).set({
         name: data.name,
         description: data.description || null,
-        icon: img ? sql`gen_random_uuid()` : null,
+        icon: img ? sql`gen_random_uuid()` : undefined,
       }).where(eq(gameBoardCategoryTable.id, category.id)).returning();
-      if (category.icon) await deleteFile(category.icon);
-      if (img && updated.icon) await writeFile(updated.icon, await img.png().toBuffer());
+      if (img) {
+        if (category.icon) await deleteFile(category.icon);
+        if (updated.icon) await writeFile(updated.icon, await img.png().toBuffer());
+      }
     } catch (error) {
       console.error(error);
       return fail(500, {message: "Internal server error",});
