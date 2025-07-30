@@ -45,9 +45,11 @@
           {title}
         </div>
       {/if}
-      <div class="flex flex-row gap-2">
-        {@render actions?.()}
-      </div>
+      {#if actions}
+        <div class="flex flex-row gap-2">
+          {@render actions()}
+        </div>
+      {/if}
     </div>
   {/if}
   <div class="rounded-2xl bg-surface-alt p-2 inset-shadow">
