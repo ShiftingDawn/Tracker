@@ -27,7 +27,7 @@
   {/snippet}
   <div class="flex gap-4">
     {#if data.category.icon}
-      <Image size={128} src={`/static/${data.category.icon}`} alt="game logo" />
+      <Image size={128} src={`/img/${data.category.icon}`} alt="game logo" />
     {/if}
     <div>
       <h1 class="text-xl font-bold">{data.category.name}</h1>

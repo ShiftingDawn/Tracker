@@ -28,7 +28,7 @@
             >
               <div class="w-[64px] h-[64px]">
                 <img
-                  src={`/static/${game.icon}`}
+                  src={`/img/${game.icon}`}
                   alt={`${game.name} logo`}
                   class="w-full h-full overflow-hidden object-scale-down"
                 />

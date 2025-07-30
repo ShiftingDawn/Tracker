@@ -11,7 +11,7 @@
 <div class="flex flex-col gap-4">
   <Section w="md" title={data.game.name}>
     <div class="flex gap-4">
-      <Image size={128} src={`/static/${data.game.icon}`} alt="game logo" />
+      <Image size={128} src={`/img/${data.game.icon}`} alt="game logo" />
       <div>
         <Subtext>Added by {data.game.creator.username}</Subtext>
       </div>
@@ -20,7 +20,9 @@
       <div class="mt-4">
         <Button href={`/game/${data.game.id}/edit`}>Edit game</Button>
         <Button href={`/game/${data.game.id}/sections`}>Edit sections</Button>
-        <Button href={`/game/${data.game.id}/category/create`}>Add category</Button>
+        <Button href={`/game/${data.game.id}/category/create`}
+          >Add category</Button
+        >
       </div>
     {/if}
   </Section>
@@ -37,7 +39,7 @@
                 {#if category.icon}
                   <Image
                     size={64}
-                    src={`/static/${category.icon}`}
+                    src={`/img/${category.icon}`}
                     alt={`${category.name} category icon`}
                   />
                 {:else}
