@@ -33,8 +33,12 @@
                   class="w-full h-full overflow-hidden object-scale-down"
                 />
               </div>
-              <div>
+              <div class="flex flex-col">
                 <p class="font-bold">{game.name}</p>
+                <Subtext>
+                  Contains {game.sectionCount}
+                  {game.sectionCount === 1 ? "section" : "sections"}
+                </Subtext>
                 <Subtext>
                   Contains {game.categoryCount}
                   {game.categoryCount === 1 ? "category" : "categories"}

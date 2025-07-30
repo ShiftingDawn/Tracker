@@ -1,6 +1,6 @@
 import { db } from "$lib/server/db";
-import { gameBoardCategoryTable, gameTable } from "$lib/server/db/schema";
-import { count, desc, eq } from "drizzle-orm";
+import { gameBoardCategoryTable, gameBoardSectionTable, gameTable } from "$lib/server/db/schema";
+import { countDistinct, desc, eq } from "drizzle-orm";
 import type { PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async (event) => {
@@ -10,9 +10,11 @@ export const load: PageServerLoad = async (event) => {
     id: gameTable.id,
     name: gameTable.name,
     icon: gameTable.icon,
-    categoryCount: count(gameBoardCategoryTable.id),
+    sectionCount: countDistinct(gameBoardSectionTable.id),
+    categoryCount: countDistinct(gameBoardCategoryTable.id),
   }).from(gameTable)
-    .leftJoin(gameBoardCategoryTable, eq(gameBoardCategoryTable.gameId, gameTable.id))
+    .leftJoin(gameBoardSectionTable, eq(gameBoardSectionTable.gameId, gameTable.id))
+    .leftJoin(gameBoardCategoryTable, eq(gameBoardCategoryTable.sectionId, gameBoardSectionTable.id))
     .groupBy(gameTable.id)
     .orderBy(desc(gameTable.createdAt))
     .limit(5);

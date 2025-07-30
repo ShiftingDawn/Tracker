@@ -9,11 +9,8 @@
 </script>
 
 {#snippet gameActions()}
+  <Button href={`/game/${data.game.id}/sections`}>Sections</Button>
   <Button href={`/game/${data.game.id}/edit`}>Edit</Button>
-{/snippet}
-
-{#snippet categoryActions()}
-  <Button href={`/game/${data.game.id}/category/create`}>New category</Button>
 {/snippet}
 
 <div class="flex flex-col gap-4">
@@ -29,38 +26,36 @@
       </div>
     </div>
   </Section>
-  <Section
-    w="md"
-    title="Categories"
-    actions={data.isOwner ? categoryActions : undefined}
-  >
-    {#if data.game.categories.length > 0}
-      <ol>
-        {#each data.game.categories as category (category.id)}
-          <li>
-            <a
-              href={`/game/${data.game.id}/category/${category.id}`}
-              class="flex flex-row gap-2 hover:bg-primary/20 transition-colors rounded-lg"
-            >
-              {#if category.icon}
-                <Image
-                  size={64}
-                  src={`/static/${category.icon}`}
-                  alt={`${category.name} category icon`}
-                />
-              {:else}
-                <div class="h-[64px]" aria-hidden="true"></div>
-              {/if}
-              <div class="flex flex-col">
-                <p class="font-bold">{category.name}</p>
-                {#if category.description}
-                  <p>{category.description}</p>
+  {#each data.game.sections as section (section.id)}
+    <Section title={section.name} w="md">
+      {#if section.categories.length > 0}
+        <ol>
+          {#each section.categories as category (category.id)}
+            <li>
+              <a
+                href={`/game/${data.game.id}/category/${category.id}`}
+                class="flex flex-row gap-2 hover:bg-primary/20 transition-colors rounded-lg"
+              >
+                {#if category.icon}
+                  <Image
+                    size={64}
+                    src={`/static/${category.icon}`}
+                    alt={`${category.name} category icon`}
+                  />
+                {:else}
+                  <div class="h-[64px]" aria-hidden="true"></div>
                 {/if}
-                <Subtext>Added by {category.creator.username}</Subtext>
-              </div>
-            </a>
-          </li>{/each}
-      </ol>
-    {/if}
-  </Section>
+                <div class="flex flex-col">
+                  <p class="font-bold">{category.name}</p>
+                  {#if category.description}
+                    <p>{category.description}</p>
+                  {/if}
+                  <Subtext>Added by {category.creator.username}</Subtext>
+                </div>
+              </a>
+            </li>{/each}
+        </ol>
+      {/if}
+    </Section>
+  {/each}
 </div>

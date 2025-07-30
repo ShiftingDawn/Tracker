@@ -37,19 +37,19 @@
   <a
     href={disabled ? undefined : href}
     class={twMerge(button({ variant }), cls)}
-    aria-disabled={disabled}
+    aria-disabled={disabled || undefined}
     role={disabled ? "link" : undefined}
     tabindex={disabled ? -1 : undefined}
     {...props}
-    data-disabled={disabled}
+    data-disabled={disabled || undefined}
   >
     {@render children?.()}
   </a>
 {:else}
   <button
-    class="{twMerge(button({ variant }), cls)}{type}"
+    class="{twMerge(button({ variant }), cls)}"
     {disabled}
-    data-disabled={disabled}
+    data-disabled={disabled || undefined}
     {...props}
   >
     {@render children?.()}

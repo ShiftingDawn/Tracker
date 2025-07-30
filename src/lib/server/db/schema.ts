@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { pgTable, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
+import { pgTable, smallint, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
 
 export const userTable = pgTable("user", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -32,21 +32,36 @@ export const gameTable = pgTable("game", {
 });
 export const gameRelations = relations(gameTable, ({one, many,}) => ({
   creator: one(userTable, {fields: [gameTable.creatorId,], references: [userTable.id,],}),
-  categories: many(gameBoardCategoryTable),
+  sections: many(gameBoardSectionTable),
 }));
 export type Game = typeof gameTable.$inferSelect;
+
+export const gameBoardSectionTable = pgTable("game_board_section", {
+  id: uuid().primaryKey().defaultRandom(),
+  name: varchar("name", {length: 64,}).unique().notNull(),
+  order: smallint("order").notNull(),
+  gameId: uuid("game_id").notNull().references(() => gameTable.id),
+  creatorId: uuid("creator_id").notNull().references(() => userTable.id),
+  createdAt: timestamp("created_at", {withTimezone: true, mode: "date",}).notNull().defaultNow(),
+});
+export const gameBoardSectionRelations = relations(gameBoardSectionTable, ({one, many,}) => ({
+  creator: one(userTable, {fields: [gameBoardSectionTable.creatorId,], references: [userTable.id,],}),
+  game: one(gameTable, {fields: [gameBoardSectionTable.gameId,], references: [gameTable.id,],}),
+  categories: many(gameBoardCategoryTable),
+}));
+export type GameBoardSection = typeof gameBoardSectionTable.$inferSelect;
 
 export const gameBoardCategoryTable = pgTable("game_board_category", {
   id: uuid().primaryKey().defaultRandom(),
   name: varchar("name", {length: 64,}).unique().notNull(),
   description: varchar("description", {length: 255,}),
   icon: uuid().defaultRandom(),
-  gameId: uuid("game_id").notNull().references(() => gameTable.id),
+  sectionId: uuid("section_id").notNull().references(() => gameBoardSectionTable.id),
   creatorId: uuid("creator_id").notNull().references(() => userTable.id),
   createdAt: timestamp("created_at", {withTimezone: true, mode: "date",}).notNull().defaultNow(),
 });
 export const gameBoardCategoryRelations = relations(gameBoardCategoryTable, ({one,}) => ({
-  game: one(gameTable, {fields: [gameBoardCategoryTable.gameId,], references: [gameTable.id,],}),
+  section: one(gameBoardSectionTable, {fields: [gameBoardCategoryTable.sectionId,], references: [gameBoardSectionTable.id,],}),
   creator: one(userTable, {fields: [gameBoardCategoryTable.creatorId,], references: [userTable.id,],}),
 }));
 export type GameBoardCategory = typeof gameBoardCategoryTable.$inferSelect;

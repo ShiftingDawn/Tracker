@@ -26,7 +26,7 @@
     <div>
       <h1 class="text-xl font-bold">{data.category.name}</h1>
       <p>{data.category.description}</p>
-      <Subtext>Added by {data.category.creator.username}</Subtext>
+      <Subtext>Added by {data.creator.username}</Subtext>
     </div>
   </div>
 </Section>

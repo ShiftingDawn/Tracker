@@ -1,18 +1,22 @@
 import { db } from "$lib/server/db";
-import { gameBoardCategoryTable } from "$lib/server/db/schema";
+import { gameBoardCategoryTable, gameBoardSectionTable, gameTable, userTable } from "$lib/server/db/schema";
 import { error } from "@sveltejs/kit";
-import { and, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import type { PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async (event) => {
-  const category = await db.query.gameBoardCategoryTable.findFirst({
-    where: and(eq(gameBoardCategoryTable.id, event.params.categoryId), eq(gameBoardCategoryTable.gameId, event.params.gameId)),
-    with: {creator: {columns: {username: true,},}, game: true,},
-  });
+  const [category,] = await db.select()
+    .from(gameBoardCategoryTable)
+    .innerJoin(gameBoardSectionTable, eq(gameBoardCategoryTable.sectionId, gameBoardSectionTable.id))
+    .innerJoin(gameTable, eq(gameBoardSectionTable.gameId, gameTable.id))
+    .innerJoin(userTable, eq(gameBoardCategoryTable.creatorId, userTable.id))
+    .where(eq(gameBoardCategoryTable.id, event.params.categoryId))
+    .limit(1);
   if (!category) error(404);
   return {
-    category,
+    category: category.game_board_category,
     game: category.game,
-    isOwner: event.locals.user?.id === category.creatorId,
+    creator: category.user,
+    isOwner: event.locals.user?.id === category.game_board_category.creatorId,
   };
 };
