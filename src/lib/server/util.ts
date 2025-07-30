@@ -19,7 +19,7 @@ export function getError(holder: unknown): string | undefined {
 
 export function isImage(file: Blob): boolean {
   const t = file.type;
-  return t === "image/png" || t === "image/jpeg";
+  return t === "image/png" || t === "image/jpeg" || t === "image/webp";
 }
 
 export async function getScaledSizes(size: number, img: ReturnType<typeof sharp>): Promise<ResizeOptions> {

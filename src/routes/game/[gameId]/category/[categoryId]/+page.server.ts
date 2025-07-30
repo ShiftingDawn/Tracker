@@ -1,7 +1,7 @@
 import { db } from "$lib/server/db";
-import { gameBoardCategoryTable, gameBoardSectionTable, gameTable, userTable } from "$lib/server/db/schema";
+import { gameBoardCategoryTable, gameBoardSectionTable, gameQuestTable, gameTable, userTable } from "$lib/server/db/schema";
 import { error } from "@sveltejs/kit";
-import { eq } from "drizzle-orm";
+import { asc, eq } from "drizzle-orm";
 import type { PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async (event) => {
@@ -13,10 +13,16 @@ export const load: PageServerLoad = async (event) => {
     .where(eq(gameBoardCategoryTable.id, event.params.categoryId))
     .limit(1);
   if (!category) error(404);
+  const quests = await db.query.gameQuestTable.findMany({
+    where: eq(gameQuestTable.categoryId, category.game_board_category.id),
+    orderBy: asc(gameQuestTable.order),
+    with: {creator: {columns: {username: true,},},},
+  });
   return {
     category: category.game_board_category,
     game: category.game,
     creator: category.user,
+    quests,
     isOwner: event.locals.user?.id === category.game_board_category.creatorId,
   };
 };

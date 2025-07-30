@@ -71,3 +71,22 @@ export const gameBoardCategoryRelations = relations(gameBoardCategoryTable, ({on
   creator: one(userTable, {fields: [gameBoardCategoryTable.creatorId,], references: [userTable.id,],}),
 }));
 export type GameBoardCategory = typeof gameBoardCategoryTable.$inferSelect;
+
+export const gameQuestTable = pgTable("game_quest", {
+  id: uuid().primaryKey().defaultRandom(),
+  name: varchar("name", {length: 64,}).notNull(),
+  description: text("description").notNull(),
+  icon: uuid().defaultRandom(),
+  order: smallint("order").notNull(),
+  categoryId: uuid("category_id").notNull().references(() => gameBoardCategoryTable.id),
+  creatorId: uuid("creator_id").notNull().references(() => userTable.id),
+  createdAt: timestamp("created_at", {withTimezone: true, mode: "date",}).notNull().defaultNow(),
+}, table => [
+  uniqueIndex("unique_name_category_id").on(table.name, table.categoryId),
+  //
+]);
+export const gameQuestRelations = relations(gameQuestTable, ({one,}) => ({
+  category: one(gameBoardCategoryTable, {fields: [gameQuestTable.categoryId,], references: [gameBoardCategoryTable.id,],}),
+  creator: one(userTable, {fields: [gameQuestTable.creatorId,], references: [userTable.id,],}),
+}));
+export type GameQuest = typeof gameQuestTable.$inferSelect;

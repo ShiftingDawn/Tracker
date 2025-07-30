@@ -53,8 +53,11 @@
                   <Subtext>Added by {category.creator.username}</Subtext>
                 </div>
               </a>
-            </li>{/each}
+            </li>
+          {/each}
         </ol>
+      {:else}
+        <p>No categories have been created yet.</p>
       {/if}
     </Section>
   {/each}
