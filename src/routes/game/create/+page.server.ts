@@ -4,7 +4,7 @@ import { gameTable } from "$lib/server/db/schema";
 import { writeFile } from "$lib/server/fileservices";
 import { getError, getScaledSizes, isImage } from "$lib/server/util";
 import { fail, redirect, type Actions } from "@sveltejs/kit";
-import sharp, { type ResizeOptions } from "sharp";
+import sharp from "sharp";
 import z from "zod";
 import { zfd } from "zod-form-data";
 import type { PageServerLoad } from "./$types";

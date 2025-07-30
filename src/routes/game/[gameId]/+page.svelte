@@ -8,12 +8,20 @@
   const { data }: PageProps = $props();
 </script>
 
-{#snippet actions()}
+{#snippet gameActions()}
+  <Button href={`/game/${data.game.id}/edit`}>Edit</Button>
+{/snippet}
+
+{#snippet categoryActions()}
   <Button href={`/game/${data.game.id}/category/create`}>New category</Button>
 {/snippet}
 
 <div class="flex flex-col gap-4">
-  <Section w="md" title={data.game.name}>
+  <Section
+    w="md"
+    title={data.game.name}
+    actions={data.isOwner ? gameActions : undefined}
+  >
     <div class="flex gap-4">
       <Image size={128} src={`/static/${data.game.icon}`} alt="game logo" />
       <div>
@@ -24,7 +32,7 @@
   <Section
     w="md"
     title="Categories"
-    actions={data.isOwner ? actions : undefined}
+    actions={data.isOwner ? categoryActions : undefined}
   >
     {#if data.game.categories.length > 0}
       <ol>
