@@ -1,11 +1,11 @@
 <script lang="ts">
-  import Button from "$lib/componments/button.svelte";
-  import AddIcon from "$lib/componments/icons/add-icon.svelte";
-  import EditIcon from "$lib/componments/icons/edit-icon.svelte";
-  import GridIcon from "$lib/componments/icons/grid-icon.svelte";
-  import Image from "$lib/componments/image.svelte";
-  import Section from "$lib/componments/section.svelte";
-  import Subtext from "$lib/componments/subtext.svelte";
+  import Button from "$lib/components/button.svelte";
+  import AddIcon from "$lib/components/icons/add-icon.svelte";
+  import EditIcon from "$lib/components/icons/edit-icon.svelte";
+  import GridIcon from "$lib/components/icons/grid-icon.svelte";
+  import Image from "$lib/components/image.svelte";
+  import Section from "$lib/components/section.svelte";
+  import Subtext from "$lib/components/subtext.svelte";
   import type { PageProps } from "./$types";
 
   const { data }: PageProps = $props();

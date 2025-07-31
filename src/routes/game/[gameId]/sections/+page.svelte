@@ -1,14 +1,14 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
-  import Button from "$lib/componments/button.svelte";
-  import Divider from "$lib/componments/divider.svelte";
-  import AddIcon from "$lib/componments/icons/add-icon.svelte";
-  import ChevronDownIcon from "$lib/componments/icons/chevron-down-icon.svelte";
-  import ChevronUpIcon from "$lib/componments/icons/chevron-up-icon.svelte";
-  import DeleteIcon from "$lib/componments/icons/delete-icon.svelte";
-  import SaveIcon from "$lib/componments/icons/save-icon.svelte";
-  import Input from "$lib/componments/input.svelte";
-  import Section from "$lib/componments/section.svelte";
+  import Button from "$lib/components/button.svelte";
+  import Divider from "$lib/components/divider.svelte";
+  import AddIcon from "$lib/components/icons/add-icon.svelte";
+  import ChevronDownIcon from "$lib/components/icons/chevron-down-icon.svelte";
+  import ChevronUpIcon from "$lib/components/icons/chevron-up-icon.svelte";
+  import DeleteIcon from "$lib/components/icons/delete-icon.svelte";
+  import SaveIcon from "$lib/components/icons/save-icon.svelte";
+  import Input from "$lib/components/input.svelte";
+  import Section from "$lib/components/section.svelte";
   import type { PageProps } from "./$types";
 
   const { data, form }: PageProps = $props();

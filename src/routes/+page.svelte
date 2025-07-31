@@ -1,7 +1,7 @@
 <script lang="ts">
-  import Dot from "$lib/componments/dot.svelte";
-  import Section from "$lib/componments/section.svelte";
-  import Subtext from "$lib/componments/subtext.svelte";
+  import Dot from "$lib/components/dot.svelte";
+  import Section from "$lib/components/section.svelte";
+  import Subtext from "$lib/components/subtext.svelte";
   import type { PageProps } from "./$types";
 
   const { data }: PageProps = $props();

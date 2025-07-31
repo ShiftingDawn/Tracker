@@ -1,7 +1,7 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
-  import Button from "$lib/componments/button.svelte";
-  import Section from "$lib/componments/section.svelte";
+  import Button from "$lib/components/button.svelte";
+  import Section from "$lib/components/section.svelte";
   import type { PageProps } from "./$types";
 
   const { data, params }: PageProps = $props();

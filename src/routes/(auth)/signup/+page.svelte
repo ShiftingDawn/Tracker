@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { enhance } from "$app/forms";
-	import Button from "$lib/componments/button.svelte";
-	import Divider from "$lib/componments/divider.svelte";
-	import Input from "$lib/componments/input.svelte";
-	import Section from "$lib/componments/section.svelte";
+	import Button from "$lib/components/button.svelte";
+	import Divider from "$lib/components/divider.svelte";
+	import Input from "$lib/components/input.svelte";
+	import Section from "$lib/components/section.svelte";
 	import type { ActionData } from "./$types";
 
 	let { form }: { form: ActionData } = $props();

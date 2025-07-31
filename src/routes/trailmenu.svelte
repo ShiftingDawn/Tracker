@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from "$app/state";
-  import Divider from "$lib/componments/divider.svelte";
+  import Divider from "$lib/components/divider.svelte";
   import Logo from "$lib/logo.svelte";
 
   const {

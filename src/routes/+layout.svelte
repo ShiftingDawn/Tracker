@@ -1,5 +1,5 @@
 <script lang="ts">
-  import MenuIcon from "$lib/componments/icons/menu-icon.svelte";
+  import MenuIcon from "$lib/components/icons/menu-icon.svelte";
   import Logo from "$lib/logo.svelte";
   import { twMerge } from "tailwind-merge";
   import "../app.css";

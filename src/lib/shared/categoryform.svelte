@@ -1,10 +1,10 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
-  import Button from "$lib/componments/button.svelte";
-  import SaveIcon from "$lib/componments/icons/save-icon.svelte";
-  import Input from "$lib/componments/input.svelte";
-  import Section from "$lib/componments/section.svelte";
-  import Select from "$lib/componments/select.svelte";
+  import Button from "$lib/components/button.svelte";
+  import SaveIcon from "$lib/components/icons/save-icon.svelte";
+  import Input from "$lib/components/input.svelte";
+  import Section from "$lib/components/section.svelte";
+  import Select from "$lib/components/select.svelte";
   import type { GameBoardCategory } from "$lib/server/db/schema";
   import type { ChangeEventHandler } from "svelte/elements";
 
