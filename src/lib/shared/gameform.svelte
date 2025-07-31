@@ -1,10 +1,11 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
   import Button from "$lib/components/button.svelte";
-  import SaveIcon from "$lib/components/icons/save-icon.svelte";
   import Input from "$lib/components/input.svelte";
   import Section from "$lib/components/section.svelte";
+  import icons from "$lib/icons";
   import type { Game } from "$lib/server/db/schema";
+  import Icon from "@iconify/svelte";
   import type { ChangeEventHandler } from "svelte/elements";
 
   let fileSizeOk: boolean = $state(true);
@@ -60,7 +61,7 @@
     />
     <div class="mx-auto">
       <Button type="submit">
-        <SaveIcon />
+        <Icon icon={icons.save} />
         Submit
       </Button>
     </div>

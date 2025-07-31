@@ -1,1 +1,0 @@
-<span class="icon-[pixel--bars-solid]"></span>

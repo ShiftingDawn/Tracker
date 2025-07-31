@@ -2,13 +2,10 @@
   import { enhance } from "$app/forms";
   import Button from "$lib/components/button.svelte";
   import Divider from "$lib/components/divider.svelte";
-  import AddIcon from "$lib/components/icons/add-icon.svelte";
-  import ChevronDownIcon from "$lib/components/icons/chevron-down-icon.svelte";
-  import ChevronUpIcon from "$lib/components/icons/chevron-up-icon.svelte";
-  import DeleteIcon from "$lib/components/icons/delete-icon.svelte";
-  import SaveIcon from "$lib/components/icons/save-icon.svelte";
   import Input from "$lib/components/input.svelte";
   import Section from "$lib/components/section.svelte";
+  import icons from "$lib/icons";
+  import Icon from "@iconify/svelte";
   import type { PageProps } from "./$types";
 
   const { data, form }: PageProps = $props();
@@ -48,7 +45,7 @@
         <input type="hidden" name="order" value={sectionId} />
       {/each}
       <Button type="submit">
-        <SaveIcon />
+        <Icon icon={icons.save} />
         Save
       </Button>
     </form>
@@ -68,7 +65,7 @@
               disabled={section.categories.length > 0}
               variant="text"
             >
-              <DeleteIcon />
+              <Icon icon={icons.delete} />
             </Button>
           </form>
           <Button
@@ -76,14 +73,14 @@
             disabled={index === 0}
             variant="text"
           >
-            <ChevronUpIcon />
+            <Icon icon={icons.chevronUp} />
           </Button>
           <Button
             onclick={() => moveDown(sectionId)}
             disabled={index === sections.length - 1}
             variant="text"
           >
-            <ChevronDownIcon />
+            <Icon icon={icons.chevronDown} />
           </Button>
         </div>
       </li>
@@ -99,7 +96,7 @@
     <Input label="Add section" name="name" />
     <div class="flex items-end">
       <Button>
-        <AddIcon />
+        <Icon icon={icons.add} />
         Add
       </Button>
     </div>

@@ -46,7 +46,7 @@
         </div>
       {/if}
       {#if actions}
-        <div class="flex flex-row gap-2">
+        <div class={twMerge("flex flex-row gap-2", !title && "w-full")}>
           {@render actions()}
         </div>
       {/if}

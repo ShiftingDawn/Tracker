@@ -1,17 +1,24 @@
 <script lang="ts">
   import Button from "$lib/components/button.svelte";
-  import AddIcon from "$lib/components/icons/add-icon.svelte";
-  import DeleteIcon from "$lib/components/icons/delete-icon.svelte";
-  import EditIcon from "$lib/components/icons/edit-icon.svelte";
   import Image from "$lib/components/image.svelte";
   import Section from "$lib/components/section.svelte";
   import Subtext from "$lib/components/subtext.svelte";
+  import icons from "$lib/icons";
+  import Icon from "@iconify/svelte";
   import type { PageProps } from "./$types";
 
   const { data }: PageProps = $props();
 </script>
 
 <Section w="md">
+  {#snippet actions()}
+    <Button href={`/game/${data.game.id}`} variant="text" class="w-full">
+      <div class="text-[1.5rem]">
+        <Icon icon={icons.chevronLeft} />
+      </div>
+      {data.game.name}
+    </Button>
+  {/snippet}
   <div class="flex gap-4">
     {#if data.category.icon}
       <Image size={128} src={`/img/${data.category.icon}`} alt="game logo" />
@@ -25,14 +32,14 @@
   {#if data.isCategoryOwner}
     <div class="mt-4 flex gap-2">
       <Button href={`/game/${data.game.id}/category/${data.category.id}/edit`}>
-        <EditIcon />
+        <Icon icon={icons.edit} />
         Edit
       </Button>
       <Button
         variant="outline"
         href={`/game/${data.game.id}/category/${data.category.id}/delete`}
       >
-        <DeleteIcon />
+        <Icon icon={icons.delete} />
         Delete
       </Button>
     </div>
@@ -43,7 +50,7 @@
   <Button
     href={`/game/${data.game.id}/category/${data.category.id}/quest/create`}
   >
-    <AddIcon />
+    <Icon icon={icons.add} />
     Add new quest
   </Button>
 {/snippet}

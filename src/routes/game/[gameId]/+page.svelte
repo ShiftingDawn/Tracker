@@ -1,11 +1,10 @@
 <script lang="ts">
   import Button from "$lib/components/button.svelte";
-  import AddIcon from "$lib/components/icons/add-icon.svelte";
-  import EditIcon from "$lib/components/icons/edit-icon.svelte";
-  import GridIcon from "$lib/components/icons/grid-icon.svelte";
   import Image from "$lib/components/image.svelte";
   import Section from "$lib/components/section.svelte";
   import Subtext from "$lib/components/subtext.svelte";
+  import icons from "$lib/icons";
+  import Icon from "@iconify/svelte";
   import type { PageProps } from "./$types";
 
   const { data }: PageProps = $props();
@@ -23,15 +22,15 @@
     {#if data.isGameOwner}
       <div class="mt-4 flex gap-2 flex-wrap">
         <Button href={`/game/${data.game.id}/edit`}>
-          <EditIcon />
+          <Icon icon={icons.edit} />
           Edit game
         </Button>
         <Button href={`/game/${data.game.id}/sections`}>
-          <GridIcon />
+          <Icon icon={icons.grid} />
           Edit sections
         </Button>
         <Button href={`/game/${data.game.id}/category/create`}>
-          <AddIcon />
+          <Icon icon={icons.add} />
           Add category
         </Button>
       </div>
