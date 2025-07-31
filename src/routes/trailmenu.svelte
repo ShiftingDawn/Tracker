@@ -1,7 +1,6 @@
 <script lang="ts">
   import { page } from "$app/state";
   import Divider from "$lib/componments/divider.svelte";
-  import MenuIcon from "$lib/componments/icons/menu-icon.svelte";
   import Logo from "$lib/logo.svelte";
 
   const {
@@ -22,7 +21,7 @@
     if (all.length === 0) return [null, []];
     return [
       all[all.length - 1],
-      all.length === 1 ? [] : all.slice(0, all.length - 1),
+      all.length === 1 ? [] : all.slice(0, all.length - 1).reverse(),
     ];
   });
 </script>
