@@ -66,11 +66,21 @@
   </div>
   <Divider />
   {#if current}
-    <div class="px-2 pt-2">
-      <p class="text-drawer-fg/75">Current page</p>
-      <div class="pl-2 w-full font-bold">
-        {current.name}
-      </div>
+    <div class="pt-2">
+      <p class="ml-2 text-drawer-fg/75">Current page</p>
+      {#if current.href}
+        <a
+          href={current.href}
+          class="pl-4 py-1 hover:bg-primary/50 transition-colors block w-full"
+          onclick={closeDrawer}
+        >
+          {current.name}
+        </a>
+      {:else}
+        <div class="pl-4 py-1 w-full font-bold">
+          {current.name}
+        </div>
+      {/if}
     </div>
   {/if}
   {#if breadcrumbs.length > 0}
