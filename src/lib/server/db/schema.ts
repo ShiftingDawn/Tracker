@@ -67,9 +67,10 @@ export const gameBoardCategoryTable = pgTable("game_board_category", {
   uniqueIndex("unique_name_section_id").on(table.name, table.sectionId),
   //
 ]);
-export const gameBoardCategoryRelations = relations(gameBoardCategoryTable, ({one,}) => ({
+export const gameBoardCategoryRelations = relations(gameBoardCategoryTable, ({one, many,}) => ({
   section: one(gameBoardSectionTable, {fields: [gameBoardCategoryTable.sectionId,], references: [gameBoardSectionTable.id,],}),
   creator: one(userTable, {fields: [gameBoardCategoryTable.creatorId,], references: [userTable.id,],}),
+  quests: many(gameQuestTable),
 }));
 export type GameBoardCategory = typeof gameBoardCategoryTable.$inferSelect;
 

@@ -7,31 +7,31 @@
   import type { PageProps } from "./$types";
 
   const { data }: PageProps = $props();
-  const categories = $state<string[]>(
-    data.section.categories.map((category) => category.id),
+  const quests = $state<string[]>(
+    data.category.quests.map((quest) => quest.id),
   );
 
   function moveUp(id: string) {
-    const index = categories.indexOf(id);
+    const index = quests.indexOf(id);
     if (index === 0) return;
-    const cur = categories[index - 1];
-    categories[index - 1] = id;
-    categories[index] = cur;
+    const cur = quests[index - 1];
+    quests[index - 1] = id;
+    quests[index] = cur;
   }
   function moveDown(id: string) {
-    const index = categories.indexOf(id);
-    if (index === categories.length - 1) return;
-    const cur = categories[index + 1];
-    categories[index + 1] = id;
-    categories[index] = cur;
+    const index = quests.indexOf(id);
+    if (index === quests.length - 1) return;
+    const cur = quests[index + 1];
+    quests[index + 1] = id;
+    quests[index] = cur;
   }
 </script>
 
-<Section w="md" title={`Edit category order: ${data.section.name}`}>
+<Section w="md" title={`Edit quest order: ${data.category.name}`}>
   {#snippet actions()}
     <form method="post" use:enhance>
-      {#each categories as categoryId (categoryId)}
-        <input type="hidden" name="order" value={categoryId} />
+      {#each quests as questId (questId)}
+        <input type="hidden" name="order" value={questId} />
       {/each}
       <Button type="submit">
         <Icon icon={icons.save} />
@@ -40,25 +40,23 @@
     </form>
   {/snippet}
   <ol class="divide-y divide-primary">
-    {#each categories as categoryId, index (categoryId)}
-      {@const category = data.section.categories.find(
-        (s) => s.id === categoryId,
-      )!}
+    {#each quests as questId, index (questId)}
+      {@const quest = data.category.quests.find((s) => s.id === questId)!}
       <li>
         <div class="flex gap-2 py-1">
           <span class="w-full">
-            {category.name}
+            {quest.name}
           </span>
           <Button
-            onclick={() => moveUp(categoryId)}
+            onclick={() => moveUp(questId)}
             disabled={index === 0}
             variant="text"
           >
             <Icon icon={icons.chevronUp} />
           </Button>
           <Button
-            onclick={() => moveDown(categoryId)}
-            disabled={index === categories.length - 1}
+            onclick={() => moveDown(questId)}
+            disabled={index === quests.length - 1}
             variant="text"
           >
             <Icon icon={icons.chevronDown} />

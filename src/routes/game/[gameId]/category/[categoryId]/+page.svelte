@@ -35,6 +35,10 @@
         <Icon icon={icons.edit} />
         Edit
       </Button>
+      <Button href={`/game/${data.game.id}/category/${data.category.id}/order`}>
+        <Icon icon={icons.menu} />
+        Order
+      </Button>
       <Button
         variant="outline"
         href={`/game/${data.game.id}/category/${data.category.id}/delete`}
