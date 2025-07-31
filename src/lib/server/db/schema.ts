@@ -59,6 +59,7 @@ export const gameBoardCategoryTable = pgTable("game_board_category", {
   name: varchar("name", {length: 64,}).notNull(),
   description: varchar("description", {length: 255,}),
   icon: uuid().defaultRandom(),
+  order: smallint("order").notNull(),
   sectionId: uuid("section_id").notNull().references(() => gameBoardSectionTable.id),
   creatorId: uuid("creator_id").notNull().references(() => userTable.id),
   createdAt: timestamp("created_at", {withTimezone: true, mode: "date",}).notNull().defaultNow(),

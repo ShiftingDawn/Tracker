@@ -16,7 +16,7 @@ export const load: LayoutServerLoad = async (event) => {
           creator: {columns: {username: true,},},
           categories: {
             with: {creator: {columns: {username: true,},},},
-            orderBy: asc(gameBoardCategoryTable.createdAt),
+            orderBy: asc(gameBoardCategoryTable.order),
           },
         },
       },

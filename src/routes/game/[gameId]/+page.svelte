@@ -39,6 +39,14 @@
   <div class="flex justify-center gap-4 flex-wrap">
     {#each data.game.sections as section (section.id)}
       <Section title={section.name} w="md" class="m-0">
+        {#snippet actions()}
+          {#if section.creatorId === data.userId}
+            <Button href={`/game/${data.game.id}/sections/order/${section.id}`}>
+              <Icon icon={icons.menu} />
+              Order
+            </Button>
+          {/if}
+        {/snippet}
         {#if section.categories.length > 0}
           <ol>
             {#each section.categories as category (category.id)}
