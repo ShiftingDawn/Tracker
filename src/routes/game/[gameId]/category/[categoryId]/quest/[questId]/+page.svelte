@@ -11,6 +11,18 @@
 </script>
 
 <Section w="md">
+  {#snippet actions()}
+    <Button
+      href={`/game/${data.game.id}/category/${data.category.id}`}
+      variant="text"
+      class="w-full"
+    >
+      <div class="text-[1.5rem]">
+        <Icon icon={icons.chevronLeft} />
+      </div>
+      {data.category.name}
+    </Button>
+  {/snippet}
   <div class="flex gap-4">
     {#if data.quest.icon}
       <Image size={128} src={`/img/${data.quest.icon}`} alt="quest logo" />
