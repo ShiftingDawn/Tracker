@@ -22,7 +22,6 @@ body {
     linear-gradient(-45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000);
   background-size: min(10vw, 100px) min(10vw, 100px);
   background-repeat: repeat;
-  font-size: 1.1em;
 }
 
 :focus-visible:not(.outline-none) {
