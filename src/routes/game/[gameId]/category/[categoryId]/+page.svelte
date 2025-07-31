@@ -22,7 +22,7 @@
       <Subtext>Added by {data.categoryCreator.username}</Subtext>
     </div>
   </div>
-  {#if data.isOwner}
+  {#if data.isCategoryOwner}
     <div class="mt-4 flex gap-2">
       <Button href={`/game/${data.game.id}/category/${data.category.id}/edit`}>
         <EditIcon />
@@ -51,7 +51,7 @@
   title="Quests"
   w="md"
   class="mt-4"
-  actions={data.isOwner ? questActions : undefined}
+  actions={data.isCategoryOwner ? questActions : undefined}
 >
   {#if data.quests.length > 0}
     <ol>

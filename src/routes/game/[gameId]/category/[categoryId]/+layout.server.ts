@@ -4,7 +4,7 @@ import { addBreadcrumb } from "$lib/server/util";
 import { eq } from "drizzle-orm";
 import type { LayoutServerLoad } from "./$types";
 
-export const load: LayoutServerLoad = async event => {
+export const load: LayoutServerLoad = async (event) => {
   const [category,] = await db.select()
     .from(gameBoardCategoryTable)
     .innerJoin(gameBoardSectionTable, eq(gameBoardCategoryTable.sectionId, gameBoardSectionTable.id))
@@ -16,6 +16,7 @@ export const load: LayoutServerLoad = async event => {
     {
       category: category.game_board_category,
       categoryCreator: category.user,
+      isCategoryOwner: category.game_board_section.creatorId === event.locals.user?.id,
     },
     event,
     category.game_board_category.name,

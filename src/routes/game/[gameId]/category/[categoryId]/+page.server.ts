@@ -10,8 +10,5 @@ export const load: PageServerLoad = async (event) => {
     orderBy: asc(gameQuestTable.order),
     with: {creator: {columns: {username: true,},},},
   });
-  return {
-    quests,
-    isOwner: event.locals.user?.id === category.creatorId,
-  };
+  return {quests,};
 };

@@ -20,7 +20,7 @@
         <Subtext>Added by {data.game.creator.username}</Subtext>
       </div>
     </div>
-    {#if data.isOwner}
+    {#if data.isGameOwner}
       <div class="mt-4 flex gap-2 flex-wrap">
         <Button href={`/game/${data.game.id}/edit`}>
           <EditIcon />

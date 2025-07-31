@@ -26,5 +26,6 @@ export const load: LayoutServerLoad = async (event) => {
   return await addBreadcrumb({
     game,
     gameCreator: game.creator,
+    isGameOwner: game.creatorId === event.locals.user?.id,
   }, event, game.name, `/game/${game.id}`);
 };
