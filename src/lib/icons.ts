@@ -4,6 +4,7 @@ const icons = {
   menu: name("bars-solid"),
   edit: name("edit"),
   add: name("plus-solid"),
+  minus: name("minus-solid"),
   grid: name("grid"),
   save: name("save"),
   delete: name("trash-alt"),

@@ -75,6 +75,7 @@
   gameId={data.game.id}
   categoryId={data.category.id}
   quests={incomplete}
+  collapseStateId={`inc${data.category.id}`}
   actions={data.isCategoryOwner ? questActions : undefined}
 />
 {#if completed}
@@ -84,5 +85,6 @@
     gameId={data.game.id}
     categoryId={data.category.id}
     quests={completed}
+    collapseStateId={`cmp${data.category.id}`}
   />
 {/if}

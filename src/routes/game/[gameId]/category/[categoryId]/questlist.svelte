@@ -11,6 +11,7 @@
     quests,
     gameId,
     categoryId,
+    collapseStateId,
     actions,
   }: {
     title: string;
@@ -18,11 +19,12 @@
     quests: (GameQuest & { creator: { username: string } })[];
     gameId: string;
     categoryId: string;
+    collapseStateId: string;
     actions?: Snippet;
   } = $props();
 </script>
 
-<Section {title} w="md" class="mt-4" {actions}>
+<Section {title} w="md" class="mt-4" {actions} {collapseStateId}>
   {#if quests.length > 0}
     <ol>
       {#each quests as quest (quest.id)}
