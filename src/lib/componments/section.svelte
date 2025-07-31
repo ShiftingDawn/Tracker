@@ -4,7 +4,7 @@
   import { tv, type VariantProps } from "tailwind-variants";
 
   const section = tv({
-    base: "mx-auto rounded-2xl shadow-lg bg-white p-2 w-full",
+    base: "mx-auto min-[28rem]:rounded-2xl shadow-lg bg-white p-2 w-full",
     variants: {
       w: {
         xs: "max-w-xs",

@@ -40,7 +40,7 @@
 				autocomplete="off"
 				autocapitalize="off"
 			/>
-			<div class="text-center">
+			<div class="mx-auto">
 				<Button type="submit">Sign up</Button>
 			</div>
 		</form>

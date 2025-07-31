@@ -14,43 +14,27 @@
   <title>Tracker</title>
 </svelte:head>
 
-<header class="sticky top-0 z-10">
-  <nav
-    class="w-full h-16 backdrop-blur-sm flex items-center justify-between text-primary mb-4 bg-black/75"
-  >
-    <div class="flex flex-row items-center pl-4 gap-4">
-      <button
-        class="w-10 h-10 flex items-center justify-center gap-2 text-xl font-bold tracking-widest uppercase bg-primary/10 rounded-full cursor-pointer hover:bg-primary/20 transition-colors disabled:cursor-not-allowed disabled:bg-white/10 disabled:text-white/25"
-        onclick={() => (drawerOpen = true)}
-        aria-haspopup="menu"
-      >
-        <MenuIcon />
-      </button>
-      <a
-        href="/"
-        aria-label="homepage"
-        class="flex items-center gap-2 px-4 py-1 text-xl font-bold tracking-widest uppercase bg-primary/10 rounded-full"
-      >
-        <div class="w-8 h-8"><Logo /></div>
-        Tracker
-      </a>
-    </div>
-    {#if data.isLoggedIn}
-      <a
-        href="/account"
-        class="mx-4 px-4 py-1 font-bold uppercase bg-primary/10 rounded-full"
-      >
-        Account
-      </a>
-    {:else}
-      <a
-        href="/signin"
-        class="mx-4 px-4 py-1 font-bold uppercase bg-primary/10 rounded-full"
-      >
-        Sign in
-      </a>
-    {/if}
-  </nav>
+<header
+  class="sticky top-0 z-10 h-16 flex items-center text-primary-fg w-full backdrop-blur-sm"
+>
+  <div class="flex flex-row items-center px-4 gap-4">
+    <button
+      class="w-10 h-10 flex items-center justify-center gap-2 text-xl font-bold tracking-widest uppercase bg-primary rounded-full cursor-pointer hover:bg-primary/20 transition-colors"
+      onclick={() => (drawerOpen = true)}
+      aria-haspopup="menu"
+      aria-label="open drawer"
+    >
+      <MenuIcon />
+    </button>
+    <a
+      href="/"
+      aria-label="homepage"
+      class="flex items-center gap-2 px-4 py-1 text-xl font-bold tracking-widest uppercase bg-primary rounded-full"
+    >
+      <div class="w-8 h-8"><Logo /></div>
+      Tracker
+    </a>
+  </div>
 </header>
 <main>
   {@render children()}
@@ -77,6 +61,9 @@
     )}
     aria-hidden={!drawerOpen}
   >
-    <Trailmenu closeDrawer={() => (drawerOpen = false)} username={data.username}/>
+    <Trailmenu
+      closeDrawer={() => (drawerOpen = false)}
+      username={data.username}
+    />
   </div>
 </div>

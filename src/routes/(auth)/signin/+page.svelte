@@ -31,13 +31,13 @@
 				autocomplete="current-password"
 				autocapitalize="off"
 			/>
-			<div class="text-center">
+			<div class="mx-auto">
 				<Button type="submit">Sign in</Button>
 			</div>
 		</form>
 		<Divider>OR</Divider>
-		<Button href="/signup" variant="outline"
-			>Don&apos;t have an account?</Button
-		>
+		<Button href="/signup" variant="outline">
+			Don&apos;t have an account?
+		</Button>
 	</div>
 </Section>

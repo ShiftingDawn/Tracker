@@ -16,7 +16,7 @@
 html,
 body {
   width: 100%;
-  height: 100%;
+  min-height: 100%;
   background-color: #020202;
   background-image:
     linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000),

@@ -4,8 +4,6 @@ import { countDistinct, desc, eq } from "drizzle-orm";
 import type { PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async (event) => {
-  if (!event.locals.user) return {user: null,};
-
   const recentGames = await db.select({
     id: gameTable.id,
     name: gameTable.name,
