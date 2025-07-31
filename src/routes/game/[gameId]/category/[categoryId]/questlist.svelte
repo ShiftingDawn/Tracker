@@ -1,7 +1,9 @@
 <script lang="ts">
+  import { enhance } from "$app/forms";
   import Image from "$lib/components/image.svelte";
   import Section from "$lib/components/section.svelte";
   import Subtext from "$lib/components/subtext.svelte";
+  import Toggleswitch from "$lib/components/toggleswitch.svelte";
   import type { GameQuest } from "$lib/server/db/schema";
   import type { Snippet } from "svelte";
 
@@ -12,6 +14,8 @@
     gameId,
     categoryId,
     collapseStateId,
+    canPinQuests,
+    isPinned,
     actions,
   }: {
     title: string;
@@ -20,6 +24,8 @@
     gameId: string;
     categoryId: string;
     collapseStateId: string;
+    canPinQuests: boolean;
+    isPinned?: (questId: string) => boolean;
     actions?: Snippet;
   } = $props();
 </script>
@@ -28,10 +34,12 @@
   {#if quests.length > 0}
     <ol>
       {#each quests as quest (quest.id)}
-        <li>
+        <li
+          class="flex flex-row gap-2 hover:bg-primary/20 transition-colors rounded-lg"
+        >
           <a
             href={`/game/${gameId}/category/${categoryId}/quest/${quest.id}`}
-            class="flex flex-row gap-2 hover:bg-primary/20 transition-colors rounded-lg"
+            class="w-full flex flex-row gap-2"
           >
             {#if quest.icon}
               <Image
@@ -42,12 +50,25 @@
             {:else}
               <div class="h-[64px]" aria-hidden="true"></div>
             {/if}
-            <div class="flex flex-col">
+            <div class="flex flex-col w-full">
               <p class="font-bold">{quest.name}</p>
               <p>{quest.description}</p>
               <Subtext>Added by {quest.creator.username}</Subtext>
             </div>
           </a>
+          {#if canPinQuests && isPinned}
+            <div class="p-2 flex items-center justify-center">
+              <form method="post" use:enhance action="?/togglepin">
+                <input type="hidden" name="quest" value={quest.id} />
+                <Toggleswitch
+                  label="Pin"
+                  checked={isPinned(quest.id)}
+                  name="pinned"
+                  onchange={(e) => e.currentTarget.closest("form")!.submit()}
+                />
+              </form>
+            </div>
+          {/if}
         </li>
       {/each}
     </ol>

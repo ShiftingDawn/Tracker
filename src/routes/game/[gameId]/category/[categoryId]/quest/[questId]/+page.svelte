@@ -34,14 +34,21 @@
       <p>{data.quest.description}</p>
       <Subtext>Added by {data.questCreator.username}</Subtext>
       {#if data.isLoggedIn}
-        <div class="mt-2">
+        <div class="mt-2 flex gap-2">
+          <form method="post" use:enhance action="?/togglepin">
+            <Toggleswitch
+              label="Pin"
+              checked={data.quest.pinnedQuests.length > 0}
+              name="pinned"
+              onchange={(e) => e.currentTarget.closest("form")!.submit()}
+            />
+          </form>
           <form method="post" use:enhance action="?/togglecompletion">
             <Toggleswitch
-              labelChecked="Completed"
-              labelUnchecked="Not completed"
+              label="Complete"
               checked={Boolean(data.completionData)}
               name="completed"
-              onchange={e => e.currentTarget.closest("form")!.submit()}
+              onchange={(e) => e.currentTarget.closest("form")!.submit()}
             />
           </form>
         </div>

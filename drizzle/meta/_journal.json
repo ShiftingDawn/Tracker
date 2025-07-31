@@ -64,6 +64,13 @@
       "when": 1753988048634,
       "tag": "0008_user_quest_completion",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1753996379364,
+      "tag": "0009_user_quest_pin",
+      "breakpoints": true
     }
   ]
 }

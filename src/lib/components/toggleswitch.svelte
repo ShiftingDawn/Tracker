@@ -3,13 +3,13 @@
     import { twMerge } from "tailwind-merge";
 
     let {
+        label,
         labelChecked,
-        labelUnchecked,
         checked = $bindable(),
         ...props
     }: HTMLInputAttributes & {
-        labelChecked: string;
-        labelUnchecked: string;
+        label: string;
+        labelChecked?: string;
         checked: boolean;
     } = $props();
 </script>
@@ -23,9 +23,9 @@
         )}
     >
         {#if checked}
-            {labelChecked}
+            {labelChecked ?? label}
         {:else}
-            {labelUnchecked}
+            {label}
         {/if}
         <input type="checkbox" bind:checked class="hidden" {...props} />
     </label>

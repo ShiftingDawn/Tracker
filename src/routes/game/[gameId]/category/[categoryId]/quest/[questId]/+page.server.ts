@@ -1,12 +1,13 @@
+import { requireAuth } from "$lib/server/auth";
 import { db } from "$lib/server/db";
 import { userQuestCompletionTable } from "$lib/server/db/schema";
+import { toggleQuestPin } from "$lib/server/questutils";
+import { getError } from "$lib/server/util";
+import { fail } from "@sveltejs/kit";
 import { and, eq } from "drizzle-orm";
+import z from "zod";
 import { zfd } from "zod-form-data";
 import type { Actions, PageServerLoad } from "./$types";
-import z from "zod";
-import { fail } from "@sveltejs/kit";
-import { getError } from "$lib/server/util";
-import { requireAuth } from "$lib/server/auth";
 
 export const load: PageServerLoad = async (event) => {
   const user = event.locals.user;
@@ -55,6 +56,25 @@ export const actions: Actions = {
       return fail(500, {message: "Internal server error",});
     }
   },
+  togglepin: async (event) => {
+    const {user, } = requireAuth();
+    const formData = await event.request.formData();
+    const {success, data, error: parseError,} = togglePinSchema.safeParse(formData);
+    if (!success) {
+      const errs = z.treeifyError(parseError);
+      return fail(400, {
+        success: false,
+        pinned: getError(errs.properties?.pinned),
+      });
+    }
+    try {
+      await toggleQuestPin(user.id, event.params.questId!, event.params.categoryId!, data.pinned);
+    } catch(error) {
+      console.error(error);
+      return fail(500, {message: "Internal server error",});
+    }
+  },
 };
 
 const toggleCompletionSchema = zfd.formData({completed: zfd.checkbox(),});
+const togglePinSchema = zfd.formData({pinned: zfd.checkbox(),});

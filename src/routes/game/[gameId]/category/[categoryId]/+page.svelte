@@ -9,6 +9,13 @@
   import Questlist from "./questlist.svelte";
 
   const { data }: PageProps = $props();
+  const pinned = $derived(
+    data.isLoggedIn
+      ? data.quests
+          .filter((quest) => quest.pinnedQuests.length > 0)
+          .sort((a, b) => a.pinnedQuests[0].order - b.pinnedQuests[0].order)
+      : null,
+  );
   const incomplete = $derived(
     data.isLoggedIn
       ? data.quests.filter((quest) => quest.completedQuests.length === 0)
@@ -61,6 +68,19 @@
   {/if}
 </Section>
 
+{#if pinned}
+  <Questlist
+    title="Pinned quests"
+    emptyLabel="No quests have been pinned yet."
+    gameId={data.game.id}
+    categoryId={data.category.id}
+    quests={pinned}
+    collapseStateId={`pnd${data.category.id}`}
+    canPinQuests={data.isLoggedIn}
+    isPinned={() => true}
+  />
+{/if}
+
 {#snippet questActions()}
   <Button
     href={`/game/${data.game.id}/category/${data.category.id}/quest/create`}
@@ -77,6 +97,8 @@
   quests={incomplete}
   collapseStateId={`inc${data.category.id}`}
   actions={data.isCategoryOwner ? questActions : undefined}
+  canPinQuests={data.isLoggedIn}
+  isPinned={(questId) => pinned?.findIndex((q) => q.id === questId) !== -1}
 />
 {#if completed}
   <Questlist
@@ -86,5 +108,7 @@
     categoryId={data.category.id}
     quests={completed}
     collapseStateId={`cmp${data.category.id}`}
+    canPinQuests={data.isLoggedIn}
+    isPinned={(questId) => pinned?.findIndex((q) => q.id === questId) !== -1}
   />
 {/if}
