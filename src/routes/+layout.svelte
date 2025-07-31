@@ -1,29 +1,39 @@
 <script lang="ts">
+  import MenuIcon from "$lib/componments/icons/menu-icon.svelte";
   import Logo from "$lib/logo.svelte";
+  import { twMerge } from "tailwind-merge";
   import "../app.css";
   import Trailmenu from "./trailmenu.svelte";
 
   let { children, data } = $props();
+
+  let drawerOpen = $state(false);
 </script>
 
 <svelte:head>
   <title>Tracker</title>
 </svelte:head>
 
-<header>
+<header class="sticky top-0 z-10">
   <nav
-    class="sticky top-0 w-full h-16 backdrop-blur-sm flex items-center justify-between text-primary mb-4 bg-black/75"
+    class="w-full h-16 backdrop-blur-sm flex items-center justify-between text-primary mb-4 bg-black/75"
   >
-    <div class="flex flex-row items-center">
+    <div class="flex flex-row items-center pl-4 gap-4">
+      <button
+        class="w-10 h-10 flex items-center justify-center gap-2 text-xl font-bold tracking-widest uppercase bg-primary/10 rounded-full cursor-pointer hover:bg-primary/20 transition-colors disabled:cursor-not-allowed disabled:bg-white/10 disabled:text-white/25"
+        onclick={() => (drawerOpen = true)}
+        aria-haspopup="menu"
+      >
+        <MenuIcon />
+      </button>
       <a
         href="/"
         aria-label="homepage"
-        class="flex items-center gap-2 mx-4 px-4 py-1 text-xl font-bold tracking-widest uppercase bg-primary/10 rounded-full"
+        class="flex items-center gap-2 px-4 py-1 text-xl font-bold tracking-widest uppercase bg-primary/10 rounded-full"
       >
         <div class="w-8 h-8"><Logo /></div>
         Tracker
       </a>
-      <Trailmenu />
     </div>
     {#if data.isLoggedIn}
       <a
@@ -45,3 +55,28 @@
 <main>
   {@render children()}
 </main>
+<div
+  class={twMerge(
+    "fixed z-20 inset-0 pointer-events-none transition-all backdrop-blur-none",
+    drawerOpen && "pointer-events-auto backdrop-blur-sm",
+  )}
+  aria-hidden={!drawerOpen}
+  role="dialog"
+  tabindex="-1"
+  aria-modal="true"
+>
+  <div
+    class="fixed inset-0"
+    onclick={() => (drawerOpen = false)}
+    aria-hidden="true"
+  ></div>
+  <div
+    class={twMerge(
+      "h-full w-64 bg-drawer text-drawer-fg -translate-x-full transition-transform ease-in-out duration-75",
+      drawerOpen && "translate-x-0",
+    )}
+    aria-hidden={!drawerOpen}
+  >
+    <Trailmenu closeDrawer={() => (drawerOpen = false)} username={data.username}/>
+  </div>
+</div>

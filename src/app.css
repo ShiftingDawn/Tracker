@@ -8,6 +8,9 @@
 
   --color-error: var(--color-red-400);
   --color-error-fg: var(--color-red-700);
+
+  --color-drawer: var(--color-neutral-950);
+  --color-drawer-fg: var(--color-neutral-50);
 }
 
 html,
