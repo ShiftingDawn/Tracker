@@ -3,9 +3,11 @@
   import Image from "$lib/components/image.svelte";
   import Section from "$lib/components/section.svelte";
   import Subtext from "$lib/components/subtext.svelte";
+  import Toggleswitch from "$lib/components/toggleswitch.svelte";
   import icons from "$lib/icons";
   import Icon from "@iconify/svelte";
   import type { PageProps } from "./$types";
+  import { enhance } from "$app/forms";
 
   const { data }: PageProps = $props();
 </script>
@@ -31,6 +33,19 @@
       <h1 class="text-xl font-bold">{data.quest.name}</h1>
       <p>{data.quest.description}</p>
       <Subtext>Added by {data.questCreator.username}</Subtext>
+      {#if data.isLoggedIn}
+        <div class="mt-2">
+          <form method="post" use:enhance action="?/togglecompletion">
+            <Toggleswitch
+              labelChecked="Completed"
+              labelUnchecked="Not completed"
+              checked={Boolean(data.completionData)}
+              name="completed"
+              onchange={e => e.currentTarget.closest("form")!.submit()}
+            />
+          </form>
+        </div>
+      {/if}
     </div>
   </div>
   {#if data.isQuestOwner}

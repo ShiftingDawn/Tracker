@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { pgTable, smallint, text, timestamp, uniqueIndex, uuid, varchar } from "drizzle-orm/pg-core";
+import { pgTable, primaryKey, smallint, text, timestamp, uniqueIndex, uuid, varchar } from "drizzle-orm/pg-core";
 
 export const userTable = pgTable("user", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -9,6 +9,7 @@ export const userTable = pgTable("user", {
 export const userRelations = relations(userTable, ({many,}) => ({
   sessions: many(sessionTable),
   games: many(gameTable),
+  completedQuests: many(userQuestCompletionTable),
 }));
 export type User = typeof userTable.$inferSelect;
 
@@ -43,10 +44,7 @@ export const gameBoardSectionTable = pgTable("game_board_section", {
   gameId: uuid("game_id").notNull().references(() => gameTable.id),
   creatorId: uuid("creator_id").notNull().references(() => userTable.id),
   createdAt: timestamp("created_at", {withTimezone: true, mode: "date",}).notNull().defaultNow(),
-}, table => [
-  uniqueIndex("unique_name_game_id").on(table.name, table.gameId),
-  //
-]);
+}, table => [ uniqueIndex("unique_name_game_id").on(table.name, table.gameId),]);
 export const gameBoardSectionRelations = relations(gameBoardSectionTable, ({one, many,}) => ({
   creator: one(userTable, {fields: [gameBoardSectionTable.creatorId,], references: [userTable.id,],}),
   game: one(gameTable, {fields: [gameBoardSectionTable.gameId,], references: [gameTable.id,],}),
@@ -63,10 +61,7 @@ export const gameBoardCategoryTable = pgTable("game_board_category", {
   sectionId: uuid("section_id").notNull().references(() => gameBoardSectionTable.id),
   creatorId: uuid("creator_id").notNull().references(() => userTable.id),
   createdAt: timestamp("created_at", {withTimezone: true, mode: "date",}).notNull().defaultNow(),
-}, table => [
-  uniqueIndex("unique_name_section_id").on(table.name, table.sectionId),
-  //
-]);
+}, table => [ uniqueIndex("unique_name_section_id").on(table.name, table.sectionId),]);
 export const gameBoardCategoryRelations = relations(gameBoardCategoryTable, ({one, many,}) => ({
   section: one(gameBoardSectionTable, {fields: [gameBoardCategoryTable.sectionId,], references: [gameBoardSectionTable.id,],}),
   creator: one(userTable, {fields: [gameBoardCategoryTable.creatorId,], references: [userTable.id,],}),
@@ -83,12 +78,23 @@ export const gameQuestTable = pgTable("game_quest", {
   categoryId: uuid("category_id").notNull().references(() => gameBoardCategoryTable.id),
   creatorId: uuid("creator_id").notNull().references(() => userTable.id),
   createdAt: timestamp("created_at", {withTimezone: true, mode: "date",}).notNull().defaultNow(),
-}, table => [
-  uniqueIndex("unique_name_category_id").on(table.name, table.categoryId),
-  //
-]);
-export const gameQuestRelations = relations(gameQuestTable, ({one,}) => ({
+}, table => [ uniqueIndex("unique_name_category_id").on(table.name, table.categoryId),]);
+export const gameQuestRelations = relations(gameQuestTable, ({one, many,}) => ({
   category: one(gameBoardCategoryTable, {fields: [gameQuestTable.categoryId,], references: [gameBoardCategoryTable.id,],}),
   creator: one(userTable, {fields: [gameQuestTable.creatorId,], references: [userTable.id,],}),
+  completedQuests: many(userQuestCompletionTable),
 }));
 export type GameQuest = typeof gameQuestTable.$inferSelect;
+
+export const userQuestCompletionTable = pgTable("user_quest_completion", {
+  userId: uuid("user_id").notNull().references(() => userTable.id),
+  questId: uuid("quest_id").notNull().references(() => gameQuestTable.id),
+  completedAt: timestamp("completed_at", {withTimezone: true, mode: "date",}).notNull().defaultNow(),
+}, table => [
+  primaryKey({columns: [table.userId, table.questId,],}),
+  uniqueIndex("unique_user_id_quest_id").on(table.userId, table.questId),
+]);
+export const userQuestCompletionRelations = relations(userQuestCompletionTable, ({one,}) => ({
+  user: one(userTable, {fields: [userQuestCompletionTable.userId,], references: [userTable.id,],}),
+  quest: one(gameQuestTable, {fields: [userQuestCompletionTable.questId,], references: [gameQuestTable.id,],}),
+}));

@@ -5,7 +5,9 @@
   --color-primary-fg: var(--color-neutral-50);
   --color-primary-alt: color-mix(in oklab, var(--color-primary) 20%, transparent);
 
-  --color-error: var(--color-red-400);
+  --color-success: var(--color-emerald-200);
+  --color-success-fg: var(--color-emerald-700);
+  --color-error: var(--color-red-200);
   --color-error-fg: var(--color-red-700);
 
   --color-drawer: var(--color-neutral-950);

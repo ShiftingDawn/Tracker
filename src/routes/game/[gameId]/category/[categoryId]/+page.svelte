@@ -6,8 +6,19 @@
   import icons from "$lib/icons";
   import Icon from "@iconify/svelte";
   import type { PageProps } from "./$types";
+  import Questlist from "./questlist.svelte";
 
   const { data }: PageProps = $props();
+  const incomplete = $derived(
+    data.isLoggedIn
+      ? data.quests.filter((quest) => quest.completedQuests.length === 0)
+      : data.quests,
+  );
+  const completed = $derived(
+    data.isLoggedIn
+      ? data.quests.filter((quest) => quest.completedQuests.length > 0)
+      : null,
+  );
 </script>
 
 <Section w="md">
@@ -58,39 +69,20 @@
     Add new quest
   </Button>
 {/snippet}
-<Section
+<Questlist
   title="Quests"
-  w="md"
-  class="mt-4"
+  emptyLabel="No quests have been created yet."
+  gameId={data.game.id}
+  categoryId={data.category.id}
+  quests={incomplete}
   actions={data.isCategoryOwner ? questActions : undefined}
->
-  {#if data.quests.length > 0}
-    <ol>
-      {#each data.quests as quest (quest.id)}
-        <li>
-          <a
-            href={`/game/${data.game.id}/category/${data.category.id}/quest/${quest.id}`}
-            class="flex flex-row gap-2 hover:bg-primary/20 transition-colors rounded-lg"
-          >
-            {#if quest.icon}
-              <Image
-                size={64}
-                src={`/img/${quest.icon}`}
-                alt={`${quest.name} quest icon`}
-              />
-            {:else}
-              <div class="h-[64px]" aria-hidden="true"></div>
-            {/if}
-            <div class="flex flex-col">
-              <p class="font-bold">{quest.name}</p>
-              <p>{quest.description}</p>
-              <Subtext>Added by {quest.creator.username}</Subtext>
-            </div>
-          </a>
-        </li>
-      {/each}
-    </ol>
-  {:else}
-    <p>No quests have been created yet.</p>
-  {/if}
-</Section>
+/>
+{#if completed}
+  <Questlist
+    title="Completed quests"
+    emptyLabel="No quests have been completed yet."
+    gameId={data.game.id}
+    categoryId={data.category.id}
+    quests={completed}
+  />
+{/if}
