@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Dot from "$lib/componments/dot.svelte";
   import Section from "$lib/componments/section.svelte";
   import Subtext from "$lib/componments/subtext.svelte";
   import type { PageProps } from "./$types";
@@ -11,7 +12,7 @@
     <p>Tracker is a customizable progress tracker, scoreboard and more!</p>
     {#if data.isLoggedIn}
       <p class="mt-4">
-        Welcome back, <strong>{data.user.username}</strong>
+        Welcome back, <strong>{data.user!.username}</strong>
       </p>
     {:else}
       <p class="mt-4">Sign in to get started...</p>
@@ -36,11 +37,13 @@
               <div class="flex flex-col">
                 <p class="font-bold">{game.name}</p>
                 <Subtext>
-                  Contains {game.sectionCount}
+                  <Dot />
+                  {game.sectionCount}
                   {game.sectionCount === 1 ? "section" : "sections"}
                 </Subtext>
                 <Subtext>
-                  Contains {game.categoryCount}
+                  <Dot />
+                  {game.categoryCount}
                   {game.categoryCount === 1 ? "category" : "categories"}
                 </Subtext>
               </div>

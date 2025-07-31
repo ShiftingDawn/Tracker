@@ -1,5 +1,7 @@
 import type { ResizeOptions } from "sharp";
 import type sharp from "sharp";
+import type { RequestEvent } from "../../routes/$types";
+import type { ServerLoadEvent } from "@sveltejs/kit";
 
 export function getError(holder: unknown): string | undefined {
   if (holder === null || holder === undefined) {
@@ -29,4 +31,9 @@ export async function getScaledSizes(size: number, img: ReturnType<typeof sharp>
     width: Math.floor(meta.width * scale),
     height: Math.floor(meta.height * scale),
   };
+}
+
+export async function addBreadcrumb<T extends object>(input: T, event: ServerLoadEvent, name: string, href: string) {
+  const parent = await event.parent();
+  return { ...input, breadcrumbs: parent.breadcrumbs.concat({name, href,}), };
 }

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
   import Button from "$lib/componments/button.svelte";
+  import SaveIcon from "$lib/componments/icons/save-icon.svelte";
   import Input from "$lib/componments/input.svelte";
   import Section from "$lib/componments/section.svelte";
   import Select from "$lib/componments/select.svelte";
@@ -82,8 +83,11 @@
       class="px-0 py-0 file:bg-primary file:text-primary-fg file:rounded-lg file:px-2 file:py-1 hover:file:bg-primary/70 file:cursor-pointer"
       onchange={validateFile}
     />
-    <div class="text-center">
-      <Button type="submit">Submit</Button>
+    <div class="mx-auto">
+      <Button type="submit">
+        <SaveIcon />
+        Submit
+      </Button>
     </div>
   </form>
 </Section>

@@ -1,0 +1,1 @@
+<span class="icon-[pixel--trash-alt]"></span>

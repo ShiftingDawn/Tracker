@@ -2,6 +2,11 @@
   import { enhance } from "$app/forms";
   import Button from "$lib/componments/button.svelte";
   import Divider from "$lib/componments/divider.svelte";
+  import AddIcon from "$lib/componments/icons/add-icon.svelte";
+  import ChevronDownIcon from "$lib/componments/icons/chevron-down-icon.svelte";
+  import ChevronUpIcon from "$lib/componments/icons/chevron-up-icon.svelte";
+  import DeleteIcon from "$lib/componments/icons/delete-icon.svelte";
+  import SaveIcon from "$lib/componments/icons/save-icon.svelte";
   import Input from "$lib/componments/input.svelte";
   import Section from "$lib/componments/section.svelte";
   import type { PageProps } from "./$types";
@@ -42,7 +47,10 @@
       {#each sections as sectionId (sectionId)}
         <input type="hidden" name="order" value={sectionId} />
       {/each}
-      <Button type="submit">Save</Button>
+      <Button type="submit">
+        <SaveIcon />
+        Save
+      </Button>
     </form>
   {/snippet}
   <ol class="divide-y divide-primary">
@@ -55,18 +63,27 @@
           </span>
           <form method="post" use:enhance action="?/removesection">
             <input type="hidden" name="id" value={sectionId} />
-            <Button type="submit" disabled={section.categories.length > 0}>
-              Delete
+            <Button
+              type="submit"
+              disabled={section.categories.length > 0}
+              variant="text"
+            >
+              <DeleteIcon />
             </Button>
           </form>
-          <Button onclick={() => moveUp(sectionId)} disabled={index === 0}>
-            UP
+          <Button
+            onclick={() => moveUp(sectionId)}
+            disabled={index === 0}
+            variant="text"
+          >
+            <ChevronUpIcon />
           </Button>
           <Button
             onclick={() => moveDown(sectionId)}
             disabled={index === sections.length - 1}
+            variant="text"
           >
-            DOWN
+            <ChevronDownIcon />
           </Button>
         </div>
       </li>
@@ -81,7 +98,10 @@
   >
     <Input label="Add section" name="name" />
     <div class="flex items-end">
-      <Button>Add</Button>
+      <Button>
+        <AddIcon />
+        Add
+      </Button>
     </div>
   </form>
 </Section>

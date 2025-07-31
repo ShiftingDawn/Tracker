@@ -9,7 +9,7 @@
     }: HTMLImgAttributes & { size: number; class?: string } = $props();
 </script>
 
-<div style={`width:${size}px;height:${size}px`} class="flex items-center justify-center">
+<div style={`max-width:${size}px;max-height:${size}px`} class="w-full h-full flex items-center justify-center">
     <img
         src={twMerge("w-full h-full overflow-hidden object-scale-down", cls)}
         {...props}

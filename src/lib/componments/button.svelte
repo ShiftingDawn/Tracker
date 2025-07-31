@@ -7,14 +7,14 @@
   import { tv, type VariantProps } from "tailwind-variants";
 
   const button = tv({
-    base: "cursor-default transition-all px-4 py-1 data-disabled:shadow-none data-disabled:text-primary/50 data-disabled:cursor-not-allowed",
+    base: "cursor-default transition-all px-4 py-1 data-disabled:shadow-none data-disabled:text-primary/50 data-disabled:cursor-not-allowed flex items-center justify-center gap-1 whitespace-nowrap",
     variants: {
       variant: {
         default:
           "bg-primary text-primary-fg rounded-full shadow-md hover:scale-102 active:scale-98 active:shadow-none data-disabled:bg-primary/10",
         outline:
           "border-2 border-primary rounded-full text-primary text-center hover:bg-primary/10 data-disabled:border-primary/50 data-disabled:bg-transparent",
-        text: "text-primary font-bold hover:bg-primary-alt rounded-full data-disabled:bg-transparent",
+        text: "text-primary font-bold hover:bg-primary-alt rounded-full data-disabled:bg-transparent data-disabled:text-black/50",
       },
     },
     defaultVariants: { variant: "default" },
@@ -47,7 +47,7 @@
   </a>
 {:else}
   <button
-    class="{twMerge(button({ variant }), cls)}"
+    class={twMerge(button({ variant }), cls)}
     {disabled}
     data-disabled={disabled || undefined}
     {...props}
