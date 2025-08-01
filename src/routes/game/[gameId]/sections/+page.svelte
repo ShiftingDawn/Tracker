@@ -4,8 +4,13 @@
   import Divider from "$lib/components/divider.svelte";
   import Input from "$lib/components/input.svelte";
   import Section from "$lib/components/section.svelte";
-  import icons from "$lib/icons";
-  import Icon from "@iconify/svelte";
+  import {
+    AddIcon,
+    ChevronDownIcon,
+    ChevronUpIcon,
+    DeleteIcon,
+    SaveIcon,
+  } from "$lib/icons";
   import type { PageProps } from "./$types";
 
   const { data, form }: PageProps = $props();
@@ -45,7 +50,7 @@
         <input type="hidden" name="order" value={sectionId} />
       {/each}
       <Button type="submit">
-        <Icon icon={icons.save} />
+        <SaveIcon />
         Save
       </Button>
     </form>
@@ -65,7 +70,7 @@
               disabled={section.categories.length > 0}
               variant="text"
             >
-              <Icon icon={icons.delete} />
+              <DeleteIcon />
             </Button>
           </form>
           <Button
@@ -73,14 +78,14 @@
             disabled={index === 0}
             variant="text"
           >
-            <Icon icon={icons.chevronUp} />
+            <ChevronUpIcon />
           </Button>
           <Button
             onclick={() => moveDown(sectionId)}
             disabled={index === sections.length - 1}
             variant="text"
           >
-            <Icon icon={icons.chevronDown} />
+            <ChevronDownIcon />
           </Button>
         </div>
       </li>
@@ -96,7 +101,7 @@
     <Input label="Add section" name="name" />
     <div class="flex items-end">
       <Button>
-        <Icon icon={icons.add} />
+        <AddIcon />
         Add
       </Button>
     </div>

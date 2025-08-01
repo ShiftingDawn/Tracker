@@ -1,13 +1,12 @@
 <script lang="ts">
+  import { enhance } from "$app/forms";
   import Button from "$lib/components/button.svelte";
   import Image from "$lib/components/image.svelte";
   import Section from "$lib/components/section.svelte";
   import Subtext from "$lib/components/subtext.svelte";
   import Toggleswitch from "$lib/components/toggleswitch.svelte";
-  import icons from "$lib/icons";
-  import Icon from "@iconify/svelte";
+  import { ChevronLeftIcon, DeleteIcon, EditIcon } from "$lib/icons";
   import type { PageProps } from "./$types";
-  import { enhance } from "$app/forms";
 
   const { data }: PageProps = $props();
 </script>
@@ -20,7 +19,7 @@
       class="w-full"
     >
       <div class="text-[1.5rem]">
-        <Icon icon={icons.chevronLeft} />
+        <ChevronLeftIcon />
       </div>
       {data.category.name}
     </Button>
@@ -60,14 +59,14 @@
       <Button
         href={`/game/${data.game.id}/category/${data.category.id}/quest/${data.quest.id}/edit`}
       >
-        <Icon icon={icons.edit} />
+        <EditIcon />
         Edit
       </Button>
       <Button
         variant="outline"
         href={`/game/${data.game.id}/category/${data.category.id}/quest/${data.quest.id}/delete`}
       >
-        <Icon icon={icons.delete} />
+        <DeleteIcon />
         Delete
       </Button>
     </div>

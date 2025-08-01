@@ -3,8 +3,7 @@
   import Image from "$lib/components/image.svelte";
   import Section from "$lib/components/section.svelte";
   import Subtext from "$lib/components/subtext.svelte";
-  import icons from "$lib/icons";
-  import Icon from "@iconify/svelte";
+  import { AddIcon, EditIcon, GridIcon, MenuIcon } from "$lib/icons";
   import type { PageProps } from "./$types";
 
   const { data }: PageProps = $props();
@@ -22,15 +21,15 @@
     {#if data.isGameOwner}
       <div class="mt-4 flex gap-2 flex-wrap">
         <Button href={`/game/${data.game.id}/edit`}>
-          <Icon icon={icons.edit} />
+          <EditIcon />
           Edit game
         </Button>
         <Button href={`/game/${data.game.id}/sections`}>
-          <Icon icon={icons.grid} />
+          <GridIcon />
           Edit sections
         </Button>
         <Button href={`/game/${data.game.id}/category/create`}>
-          <Icon icon={icons.add} />
+          <AddIcon />
           Add category
         </Button>
       </div>
@@ -42,7 +41,7 @@
         {#snippet actions()}
           {#if section.creatorId === data.userId}
             <Button href={`/game/${data.game.id}/sections/order/${section.id}`}>
-              <Icon icon={icons.menu} />
+              <MenuIcon />
               Order
             </Button>
           {/if}

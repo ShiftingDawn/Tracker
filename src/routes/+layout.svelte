@@ -1,10 +1,9 @@
 <script lang="ts">
+  import { MenuIcon } from "$lib/icons";
   import Logo from "$lib/logo.svelte";
-  import Icon from "@iconify/svelte";
   import { twMerge } from "tailwind-merge";
   import "../app.css";
   import Trailmenu from "./trailmenu.svelte";
-  import icons from "$lib/icons";
 
   let { children, data } = $props();
 
@@ -25,7 +24,7 @@
       aria-haspopup="menu"
       aria-label="open drawer"
     >
-      <Icon icon={icons.menu} />
+      <MenuIcon />
     </button>
     <a
       href="/"

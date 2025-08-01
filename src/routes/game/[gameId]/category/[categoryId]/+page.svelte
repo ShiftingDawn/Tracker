@@ -3,8 +3,13 @@
   import Image from "$lib/components/image.svelte";
   import Section from "$lib/components/section.svelte";
   import Subtext from "$lib/components/subtext.svelte";
-  import icons from "$lib/icons";
-  import Icon from "@iconify/svelte";
+  import {
+    AddIcon,
+    ChevronLeftIcon,
+    DeleteIcon,
+    EditIcon,
+    MenuIcon,
+  } from "$lib/icons";
   import type { PageProps } from "./$types";
   import Questlist from "./questlist.svelte";
 
@@ -32,15 +37,17 @@
   {#snippet actions()}
     <Button href={`/game/${data.game.id}`} variant="text" class="w-full">
       <div class="text-[1.5rem]">
-        <Icon icon={icons.chevronLeft} />
+        <ChevronLeftIcon />
       </div>
       {data.game.name}
     </Button>
   {/snippet}
   <div class="flex gap-4">
-    {#if data.category.icon}
-      <Image size={128} src={`/img/${data.category.icon}`} alt="game logo" />
-    {/if}
+    <div class="w-[128px] h-[128px]">
+      {#if data.category.icon}
+        <Image size={128} src={`/img/${data.category.icon}`} alt="game logo" />
+      {/if}
+    </div>
     <div>
       <h1 class="text-xl font-bold">{data.category.name}</h1>
       <p>{data.category.description}</p>
@@ -50,18 +57,18 @@
   {#if data.isCategoryOwner}
     <div class="mt-4 flex gap-2">
       <Button href={`/game/${data.game.id}/category/${data.category.id}/edit`}>
-        <Icon icon={icons.edit} />
+        <EditIcon />
         Edit
       </Button>
       <Button href={`/game/${data.game.id}/category/${data.category.id}/order`}>
-        <Icon icon={icons.menu} />
+        <MenuIcon />
         Order
       </Button>
       <Button
         variant="outline"
         href={`/game/${data.game.id}/category/${data.category.id}/delete`}
       >
-        <Icon icon={icons.delete} />
+        <DeleteIcon />
         Delete
       </Button>
     </div>
@@ -86,7 +93,7 @@
   <Button
     href={`/game/${data.game.id}/category/${data.category.id}/quest/create`}
   >
-    <Icon icon={icons.add} />
+    <AddIcon />
     Add new quest
   </Button>
 {/snippet}

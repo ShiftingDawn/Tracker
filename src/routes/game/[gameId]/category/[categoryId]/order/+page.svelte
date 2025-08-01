@@ -2,8 +2,7 @@
   import { enhance } from "$app/forms";
   import Button from "$lib/components/button.svelte";
   import Section from "$lib/components/section.svelte";
-  import icons from "$lib/icons";
-  import Icon from "@iconify/svelte";
+  import { ChevronDownIcon, ChevronUpIcon, SaveIcon } from "$lib/icons";
   import type { PageProps } from "./$types";
 
   const { data }: PageProps = $props();
@@ -34,7 +33,7 @@
         <input type="hidden" name="order" value={questId} />
       {/each}
       <Button type="submit">
-        <Icon icon={icons.save} />
+        <SaveIcon />
         Save
       </Button>
     </form>
@@ -52,14 +51,14 @@
             disabled={index === 0}
             variant="text"
           >
-            <Icon icon={icons.chevronUp} />
+            <ChevronUpIcon />
           </Button>
           <Button
             onclick={() => moveDown(questId)}
             disabled={index === quests.length - 1}
             variant="text"
           >
-            <Icon icon={icons.chevronDown} />
+            <ChevronDownIcon />
           </Button>
         </div>
       </li>

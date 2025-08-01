@@ -1,7 +1,6 @@
 <script lang="ts">
   import { api } from "$lib/api";
-  import icons from "$lib/icons";
-  import Icon from "@iconify/svelte";
+  import { AddIcon, MinusIcon } from "$lib/icons";
   import { onMount, type Snippet } from "svelte";
   import { twMerge } from "tailwind-merge";
   import { tv, type VariantProps } from "tailwind-variants";
@@ -70,7 +69,11 @@
       {#if title}
         {#if collapseStateId}
           <Button variant="text" class="h-8" onclick={() => handleCollapse()}>
-            <Icon icon={collapsed ? icons.add : icons.minus} />
+            {#if collapsed}
+              <AddIcon />
+            {:else}
+              <MinusIcon />
+            {/if}
           </Button>
         {/if}
         <div
@@ -93,7 +96,7 @@
     )}
     id={collapseStateId}
   >
-    <div class="rounded-2xl bg-surface-alt p-2 inset-shadow">
+    <div class="p-2">
       {@render children?.()}
     </div>
   </div>

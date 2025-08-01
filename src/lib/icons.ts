@@ -1,16 +1,23 @@
-const name = (name: string) => `pixel:${name}`;
+import AngleDownSolid from "~icons/pixel/angle-down-solid";
+import AngleLeft from "~icons/pixel/angle-left";
+import AngleRight from "~icons/pixel/angle-right";
+import AngleUpSolid from "~icons/pixel/angle-up-solid";
+import BarsSolid from "~icons/pixel/bars-solid";
+import Edit from "~icons/pixel/edit";
+import Grid from "~icons/pixel/grid";
+import MinusSolid from "~icons/pixel/minus-solid";
+import PlusSolid from "~icons/pixel/plus-solid";
+import Save from "~icons/pixel/save";
+import TrashAlt from "~icons/pixel/trash-alt";
 
-const icons = {
-  menu: name("bars-solid"),
-  edit: name("edit"),
-  add: name("plus-solid"),
-  minus: name("minus-solid"),
-  grid: name("grid"),
-  save: name("save"),
-  delete: name("trash-alt"),
-  chevronUp: name("angle-up-solid"),
-  chevronDown: name("angle-down-solid"),
-  chevronLeft: name("angle-left"),
-  chevronRight: name("angle-right"),
-};
-export default icons;
+export const MenuIcon = BarsSolid;
+export const EditIcon = Edit;
+export const AddIcon = PlusSolid;
+export const MinusIcon = MinusSolid;
+export const GridIcon = Grid;
+export const SaveIcon = Save;
+export const DeleteIcon = TrashAlt;
+export const ChevronUpIcon = AngleUpSolid;
+export const ChevronDownIcon = AngleDownSolid;
+export const ChevronLeftIcon = AngleLeft;
+export const ChevronRightIcon = AngleRight;

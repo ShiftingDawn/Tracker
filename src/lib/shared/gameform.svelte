@@ -3,9 +3,8 @@
   import Button from "$lib/components/button.svelte";
   import Input from "$lib/components/input.svelte";
   import Section from "$lib/components/section.svelte";
-  import icons from "$lib/icons";
+  import { SaveIcon } from "$lib/icons";
   import type { Game } from "$lib/server/db/schema";
-  import Icon from "@iconify/svelte";
   import type { ChangeEventHandler } from "svelte/elements";
 
   let fileSizeOk: boolean = $state(true);
@@ -61,7 +60,7 @@
     />
     <div class="mx-auto">
       <Button type="submit">
-        <Icon icon={icons.save} />
+        <SaveIcon />
         Submit
       </Button>
     </div>
