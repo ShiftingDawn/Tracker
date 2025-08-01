@@ -1,32 +1,55 @@
 <script lang="ts">
-    import type { HTMLInputAttributes } from "svelte/elements";
-    import { twMerge } from "tailwind-merge";
+  import type { Snippet } from "svelte";
+  import type { HTMLInputAttributes } from "svelte/elements";
+  import { tv, type VariantProps } from "tailwind-variants";
 
-    let {
-        label,
-        labelChecked,
-        checked = $bindable(),
-        ...props
-    }: HTMLInputAttributes & {
-        label: string;
-        labelChecked?: string;
-        checked: boolean;
+  const toggleswitch = tv({
+    base: "block rounded-full text-center cursor-pointer border-2",
+    variants: {
+      variant: {
+        default: "px-4 py-1 font-bold",
+        icon: "p-1",
+      },
+      checked: {
+        true: "text-success-fg border-success-fg",
+        false: "text-error-fg border-error-fg",
+      },
+    },
+    compoundVariants: [
+      { variant: "default", checked: true, class: "bg-success" },
+      { variant: "default", checked: false, class: "bg-error" },
+    ],
+    defaultVariants: { variant: "default" },
+  });
+
+  let {
+    variant,
+    label,
+    labelChecked,
+    checked = $bindable(),
+    ...props
+  }: HTMLInputAttributes &
+    Pick<VariantProps<typeof toggleswitch>, "variant"> & {
+      label: string | Snippet;
+      labelChecked?: string | Snippet;
+      checked: boolean;
     } = $props();
+  const checkedLabel = $derived(labelChecked ?? label);
 </script>
 
 <div>
-    <label
-        class={twMerge(
-            "block rounded-full px-4 py-1 font-bold border-2 text-center cursor-pointer",
-            checked && "bg-success text-success-fg border-success-fg",
-            !checked && "bg-error text-error-fg border-error-fg",
-        )}
-    >
-        {#if checked}
-            {labelChecked ?? label}
-        {:else}
-            {label}
-        {/if}
-        <input type="checkbox" bind:checked class="hidden" {...props} />
-    </label>
+  <label class={toggleswitch({ variant, checked })}>
+    {#if checked}
+      {#if typeof checkedLabel === "string"}
+        {checkedLabel}
+      {:else}
+        {@render checkedLabel()}
+      {/if}
+    {:else if typeof label === "string"}
+      {label}
+    {:else}
+      {@render label()}
+    {/if}
+    <input type="checkbox" bind:checked class="hidden" {...props} />
+  </label>
 </div>
