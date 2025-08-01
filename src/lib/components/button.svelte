@@ -7,7 +7,7 @@
   import { tv, type VariantProps } from "tailwind-variants";
 
   const button = tv({
-    base: "cursor-default transition-all px-4 py-1 data-disabled:shadow-none data-disabled:text-primary/50 data-disabled:cursor-not-allowed flex items-center justify-center gap-1 whitespace-nowrap",
+    base: "cursor-pointer transition-all px-4 py-1 data-disabled:shadow-none data-disabled:text-primary/50 data-disabled:cursor-not-allowed flex items-center justify-center gap-1 whitespace-nowrap",
     variants: {
       variant: {
         default:
@@ -15,6 +15,7 @@
         outline:
           "border-2 border-primary rounded-full text-primary text-center hover:bg-primary/10 data-disabled:border-primary/50 data-disabled:bg-transparent",
         text: "text-primary font-bold hover:bg-primary-alt rounded-full data-disabled:bg-transparent data-disabled:text-black/50",
+        icon: "p-0 text-primary *:w-[2em] *:h-[2em] hover:text-primary/75 disabled:text-primary/30 hover:scale-102",
       },
     },
     defaultVariants: { variant: "default" },
