@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { makeId } from "$lib/clientutil";
+  import { api } from "$lib/api";
   import icons from "$lib/icons";
   import Icon from "@iconify/svelte";
   import { onMount, type Snippet } from "svelte";
@@ -25,6 +25,7 @@
     actions,
     actionsNewLine,
     collapseStateId,
+    initialCollapseState,
     children,
   }: {
     title?: string;
@@ -32,29 +33,28 @@
     actions?: Snippet;
     actionsNewLine?: boolean;
     collapseStateId?: string;
+    initialCollapseState?: boolean;
     children?: Snippet;
   } & VariantProps<typeof section> = $props();
 
-  let collapsed = $state(false);
+  let collapsed = $state(initialCollapseState ?? false);
 
-  function handleCollapse() {
-    collapsed = !collapsed;
+  function handleCollapse(applyOnly?: boolean) {
+    if (!applyOnly) collapsed = !collapsed;
     const el = document.getElementById(collapseStateId!) as HTMLDivElement;
     if (!collapsed) {
       el.style.maxHeight = `${el.scrollHeight}px`;
-      localStorage.removeItem(collapseStateId!);
     } else {
       el.style.maxHeight = "0px";
-      localStorage.setItem(collapseStateId!, "true");
     }
+    api.post("/config/section", { id: collapseStateId!, collapsed });
   }
 
   onMount(() => {
     if (collapseStateId) {
       const el = document.getElementById(collapseStateId!) as HTMLDivElement;
       el.style.maxHeight = `${el.scrollHeight}px`;
-      collapsed = !(collapseStateId in localStorage);
-      handleCollapse();
+      handleCollapse(true);
     }
   });
 </script>
@@ -69,7 +69,7 @@
     >
       {#if title}
         {#if collapseStateId}
-          <Button variant="text" class="h-8" onclick={handleCollapse}>
+          <Button variant="text" class="h-8" onclick={() => handleCollapse()}>
             <Icon icon={collapsed ? icons.add : icons.minus} />
           </Button>
         {/if}
@@ -86,7 +86,13 @@
       {/if}
     </div>
   {/if}
-  <div class="transition-[max-height] overflow-hidden" id={collapseStateId}>
+  <div
+    class={twMerge(
+      "transition-[max-height] overflow-hidden",
+      collapsed && "max-h-0",
+    )}
+    id={collapseStateId}
+  >
     <div class="rounded-2xl bg-surface-alt p-2 inset-shadow">
       {@render children?.()}
     </div>

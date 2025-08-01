@@ -8,6 +8,7 @@ import { asc, eq } from "drizzle-orm";
 import z from "zod";
 import { zfd } from "zod-form-data";
 import type { Actions, PageServerLoad } from "./$types";
+import { keySectionCollapse, rGetBool } from "$lib/server/db/redis";
 
 export const load: PageServerLoad = async (event) => {
   const category = (await event.parent()).category;
@@ -26,7 +27,12 @@ export const load: PageServerLoad = async (event) => {
       } : undefined,
     },
   });
-  return {quests,};
+  const collapseData = event.locals.user ? {
+    pin: await rGetBool(keySectionCollapse(`pnd${category.id}`, event)),
+    incomplete: await rGetBool(keySectionCollapse(`inc${category.id}`, event)),
+    complete: await rGetBool(keySectionCollapse(`cmp${category.id}`, event)),
+  } : undefined;
+  return {quests, collapseData,};
 };
 
 export const actions: Actions = {

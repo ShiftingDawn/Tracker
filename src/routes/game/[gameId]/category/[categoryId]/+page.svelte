@@ -76,6 +76,7 @@
     categoryId={data.category.id}
     quests={pinned}
     collapseStateId={`pnd${data.category.id}`}
+    initialCollapseState={data.collapseData?.pin}
     canPinQuests={data.isLoggedIn}
     isPinned={() => true}
   />
@@ -96,6 +97,7 @@
   categoryId={data.category.id}
   quests={incomplete}
   collapseStateId={`inc${data.category.id}`}
+  initialCollapseState={data.collapseData?.incomplete}
   actions={data.isCategoryOwner ? questActions : undefined}
   canPinQuests={data.isLoggedIn}
   isPinned={(questId) => pinned?.findIndex((q) => q.id === questId) !== -1}
@@ -108,6 +110,7 @@
     categoryId={data.category.id}
     quests={completed}
     collapseStateId={`cmp${data.category.id}`}
+    initialCollapseState={data.collapseData?.complete}
     canPinQuests={data.isLoggedIn}
     isPinned={(questId) => pinned?.findIndex((q) => q.id === questId) !== -1}
   />

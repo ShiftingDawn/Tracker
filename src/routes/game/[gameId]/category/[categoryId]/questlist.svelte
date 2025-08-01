@@ -14,6 +14,7 @@
     gameId,
     categoryId,
     collapseStateId,
+    initialCollapseState,
     canPinQuests,
     isPinned,
     actions,
@@ -24,13 +25,21 @@
     gameId: string;
     categoryId: string;
     collapseStateId: string;
+    initialCollapseState?: boolean;
     canPinQuests: boolean;
     isPinned?: (questId: string) => boolean;
     actions?: Snippet;
   } = $props();
 </script>
 
-<Section {title} w="md" class="mt-4" {actions} {collapseStateId}>
+<Section
+  {title}
+  w="md"
+  class="mt-4"
+  {actions}
+  {collapseStateId}
+  {initialCollapseState}
+>
   {#if quests.length > 0}
     <ol>
       {#each quests as quest (quest.id)}
