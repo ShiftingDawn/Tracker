@@ -2,6 +2,7 @@
   import Dot from "$lib/components/dot.svelte";
   import Section from "$lib/components/section.svelte";
   import Subtext from "$lib/components/subtext.svelte";
+  import Gamelistitem from "$lib/shared/gamelistitem.svelte";
   import type { PageProps } from "./$types";
 
   const { data }: PageProps = $props();
@@ -23,31 +24,7 @@
       <ol>
         {#each data.recentGames as game (game.id)}
           <li>
-            <a
-              href={`/game/${game.id}`}
-              class="flex flex-row gap-2 hover:bg-primary/20 transition-colors rounded-lg"
-            >
-              <div class="w-[64px] h-[64px]">
-                <img
-                  src={`/img/${game.icon}`}
-                  alt={`${game.name} logo`}
-                  class="w-full h-full overflow-hidden object-scale-down"
-                />
-              </div>
-              <div class="flex flex-col">
-                <p class="font-bold">{game.name}</p>
-                <Subtext>
-                  <Dot />
-                  {game.sectionCount}
-                  {game.sectionCount === 1 ? "section" : "sections"}
-                </Subtext>
-                <Subtext>
-                  <Dot />
-                  {game.categoryCount}
-                  {game.categoryCount === 1 ? "category" : "categories"}
-                </Subtext>
-              </div>
-            </a>
+            <Gamelistitem {game} />
           </li>
         {/each}
       </ol>
