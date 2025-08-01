@@ -4,6 +4,7 @@
   import Section from "$lib/components/section.svelte";
   import Subtext from "$lib/components/subtext.svelte";
   import Toggleswitch from "$lib/components/toggleswitch.svelte";
+  import { PinIcon } from "$lib/icons";
   import type { GameQuest } from "$lib/server/db/schema";
   import type { Snippet } from "svelte";
 
@@ -70,11 +71,15 @@
               <form method="post" use:enhance action="?/togglepin">
                 <input type="hidden" name="quest" value={quest.id} />
                 <Toggleswitch
-                  label="Pin"
+                  variant="icon"
                   checked={isPinned(quest.id)}
                   name="pinned"
                   onchange={(e) => e.currentTarget.closest("form")!.submit()}
-                />
+                >
+                  {#snippet label()}
+                    <PinIcon />
+                  {/snippet}
+                </Toggleswitch>
               </form>
             </div>
           {/if}

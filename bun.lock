@@ -19,7 +19,7 @@
       "devDependencies": {
         "@eslint/compat": "^1.2.5",
         "@eslint/js": "^9.18.0",
-        "@iconify-json/pixel": "^1.2.1",
+        "@iconify-json/fluent": "^1.2.28",
         "@stylistic/eslint-plugin": "^5.2.2",
         "@sveltejs/adapter-static": "^3.0.8",
         "@sveltejs/kit": "^2.22.0",
@@ -136,7 +136,7 @@
 
     "@humanwhocodes/retry": ["@humanwhocodes/retry@0.4.3", "", {}, "sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ=="],
 
-    "@iconify-json/pixel": ["@iconify-json/pixel@1.2.1", "", { "dependencies": { "@iconify/types": "*" } }, "sha512-XwzURAMyZ/BJKeygh4PloKo9cUvS8GfcePueApzwrePvmwCwYT8SC581AQLxJHJl2FZjGWmUMVQ2FN3b9/cYyw=="],
+    "@iconify-json/fluent": ["@iconify-json/fluent@1.2.28", "", { "dependencies": { "@iconify/types": "*" } }, "sha512-Lnaf38ruWopJv8PdEsK8vXgxKpFSsKED2kI0/575ZXg6XHUMvzSuLlldAVAOEWZmMVPJFC0MXe07Ybnh1ziLvw=="],
 
     "@iconify/types": ["@iconify/types@2.0.0", "", {}, "sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg=="],
 

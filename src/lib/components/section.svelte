@@ -1,6 +1,6 @@
 <script lang="ts">
   import { api } from "$lib/api";
-  import { AddIcon, MinusIcon } from "$lib/icons";
+  import { CollapseIcon, ExpandIcon } from "$lib/icons";
   import { onMount, type Snippet } from "svelte";
   import { twMerge } from "tailwind-merge";
   import { tv, type VariantProps } from "tailwind-variants";
@@ -68,11 +68,11 @@
     >
       {#if title}
         {#if collapseStateId}
-          <Button variant="text" class="h-8" onclick={() => handleCollapse()}>
+          <Button variant="icon" class="h-8" onclick={() => handleCollapse()}>
             {#if collapsed}
-              <AddIcon />
+              <ExpandIcon />
             {:else}
-              <MinusIcon />
+              <CollapseIcon />
             {/if}
           </Button>
         {/if}
