@@ -4,7 +4,7 @@
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
-		"prod": "bunx drizzle-kit db push && bun ./build",
+		"prod": "bunx drizzle-kit migrate && bun ./build",
 		"dev": "bunx --bun vite dev",
 		"build": "bunx --bun vite build",
 		"preview": "bunx --bun vite preview",
