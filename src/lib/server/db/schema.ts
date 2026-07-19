@@ -1,5 +1,5 @@
-import { relations } from "drizzle-orm";
-import { pgTable, primaryKey, smallint, text, timestamp, uniqueIndex, uuid, varchar } from "drizzle-orm/pg-core";
+import {relations} from "drizzle-orm";
+import {pgTable, primaryKey, smallint, text, timestamp, uniqueIndex, uuid, varchar} from "drizzle-orm/pg-core";
 
 export const userTable = pgTable("user", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -45,7 +45,7 @@ export const gameBoardSectionTable = pgTable("game_board_section", {
   gameId: uuid("game_id").notNull().references(() => gameTable.id),
   creatorId: uuid("creator_id").notNull().references(() => userTable.id),
   createdAt: timestamp("created_at", {withTimezone: true, mode: "date",}).notNull().defaultNow(),
-}, table => [ uniqueIndex("game_board_section.unique_name_game_id").on(table.name, table.gameId),]);
+}, table => [uniqueIndex("game_board_section.unique_name_game_id").on(table.name, table.gameId),]);
 export const gameBoardSectionRelations = relations(gameBoardSectionTable, ({one, many,}) => ({
   creator: one(userTable, {fields: [gameBoardSectionTable.creatorId,], references: [userTable.id,],}),
   game: one(gameTable, {fields: [gameBoardSectionTable.gameId,], references: [gameTable.id,],}),
@@ -62,9 +62,12 @@ export const gameBoardCategoryTable = pgTable("game_board_category", {
   sectionId: uuid("section_id").notNull().references(() => gameBoardSectionTable.id),
   creatorId: uuid("creator_id").notNull().references(() => userTable.id),
   createdAt: timestamp("created_at", {withTimezone: true, mode: "date",}).notNull().defaultNow(),
-}, table => [ uniqueIndex("game_board_category.unique_name_section_id").on(table.name, table.sectionId),]);
+}, table => [uniqueIndex("game_board_category.unique_name_section_id").on(table.name, table.sectionId),]);
 export const gameBoardCategoryRelations = relations(gameBoardCategoryTable, ({one, many,}) => ({
-  section: one(gameBoardSectionTable, {fields: [gameBoardCategoryTable.sectionId,], references: [gameBoardSectionTable.id,],}),
+  section: one(gameBoardSectionTable, {
+    fields: [gameBoardCategoryTable.sectionId,],
+    references: [gameBoardSectionTable.id,],
+  }),
   creator: one(userTable, {fields: [gameBoardCategoryTable.creatorId,], references: [userTable.id,],}),
   quests: many(gameQuestTable),
 }));
@@ -79,9 +82,12 @@ export const gameQuestTable = pgTable("game_quest", {
   categoryId: uuid("category_id").notNull().references(() => gameBoardCategoryTable.id),
   creatorId: uuid("creator_id").notNull().references(() => userTable.id),
   createdAt: timestamp("created_at", {withTimezone: true, mode: "date",}).notNull().defaultNow(),
-}, table => [ uniqueIndex("unique_game_quest.name_category_id").on(table.name, table.categoryId),]);
+}, table => [uniqueIndex("unique_game_quest.name_category_id").on(table.name, table.categoryId),]);
 export const gameQuestRelations = relations(gameQuestTable, ({one, many,}) => ({
-  category: one(gameBoardCategoryTable, {fields: [gameQuestTable.categoryId,], references: [gameBoardCategoryTable.id,],}),
+  category: one(gameBoardCategoryTable, {
+    fields: [gameQuestTable.categoryId,],
+    references: [gameBoardCategoryTable.id,],
+  }),
   creator: one(userTable, {fields: [gameQuestTable.creatorId,], references: [userTable.id,],}),
   completedQuests: many(userQuestCompletionTable),
   pinnedQuests: many(userQuestPinnedTable),
@@ -116,3 +122,50 @@ export const userQuestPinnedRelations = relations(userQuestPinnedTable, ({one,})
   quest: one(gameQuestTable, {fields: [userQuestPinnedTable.questId,], references: [gameQuestTable.id,],}),
 }));
 export type UserQuestPinned = typeof userQuestPinnedTable.$inferSelect;
+
+export const gameQuestTaskTable = pgTable("game_quest_task", {
+  id: uuid().primaryKey().defaultRandom(),
+  name: varchar("name", {length: 64,}).notNull(),
+  description: text("description").notNull(),
+  icon: uuid().defaultRandom(),
+  order: smallint("order").notNull(),
+  questId: uuid("quest_id").notNull().references(() => gameQuestTable.id),
+  creatorId: uuid("creator_id").notNull().references(() => userTable.id),
+  createdAt: timestamp("created_at", {withTimezone: true, mode: "date",}).notNull().defaultNow(),
+}, table => [uniqueIndex("unique_game_quest_task.name_quest_id").on(table.name, table.questId),]);
+export const gameQuestTaskRelations = relations(gameQuestTaskTable, ({one, many,}) => ({
+  quest: one(gameQuestTable, {fields: [gameQuestTaskTable.questId,], references: [gameQuestTable.id,],}),
+  creator: one(userTable, {fields: [gameQuestTaskTable.creatorId,], references: [userTable.id,],}),
+  completedTasks: many(userQuestTaskCompletionTable),
+  pinnedTasks: many(userQuestTaskPinnedTable),
+}));
+export type GameQuestTask = typeof gameQuestTaskTable.$inferSelect;
+
+export const userQuestTaskCompletionTable = pgTable("user_quest_task_completion", {
+  userId: uuid("user_id").notNull().references(() => userTable.id),
+  questTaskId: uuid("quest_task_id").notNull().references(() => gameQuestTaskTable.id),
+  completedAt: timestamp("completed_at", {withTimezone: true, mode: "date",}).notNull().defaultNow(),
+}, table => [
+  primaryKey({columns: [table.userId, table.questTaskId,],}),
+  uniqueIndex("user_quest_completion.unique_user_id_quest_task_id").on(table.userId, table.questTaskId),
+]);
+export const userQuestTaskCompletionRelations = relations(userQuestTaskCompletionTable, ({one,}) => ({
+  user: one(userTable, {fields: [userQuestTaskCompletionTable.userId,], references: [userTable.id,],}),
+  quest: one(gameQuestTaskTable, {fields: [userQuestTaskCompletionTable.questTaskId,], references: [gameQuestTaskTable.id,],}),
+}));
+export type UserQuestTaskCompletion = typeof userQuestTaskCompletionTable.$inferSelect;
+
+export const userQuestTaskPinnedTable = pgTable("user_quest_task_pinned", {
+  userId: uuid("user_id").notNull().references(() => userTable.id),
+  questTaskId: uuid("quest_task_id").notNull().references(() => gameQuestTaskTable.id),
+  order: smallint("order").notNull(),
+  createdAt: timestamp("created_at", {withTimezone: true, mode: "date",}).notNull().defaultNow(),
+}, table => [
+  primaryKey({columns: [table.userId, table.questTaskId,],}),
+  uniqueIndex("user_quest_pinned.unique_user_id_quest_task_id").on(table.userId, table.questTaskId),
+]);
+export const userQuestTaskPinnedRelations = relations(userQuestTaskPinnedTable, ({one,}) => ({
+  user: one(userTable, {fields: [userQuestTaskPinnedTable.userId,], references: [userTable.id,],}),
+  quest: one(gameQuestTaskTable, {fields: [userQuestTaskPinnedTable.questTaskId,], references: [gameQuestTaskTable.id,],}),
+}));
+export type UserQuestTaskPinned = typeof userQuestTaskPinnedTable.$inferSelect;

@@ -71,6 +71,13 @@
       "when": 1753996379364,
       "tag": "0009_user_quest_pin",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1784440914031,
+      "tag": "0010_game_quest_tasks",
+      "breakpoints": true
     }
   ]
 }

@@ -1,7 +1,7 @@
 name: tracker
 services:
   database:
-    image: postgres
+    image: postgres:17
     restart: unless-stopped
     ports:
       - 5432:5432
