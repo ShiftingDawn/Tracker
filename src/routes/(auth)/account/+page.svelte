@@ -3,7 +3,7 @@
   import Gamelistitem from "$lib/shared/gamelistitem.svelte";
   import Listitem from "$lib/shared/listitem.svelte";
 
-  const { data } = $props();
+  const {data,} = $props();
 </script>
 
 <div class="flex flex-col gap-4">
@@ -17,7 +17,7 @@
     <ul>
       {#each data.games as game (game.id)}
         <li>
-          <Gamelistitem {game} />
+          <Gamelistitem {game}/>
         </li>
       {/each}
     </ul>
@@ -35,10 +35,10 @@
             <Listitem
               title={category.name}
               image={category.icon
-                ? { id: category.icon, alt: `${category.name} category icon` }
+                ? { id: category.icon, alt: `${category.name} category icon`, }
                 : undefined}
               href={`/game/${category.gameId}/category/${category.id}`}
-              text={[category.gameName]}
+              text={[category.gameName,]}
             />
           </li>
         {/each}
@@ -60,10 +60,35 @@
             <Listitem
               title={quest.name}
               image={quest.icon
-                ? { id: quest.icon, alt: `${quest.name} quest icon` }
+                ? { id: quest.icon, alt: `${quest.name} quest icon`, }
                 : undefined}
               href={`/game/${quest.gameId}/category/${quest.categoryId}/quest/${quest.id}`}
-              text={[quest.gameName, quest.categoryName]}
+              text={[quest.gameName, quest.categoryName,]}
+            />
+          </li>
+        {/each}
+      {:else}
+        <p>No contributions yet.</p>
+      {/if}
+    </ul>
+  </Section>
+  <Section
+    title="Contributed tasks"
+    w="md"
+    collapseStateId="profile.contribtasks"
+    initialCollapseState={data.collapseData.contribTasks}
+  >
+    <ul>
+      {#if data.contribTasks.length > 0}
+        {#each data.contribTasks as task (task.id)}
+          <li>
+            <Listitem
+              title={task.name}
+              image={task.icon
+                ? { id: task.icon, alt: `${task.name} task icon`, }
+                : undefined}
+              href={`/game/${task.gameId}/category/${task.categoryId}/quest/${task.questId}/task/${task.id}`}
+              text={[task.questName, task.gameName, task.categoryName,]}
             />
           </li>
         {/each}
