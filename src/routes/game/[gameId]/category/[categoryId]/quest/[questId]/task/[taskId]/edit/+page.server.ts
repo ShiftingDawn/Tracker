@@ -61,8 +61,8 @@ export const actions: Actions = {
 };
 
 const schema = zfd.formData({
-  name: zfd.text(z.string().min(3).max(64)),
-  description: zfd.text(z.string().min(3)),
+  name: zfd.text(z.string().trim().min(3).max(64)),
+  description: zfd.text(z.string().trim().min(3)),
   icon: zfd.file(z.instanceof(File).optional()),
 });
 

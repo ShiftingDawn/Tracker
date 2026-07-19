@@ -4,7 +4,7 @@
   import Section from "$lib/components/section.svelte";
   import Subtext from "$lib/components/subtext.svelte";
   import Toggleswitch from "$lib/components/toggleswitch.svelte";
-  import {PinIcon} from "$lib/icons";
+  import {PinIcon, CompleteIcon} from "$lib/icons";
   import type {GameQuestTask} from "$lib/server/db/schema";
   import type {Snippet} from "svelte";
 
@@ -19,6 +19,8 @@
     initialCollapseState,
     canPinTasks,
     isPinned,
+    canCompleteTasks,
+    isCompleted,
     actions,
   }: {
     title: string;
@@ -31,6 +33,8 @@
     initialCollapseState?: boolean;
     canPinTasks: boolean;
     isPinned?: (taskId: string) => boolean;
+    canCompleteTasks: boolean;
+    isCompleted?: (taskId: string) => boolean;
     actions?: Snippet;
   } = $props();
 </script>
@@ -62,12 +66,14 @@
             {/if}
             <div class="flex flex-col w-full">
               <p class="font-bold">{task.name}</p>
-              <p>{task.description}</p>
+              {#if task.description}
+                <p>{task.description}</p>
+              {/if}
               <Subtext>Added by {task.creator.username}</Subtext>
             </div>
           </a>
-          {#if canPinTasks && isPinned}
-            <div class="p-2 flex items-center justify-center">
+          <div class="p-2 flex items-center justify-center gap-2">
+            {#if canPinTasks && isPinned}
               <form method="post" use:enhance action="?/toggletaskpin">
                 <input type="hidden" name="task" value={task.id}/>
                 <Toggleswitch
@@ -81,8 +87,23 @@
                   {/snippet}
                 </Toggleswitch>
               </form>
-            </div>
-          {/if}
+            {/if}
+            {#if canCompleteTasks && isCompleted}
+              <form method="post" use:enhance action="?/toggletaskcomplete">
+                <input type="hidden" name="task" value={task.id}/>
+                <Toggleswitch
+                  variant="icon"
+                  checked={isCompleted(task.id)}
+                  name="completed"
+                  onchange={(e) => e.currentTarget.closest("form")!.submit()}
+                >
+                  {#snippet label()}
+                    <CompleteIcon/>
+                  {/snippet}
+                </Toggleswitch>
+              </form>
+            {/if}
+          </div>
         </li>
       {/each}
     </ol>

@@ -103,6 +103,8 @@
     initialCollapseState={data.collapseData?.pin}
     canPinTasks={data.isLoggedIn}
     isPinned={() => true}
+    canCompleteTasks={data.isLoggedIn}
+    isCompleted={(taskId) => completed?.findIndex((q) => q.id === taskId) !== -1}
   />
 {/if}
 
@@ -126,10 +128,12 @@
   actions={data.isQuestOwner ? taskActions : undefined}
   canPinTasks={data.isLoggedIn}
   isPinned={(taskId) => pinned?.findIndex((q) => q.id === taskId) !== -1}
+  canCompleteTasks={data.isLoggedIn}
+  isCompleted={() => false}
 />
 {#if completed}
   <TaskList
-    title="Completed qutasksests"
+    title="Completed tasks"
     emptyLabel="No tasks have been completed yet."
     gameId={data.game.id}
     categoryId={data.category.id}
@@ -139,5 +143,7 @@
     initialCollapseState={data.collapseData?.complete}
     canPinTasks={data.isLoggedIn}
     isPinned={(taskId) => pinned?.findIndex((q) => q.id === taskId) !== -1}
+    canCompleteTasks={data.isLoggedIn}
+    isCompleted={() => true}
   />
 {/if}

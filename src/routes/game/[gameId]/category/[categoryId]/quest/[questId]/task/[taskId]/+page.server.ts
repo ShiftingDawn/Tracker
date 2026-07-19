@@ -7,7 +7,7 @@ import {and, eq} from "drizzle-orm";
 import z from "zod";
 import {zfd} from "zod-form-data";
 import type {Actions, PageServerLoad} from "./$types";
-import {toggleTaskPin} from "$lib/server/taskutils";
+import {toggleTaskComplete, toggleTaskPin} from "$lib/server/taskutils";
 
 export const load: PageServerLoad = async (event) => {
   const completionData = event.locals.user ? await db.query.userQuestTaskCompletionTable.findFirst({
@@ -32,24 +32,7 @@ export const actions: Actions = {
       });
     }
     try {
-      const completed = await db.query.userQuestTaskCompletionTable.findFirst({
-        where: and(
-          eq(userQuestTaskCompletionTable.userId, user.id),
-          eq(userQuestTaskCompletionTable.questTaskId, event.params.taskId)
-        ),
-      });
-      if (Boolean(completed) === data.completed) return fail(400);
-      if (completed) {
-        await db.delete(userQuestTaskCompletionTable).where(and(
-          eq(userQuestTaskCompletionTable.userId, user.id),
-          eq(userQuestTaskCompletionTable.questTaskId, event.params.taskId)
-        ));
-      } else {
-        await db.insert(userQuestTaskCompletionTable).values({
-          userId: user.id,
-          questTaskId: event.params.taskId,
-        });
-      }
+      await toggleTaskComplete(user.id, event.params.taskId, data!.completed);
     } catch (error) {
       console.error(error);
       return fail(500, {message: "Internal server error",});

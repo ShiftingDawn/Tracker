@@ -126,7 +126,7 @@ export type UserQuestPinned = typeof userQuestPinnedTable.$inferSelect;
 export const gameQuestTaskTable = pgTable("game_quest_task", {
   id: uuid().primaryKey().defaultRandom(),
   name: varchar("name", {length: 64,}).notNull(),
-  description: text("description").notNull(),
+  description: text("description"),
   icon: uuid().defaultRandom(),
   order: smallint("order").notNull(),
   questId: uuid("quest_id").notNull().references(() => gameQuestTable.id),

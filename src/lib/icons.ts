@@ -12,6 +12,7 @@ import FluentPin32Filled from "~icons/fluent/pin-32-filled";
 import FluentPinOff32Filled from "~icons/fluent/pin-off-32-filled";
 import FluentSave32Filled from "~icons/fluent/save-32-filled";
 import FluentTableDefault32Filled from "~icons/fluent/table-default-32-filled";
+import Checkmark32FilledIcon from "~icons/fluent/checkmark-32-filled";
 
 export const MenuIcon = FluentNavigation32Filled;
 export const AddIcon = FluentAdd32Filled;
@@ -27,3 +28,4 @@ export const CollapseIcon = FluentChevronCircleUp32Filled;
 export const ExpandIcon = FluentChevronCircleDown32Filled;
 export const PinIcon = FluentPin32Filled;
 export const UnpinIcon = FluentPinOff32Filled;
+export const CompleteIcon = Checkmark32FilledIcon;

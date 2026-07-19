@@ -1,7 +1,7 @@
-import { and, eq, gt, inArray, sql } from "drizzle-orm";
-import { db } from "./db";
-import {gameQuestTable, gameQuestTaskTable, userQuestPinnedTable, userQuestTaskPinnedTable} from "./db/schema";
-import { fail } from "@sveltejs/kit";
+import {and, eq, gt, inArray, sql} from "drizzle-orm";
+import {db} from "./db";
+import {gameQuestTaskTable, userQuestTaskCompletionTable, userQuestTaskPinnedTable} from "./db/schema";
+import {fail} from "@sveltejs/kit";
 
 export async function toggleTaskPin(userId: string, taskId: string, questId: string, shouldPin: boolean) {
   const pinned = await db.query.userQuestTaskPinnedTable.findFirst({
@@ -18,7 +18,7 @@ export async function toggleTaskPin(userId: string, taskId: string, questId: str
         eq(userQuestTaskPinnedTable.questTaskId, taskId)
       ));
       await tx.update(userQuestTaskPinnedTable)
-        .set({ order: sql`${userQuestTaskPinnedTable.order} - 1`, })
+        .set({order: sql`${userQuestTaskPinnedTable.order} - 1`,})
         .where(and(
           gt(userQuestTaskPinnedTable.order, pinned.order),
           inArray(
@@ -30,7 +30,10 @@ export async function toggleTaskPin(userId: string, taskId: string, questId: str
         ));
     } else {
       const orderCount = tx.$with("order_count").as(
-        tx.select({value: sql`count(*)`.as("value"),})
+        tx.select({
+          value: sql`count
+              (*)`.as("value"),
+        })
           .from(userQuestTaskPinnedTable)
           .innerJoin(gameQuestTaskTable, eq(userQuestTaskPinnedTable.questTaskId, gameQuestTaskTable.id))
           .where(eq(gameQuestTaskTable.questId, questId))
@@ -42,4 +45,25 @@ export async function toggleTaskPin(userId: string, taskId: string, questId: str
       });
     }
   });
+}
+
+export async function toggleTaskComplete(userId: string, taskId: string, shouldComplete: boolean) {
+  const completed = await db.query.userQuestTaskCompletionTable.findFirst({
+    where: and(
+      eq(userQuestTaskCompletionTable.userId, userId),
+      eq(userQuestTaskCompletionTable.questTaskId, taskId)
+    ),
+  });
+  if (Boolean(completed) === shouldComplete) return fail(400);
+  if (completed) {
+    await db.delete(userQuestTaskCompletionTable).where(and(
+      eq(userQuestTaskCompletionTable.userId, userId),
+      eq(userQuestTaskCompletionTable.questTaskId, taskId)
+    ));
+  } else {
+    await db.insert(userQuestTaskCompletionTable).values({
+      userId: userId,
+      questTaskId: taskId,
+    });
+  }
 }

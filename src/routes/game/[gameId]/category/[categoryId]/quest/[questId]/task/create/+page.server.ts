@@ -48,7 +48,7 @@ export const actions: Actions = {
         );
         const [task,] = await tx.with(orderCount).insert(gameQuestTaskTable).values({
           name: data.name,
-          description: data.description,
+          description: data.description || null,
           icon: img ? undefined : null,
           questId: event.params.questId!,
           order: sql`(select * from ${orderCount})`,
@@ -67,7 +67,7 @@ export const actions: Actions = {
 
 const schema = zfd.formData({
   name: zfd.text(z.string().trim().min(3).max(64)),
-  description: zfd.text(z.string().trim().min(3)),
+  description: zfd.text(z.string().trim().min(3).optional()),
   icon: zfd.file(z.instanceof(File).optional()),
 });
 

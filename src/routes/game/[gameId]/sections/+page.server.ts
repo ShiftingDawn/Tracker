@@ -109,5 +109,5 @@ export const actions: Actions = {
 };
 
 const saveSchema = zfd.formData({order: zfd.repeatableOfType(zfd.text(z.uuidv4())),});
-const addSectionSchema = zfd.formData({name: zfd.text(z.string().min(3).trim()),});
+const addSectionSchema = zfd.formData({name: zfd.text(z.string().trim().min(3)),});
 const deleteSectionSchema = zfd.formData({id: zfd.text(z.uuidv4()),});

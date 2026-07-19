@@ -30,7 +30,9 @@
     {/if}
     <div>
       <h1 class="text-xl font-bold">{data.task.name}</h1>
-      <p>{data.task.description}</p>
+      {#if data.task.description}
+        <p>{data.task.description}</p>
+      {/if}
       <Subtext>Added by {data.taskCreator.username}</Subtext>
       {#if data.isLoggedIn}
         <div class="mt-2 flex gap-2">

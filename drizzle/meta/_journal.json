@@ -78,6 +78,13 @@
       "when": 1784440914031,
       "tag": "0010_game_quest_tasks",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1784449983493,
+      "tag": "0011_task_description_optional",
+      "breakpoints": true
     }
   ]
 }

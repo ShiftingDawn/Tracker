@@ -46,13 +46,12 @@
       defaultValue={existing?.name}
     />
     <Input
-      label="Description"
+      label="Description (optional)"
       name="description"
       minlength={3}
-      required
       autocomplete="off"
       autocapitalize="sentences"
-      defaultValue={existing?.description}
+      defaultValue={existing?.description ?? ""}
     />
     <Input
       label="Task icon (optional)"

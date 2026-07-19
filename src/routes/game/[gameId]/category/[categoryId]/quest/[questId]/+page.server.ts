@@ -14,7 +14,7 @@ import z from "zod";
 import {zfd} from "zod-form-data";
 import type {Actions, PageServerLoad} from "./$types";
 import {keySectionCollapse, rGetBool} from "$lib/server/db/redis";
-import {toggleTaskPin} from "$lib/server/taskutils";
+import {toggleTaskComplete, toggleTaskPin} from "$lib/server/taskutils";
 
 export const load: PageServerLoad = async (event) => {
   const quest = (await event.parent()).quest;
@@ -124,6 +124,25 @@ export const actions: Actions = {
       return fail(500, {message: "Internal server error",});
     }
   },
+  toggletaskcomplete: async (event) => {
+    const {user,} = requireAuth();
+    const formData = await event.request.formData();
+    const {success, data, error: parseError,} = toggleTaskCompleteSchema.safeParse(formData);
+    if (!success) {
+      const errs = z.treeifyError(parseError);
+      return fail(400, {
+        success: false,
+        task: getError(errs.properties?.task),
+        completed: getError(errs.properties?.completed),
+      });
+    }
+    try {
+      await toggleTaskComplete(user.id, data?.task, data.completed);
+    } catch (error) {
+      console.error(error);
+      return fail(500, {message: "Internal server error",});
+    }
+  },
 };
 
 const toggleCompletionSchema = zfd.formData({completed: zfd.checkbox(),});
@@ -131,4 +150,8 @@ const togglePinSchema = zfd.formData({pinned: zfd.checkbox(),});
 const toggleTaskPinSchema = zfd.formData({
   task: zfd.text(z.uuidv4()),
   pinned: zfd.checkbox(),
+});
+const toggleTaskCompleteSchema = zfd.formData({
+  task: zfd.text(z.uuidv4()),
+  completed: zfd.checkbox(),
 });
