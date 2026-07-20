@@ -1,6 +1,5 @@
 import { error, type RequestEvent } from "@sveltejs/kit";
-import type { User } from "./schema";
-import { redis } from ".";
+import {redis, type User} from ".";
 
 function keyMaker(type: string): (name: string, eventOrUser: RequestEvent | User) => string {
   return (name, eventOrUser) => {
