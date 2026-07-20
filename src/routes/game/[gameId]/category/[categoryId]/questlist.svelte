@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { enhance } from "$app/forms";
-  import Image from "$lib/components/image.svelte";
+  import {enhance} from "$app/forms";
+  import IconImage from "$lib/components/iconimage.svelte";
   import Section from "$lib/components/section.svelte";
   import Subtext from "$lib/components/subtext.svelte";
   import Toggleswitch from "$lib/components/toggleswitch.svelte";
-  import { PinIcon } from "$lib/icons";
-  import type { GameQuest } from "$lib/server/db/schema";
-  import type { Snippet } from "svelte";
+  import {PinIcon} from "$lib/icons";
+  import type {Snippet} from "svelte";
+  import type {GameQuest} from "$lib/server/db";
 
   const {
     title,
@@ -51,12 +51,8 @@
             href={`/game/${gameId}/category/${categoryId}/quest/${quest.id}`}
             class="w-full flex flex-row gap-2"
           >
-            {#if quest.icon}
-              <Image
-                size={64}
-                src={`/img/${quest.icon}`}
-                alt={`${quest.name} quest icon`}
-              />
+            {#if quest.iconId}
+              <IconImage size={64} id={quest.iconId} alt={`${quest.name} quest icon`}/>
             {:else}
               <div class="h-[64px]" aria-hidden="true"></div>
             {/if}
@@ -69,7 +65,7 @@
           {#if canPinQuests && isPinned}
             <div class="p-2 flex items-center justify-center">
               <form method="post" use:enhance action="?/togglepin">
-                <input type="hidden" name="quest" value={quest.id} />
+                <input type="hidden" name="quest" value={quest.id}/>
                 <Toggleswitch
                   variant="icon"
                   checked={isPinned(quest.id)}
@@ -77,7 +73,7 @@
                   onchange={(e) => e.currentTarget.closest("form")!.submit()}
                 >
                   {#snippet label()}
-                    <PinIcon />
+                    <PinIcon/>
                   {/snippet}
                 </Toggleswitch>
               </form>
