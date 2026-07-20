@@ -15,24 +15,31 @@ export const POST: RequestHandler = async (event) => {
     const errs = z.treeifyError(error);
     return Response.json({success: false, image: getError(errs.properties?.image),}, {status: 400,});
   }
-  if (!isImage(data.image)) {
+  if (data.image.length === 0) {
     return Response.json({success: false, icon: "Not an image",}, {status: 400,});
   }
   try {
-    let img = sharp(await data.image.bytes());
-    img = img.resize(await getScaledSizes(128, img));
-    const id = await prisma.$transaction(async tx => {
-      const image = await tx.imageStore.create({
-        data: {
-          fileName: data.image.name,
-          fileType: data.image.type,
-          creatorId: user.id,
-        },
+    const result: string[] = [];
+    for (const file of data.image) {
+      if (!isImage(file)) {
+        return Response.json({success: false, icon: "Not an image",}, {status: 400,});
+      }
+      let img = sharp(await file.bytes());
+      img = img.resize(await getScaledSizes(128, img));
+      const id = await prisma.$transaction(async tx => {
+        const image = await tx.imageStore.create({
+          data: {
+            fileName: file.name,
+            fileType: file.type,
+            creatorId: user.id,
+          },
+        });
+        await writeFile(image.id, await img.png().toBuffer());
+        return image.id;
       });
-      await writeFile(image.id, await img.png().toBuffer());
-      return image.id;
-    });
-    return new Response(JSON.stringify({image: id,}), {headers: {"Content-Type": "application/json",},});
+      result.push(id);
+    }
+    return Response.json({images: result,});
   } catch (error) {
     console.error(error);
     return Response.json({message: "Internal server error",}, {status: 500,});
@@ -40,6 +47,6 @@ export const POST: RequestHandler = async (event) => {
 };
 
 const uploadFileSchema = zfd.formData({
-  image: zfd.file(),
+  image: zfd.file().array(),
   //
 });

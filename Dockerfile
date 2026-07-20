@@ -23,6 +23,7 @@ COPY --from=builder /app/package.json ./
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/prisma.config.ts ./
 
+ENV BODY_SIZE_LIMIT=Infinity
 ENV DATABASE_URL=postgres://root:mysecretpassword@localhost:5432/local
 ENV REDIS_URL=redis://192.168.1.2:6379/1
 

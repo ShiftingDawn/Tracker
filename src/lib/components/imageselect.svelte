@@ -5,8 +5,8 @@
   import Button from "./button.svelte";
   import {enhance} from "$app/forms";
   import Modal from "./modal.svelte";
-  import type {ImageStore} from "$lib/server/db/schema";
   import {onMount} from "svelte";
+  import type {ImageStore} from "$lib/server/db";
 
   const {
     open,
@@ -59,6 +59,7 @@
           autocapitalize="off"
           class="px-0 py-0 file:bg-primary file:text-primary-fg file:rounded-lg file:px-2 file:py-1 hover:file:bg-primary/70 file:cursor-pointer"
           onchange={validateFile}
+          multiple
         />
         <Button type="submit">
           Upload

@@ -16,6 +16,7 @@ export const redis = new Redis(env.REDIS_URL);
 
 export type User = Prisma.UserGetPayload<object>;
 export type Session = Prisma.SessionGetPayload<object>;
+export type ImageStore = Prisma.ImageStoreGetPayload<object>;
 export type Game = Prisma.GameGetPayload<object>;
 export type GameSection = Prisma.GameSectionGetPayload<object>;
 export type GameCategory = Prisma.GameCategoryGetPayload<object>;
