@@ -386,6 +386,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   User: 'User',
   Session: 'Session',
+  ImageStore: 'ImageStore',
   Game: 'Game',
   GameSection: 'GameSection',
   GameCategory: 'GameCategory',
@@ -410,7 +411,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "game" | "gameSection" | "gameCategory" | "gameQuest" | "userQuestCompletion" | "userQuestPinned" | "gameQuestTask" | "userQuestTaskCompletion" | "userQuestTaskPinned"
+    modelProps: "user" | "session" | "imageStore" | "game" | "gameSection" | "gameCategory" | "gameQuest" | "userQuestCompletion" | "userQuestPinned" | "gameQuestTask" | "userQuestTaskCompletion" | "userQuestTaskPinned"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -559,6 +560,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.SessionCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.SessionCountAggregateOutputType> | number
+        }
+      }
+    }
+    ImageStore: {
+      payload: Prisma.$ImageStorePayload<ExtArgs>
+      fields: Prisma.ImageStoreFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ImageStoreFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImageStorePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ImageStoreFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImageStorePayload>
+        }
+        findFirst: {
+          args: Prisma.ImageStoreFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImageStorePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ImageStoreFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImageStorePayload>
+        }
+        findMany: {
+          args: Prisma.ImageStoreFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImageStorePayload>[]
+        }
+        create: {
+          args: Prisma.ImageStoreCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImageStorePayload>
+        }
+        createMany: {
+          args: Prisma.ImageStoreCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ImageStoreCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImageStorePayload>[]
+        }
+        delete: {
+          args: Prisma.ImageStoreDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImageStorePayload>
+        }
+        update: {
+          args: Prisma.ImageStoreUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImageStorePayload>
+        }
+        deleteMany: {
+          args: Prisma.ImageStoreDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ImageStoreUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ImageStoreUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImageStorePayload>[]
+        }
+        upsert: {
+          args: Prisma.ImageStoreUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImageStorePayload>
+        }
+        aggregate: {
+          args: Prisma.ImageStoreAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateImageStore>
+        }
+        groupBy: {
+          args: Prisma.ImageStoreGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ImageStoreGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ImageStoreCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ImageStoreCountAggregateOutputType> | number
         }
       }
     }
@@ -1285,10 +1360,21 @@ export const SessionScalarFieldEnum = {
 export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
 
 
+export const ImageStoreScalarFieldEnum = {
+  id: 'id',
+  fileName: 'fileName',
+  fileType: 'fileType',
+  creatorId: 'creatorId',
+  createdAt: 'createdAt'
+} as const
+
+export type ImageStoreScalarFieldEnum = (typeof ImageStoreScalarFieldEnum)[keyof typeof ImageStoreScalarFieldEnum]
+
+
 export const GameScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  icon: 'icon',
+  iconId: 'iconId',
   creatorId: 'creatorId',
   createdAt: 'createdAt'
 } as const
@@ -1312,7 +1398,7 @@ export const GameCategoryScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
-  icon: 'icon',
+  iconId: 'iconId',
   order: 'order',
   sectionId: 'sectionId',
   creatorId: 'creatorId',
@@ -1326,7 +1412,7 @@ export const GameQuestScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
-  icon: 'icon',
+  iconId: 'iconId',
   order: 'order',
   categoryId: 'categoryId',
   creatorId: 'creatorId',
@@ -1359,7 +1445,7 @@ export const GameQuestTaskScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
-  icon: 'icon',
+  iconId: 'iconId',
   order: 'order',
   questId: 'questId',
   creatorId: 'creatorId',
@@ -1585,6 +1671,7 @@ export type PrismaClientOptions = ({
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   session?: Prisma.SessionOmit
+  imageStore?: Prisma.ImageStoreOmit
   game?: Prisma.GameOmit
   gameSection?: Prisma.GameSectionOmit
   gameCategory?: Prisma.GameCategoryOmit

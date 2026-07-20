@@ -38,7 +38,7 @@ export type GameQuestTaskMinAggregateOutputType = {
   id: string | null
   name: string | null
   description: string | null
-  icon: string | null
+  iconId: string | null
   order: number | null
   questId: string | null
   creatorId: string | null
@@ -49,7 +49,7 @@ export type GameQuestTaskMaxAggregateOutputType = {
   id: string | null
   name: string | null
   description: string | null
-  icon: string | null
+  iconId: string | null
   order: number | null
   questId: string | null
   creatorId: string | null
@@ -60,7 +60,7 @@ export type GameQuestTaskCountAggregateOutputType = {
   id: number
   name: number
   description: number
-  icon: number
+  iconId: number
   order: number
   questId: number
   creatorId: number
@@ -81,7 +81,7 @@ export type GameQuestTaskMinAggregateInputType = {
   id?: true
   name?: true
   description?: true
-  icon?: true
+  iconId?: true
   order?: true
   questId?: true
   creatorId?: true
@@ -92,7 +92,7 @@ export type GameQuestTaskMaxAggregateInputType = {
   id?: true
   name?: true
   description?: true
-  icon?: true
+  iconId?: true
   order?: true
   questId?: true
   creatorId?: true
@@ -103,7 +103,7 @@ export type GameQuestTaskCountAggregateInputType = {
   id?: true
   name?: true
   description?: true
-  icon?: true
+  iconId?: true
   order?: true
   questId?: true
   creatorId?: true
@@ -201,7 +201,7 @@ export type GameQuestTaskGroupByOutputType = {
   id: string
   name: string
   description: string | null
-  icon: string | null
+  iconId: string | null
   order: number
   questId: string
   creatorId: string
@@ -235,13 +235,14 @@ export type GameQuestTaskWhereInput = {
   id?: Prisma.UuidFilter<"GameQuestTask"> | string
   name?: Prisma.StringFilter<"GameQuestTask"> | string
   description?: Prisma.StringNullableFilter<"GameQuestTask"> | string | null
-  icon?: Prisma.UuidNullableFilter<"GameQuestTask"> | string | null
+  iconId?: Prisma.UuidNullableFilter<"GameQuestTask"> | string | null
   order?: Prisma.IntFilter<"GameQuestTask"> | number
   questId?: Prisma.UuidFilter<"GameQuestTask"> | string
   creatorId?: Prisma.UuidFilter<"GameQuestTask"> | string
   createdAt?: Prisma.DateTimeFilter<"GameQuestTask"> | Date | string
   quest?: Prisma.XOR<Prisma.GameQuestScalarRelationFilter, Prisma.GameQuestWhereInput>
   creator?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  icon?: Prisma.XOR<Prisma.ImageStoreNullableScalarRelationFilter, Prisma.ImageStoreWhereInput> | null
   completed?: Prisma.UserQuestTaskCompletionListRelationFilter
   pinned?: Prisma.UserQuestTaskPinnedListRelationFilter
 }
@@ -250,13 +251,14 @@ export type GameQuestTaskOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
-  icon?: Prisma.SortOrderInput | Prisma.SortOrder
+  iconId?: Prisma.SortOrderInput | Prisma.SortOrder
   order?: Prisma.SortOrder
   questId?: Prisma.SortOrder
   creatorId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   quest?: Prisma.GameQuestOrderByWithRelationInput
   creator?: Prisma.UserOrderByWithRelationInput
+  icon?: Prisma.ImageStoreOrderByWithRelationInput
   completed?: Prisma.UserQuestTaskCompletionOrderByRelationAggregateInput
   pinned?: Prisma.UserQuestTaskPinnedOrderByRelationAggregateInput
 }
@@ -268,13 +270,14 @@ export type GameQuestTaskWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.GameQuestTaskWhereInput | Prisma.GameQuestTaskWhereInput[]
   name?: Prisma.StringFilter<"GameQuestTask"> | string
   description?: Prisma.StringNullableFilter<"GameQuestTask"> | string | null
-  icon?: Prisma.UuidNullableFilter<"GameQuestTask"> | string | null
+  iconId?: Prisma.UuidNullableFilter<"GameQuestTask"> | string | null
   order?: Prisma.IntFilter<"GameQuestTask"> | number
   questId?: Prisma.UuidFilter<"GameQuestTask"> | string
   creatorId?: Prisma.UuidFilter<"GameQuestTask"> | string
   createdAt?: Prisma.DateTimeFilter<"GameQuestTask"> | Date | string
   quest?: Prisma.XOR<Prisma.GameQuestScalarRelationFilter, Prisma.GameQuestWhereInput>
   creator?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  icon?: Prisma.XOR<Prisma.ImageStoreNullableScalarRelationFilter, Prisma.ImageStoreWhereInput> | null
   completed?: Prisma.UserQuestTaskCompletionListRelationFilter
   pinned?: Prisma.UserQuestTaskPinnedListRelationFilter
 }, "id">
@@ -283,7 +286,7 @@ export type GameQuestTaskOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
-  icon?: Prisma.SortOrderInput | Prisma.SortOrder
+  iconId?: Prisma.SortOrderInput | Prisma.SortOrder
   order?: Prisma.SortOrder
   questId?: Prisma.SortOrder
   creatorId?: Prisma.SortOrder
@@ -302,7 +305,7 @@ export type GameQuestTaskScalarWhereWithAggregatesInput = {
   id?: Prisma.UuidWithAggregatesFilter<"GameQuestTask"> | string
   name?: Prisma.StringWithAggregatesFilter<"GameQuestTask"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"GameQuestTask"> | string | null
-  icon?: Prisma.UuidNullableWithAggregatesFilter<"GameQuestTask"> | string | null
+  iconId?: Prisma.UuidNullableWithAggregatesFilter<"GameQuestTask"> | string | null
   order?: Prisma.IntWithAggregatesFilter<"GameQuestTask"> | number
   questId?: Prisma.UuidWithAggregatesFilter<"GameQuestTask"> | string
   creatorId?: Prisma.UuidWithAggregatesFilter<"GameQuestTask"> | string
@@ -313,11 +316,11 @@ export type GameQuestTaskCreateInput = {
   id?: string
   name: string
   description?: string | null
-  icon?: string | null
   order: number
   createdAt?: Date | string
   quest: Prisma.GameQuestCreateNestedOneWithoutTasksInput
   creator: Prisma.UserCreateNestedOneWithoutTasksInput
+  icon?: Prisma.ImageStoreCreateNestedOneWithoutGameQuestTasksInput
   completed?: Prisma.UserQuestTaskCompletionCreateNestedManyWithoutTaskInput
   pinned?: Prisma.UserQuestTaskPinnedCreateNestedManyWithoutTaskInput
 }
@@ -326,7 +329,7 @@ export type GameQuestTaskUncheckedCreateInput = {
   id?: string
   name: string
   description?: string | null
-  icon?: string | null
+  iconId?: string | null
   order: number
   questId: string
   creatorId: string
@@ -339,11 +342,11 @@ export type GameQuestTaskUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   quest?: Prisma.GameQuestUpdateOneRequiredWithoutTasksNestedInput
   creator?: Prisma.UserUpdateOneRequiredWithoutTasksNestedInput
+  icon?: Prisma.ImageStoreUpdateOneWithoutGameQuestTasksNestedInput
   completed?: Prisma.UserQuestTaskCompletionUpdateManyWithoutTaskNestedInput
   pinned?: Prisma.UserQuestTaskPinnedUpdateManyWithoutTaskNestedInput
 }
@@ -352,7 +355,7 @@ export type GameQuestTaskUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iconId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   questId?: Prisma.StringFieldUpdateOperationsInput | string
   creatorId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -365,7 +368,7 @@ export type GameQuestTaskCreateManyInput = {
   id?: string
   name: string
   description?: string | null
-  icon?: string | null
+  iconId?: string | null
   order: number
   questId: string
   creatorId: string
@@ -376,7 +379,6 @@ export type GameQuestTaskUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -385,7 +387,7 @@ export type GameQuestTaskUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iconId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   questId?: Prisma.StringFieldUpdateOperationsInput | string
   creatorId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -406,7 +408,7 @@ export type GameQuestTaskCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  icon?: Prisma.SortOrder
+  iconId?: Prisma.SortOrder
   order?: Prisma.SortOrder
   questId?: Prisma.SortOrder
   creatorId?: Prisma.SortOrder
@@ -421,7 +423,7 @@ export type GameQuestTaskMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  icon?: Prisma.SortOrder
+  iconId?: Prisma.SortOrder
   order?: Prisma.SortOrder
   questId?: Prisma.SortOrder
   creatorId?: Prisma.SortOrder
@@ -432,7 +434,7 @@ export type GameQuestTaskMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  icon?: Prisma.SortOrder
+  iconId?: Prisma.SortOrder
   order?: Prisma.SortOrder
   questId?: Prisma.SortOrder
   creatorId?: Prisma.SortOrder
@@ -487,6 +489,48 @@ export type GameQuestTaskUncheckedUpdateManyWithoutCreatorNestedInput = {
   connect?: Prisma.GameQuestTaskWhereUniqueInput | Prisma.GameQuestTaskWhereUniqueInput[]
   update?: Prisma.GameQuestTaskUpdateWithWhereUniqueWithoutCreatorInput | Prisma.GameQuestTaskUpdateWithWhereUniqueWithoutCreatorInput[]
   updateMany?: Prisma.GameQuestTaskUpdateManyWithWhereWithoutCreatorInput | Prisma.GameQuestTaskUpdateManyWithWhereWithoutCreatorInput[]
+  deleteMany?: Prisma.GameQuestTaskScalarWhereInput | Prisma.GameQuestTaskScalarWhereInput[]
+}
+
+export type GameQuestTaskCreateNestedManyWithoutIconInput = {
+  create?: Prisma.XOR<Prisma.GameQuestTaskCreateWithoutIconInput, Prisma.GameQuestTaskUncheckedCreateWithoutIconInput> | Prisma.GameQuestTaskCreateWithoutIconInput[] | Prisma.GameQuestTaskUncheckedCreateWithoutIconInput[]
+  connectOrCreate?: Prisma.GameQuestTaskCreateOrConnectWithoutIconInput | Prisma.GameQuestTaskCreateOrConnectWithoutIconInput[]
+  createMany?: Prisma.GameQuestTaskCreateManyIconInputEnvelope
+  connect?: Prisma.GameQuestTaskWhereUniqueInput | Prisma.GameQuestTaskWhereUniqueInput[]
+}
+
+export type GameQuestTaskUncheckedCreateNestedManyWithoutIconInput = {
+  create?: Prisma.XOR<Prisma.GameQuestTaskCreateWithoutIconInput, Prisma.GameQuestTaskUncheckedCreateWithoutIconInput> | Prisma.GameQuestTaskCreateWithoutIconInput[] | Prisma.GameQuestTaskUncheckedCreateWithoutIconInput[]
+  connectOrCreate?: Prisma.GameQuestTaskCreateOrConnectWithoutIconInput | Prisma.GameQuestTaskCreateOrConnectWithoutIconInput[]
+  createMany?: Prisma.GameQuestTaskCreateManyIconInputEnvelope
+  connect?: Prisma.GameQuestTaskWhereUniqueInput | Prisma.GameQuestTaskWhereUniqueInput[]
+}
+
+export type GameQuestTaskUpdateManyWithoutIconNestedInput = {
+  create?: Prisma.XOR<Prisma.GameQuestTaskCreateWithoutIconInput, Prisma.GameQuestTaskUncheckedCreateWithoutIconInput> | Prisma.GameQuestTaskCreateWithoutIconInput[] | Prisma.GameQuestTaskUncheckedCreateWithoutIconInput[]
+  connectOrCreate?: Prisma.GameQuestTaskCreateOrConnectWithoutIconInput | Prisma.GameQuestTaskCreateOrConnectWithoutIconInput[]
+  upsert?: Prisma.GameQuestTaskUpsertWithWhereUniqueWithoutIconInput | Prisma.GameQuestTaskUpsertWithWhereUniqueWithoutIconInput[]
+  createMany?: Prisma.GameQuestTaskCreateManyIconInputEnvelope
+  set?: Prisma.GameQuestTaskWhereUniqueInput | Prisma.GameQuestTaskWhereUniqueInput[]
+  disconnect?: Prisma.GameQuestTaskWhereUniqueInput | Prisma.GameQuestTaskWhereUniqueInput[]
+  delete?: Prisma.GameQuestTaskWhereUniqueInput | Prisma.GameQuestTaskWhereUniqueInput[]
+  connect?: Prisma.GameQuestTaskWhereUniqueInput | Prisma.GameQuestTaskWhereUniqueInput[]
+  update?: Prisma.GameQuestTaskUpdateWithWhereUniqueWithoutIconInput | Prisma.GameQuestTaskUpdateWithWhereUniqueWithoutIconInput[]
+  updateMany?: Prisma.GameQuestTaskUpdateManyWithWhereWithoutIconInput | Prisma.GameQuestTaskUpdateManyWithWhereWithoutIconInput[]
+  deleteMany?: Prisma.GameQuestTaskScalarWhereInput | Prisma.GameQuestTaskScalarWhereInput[]
+}
+
+export type GameQuestTaskUncheckedUpdateManyWithoutIconNestedInput = {
+  create?: Prisma.XOR<Prisma.GameQuestTaskCreateWithoutIconInput, Prisma.GameQuestTaskUncheckedCreateWithoutIconInput> | Prisma.GameQuestTaskCreateWithoutIconInput[] | Prisma.GameQuestTaskUncheckedCreateWithoutIconInput[]
+  connectOrCreate?: Prisma.GameQuestTaskCreateOrConnectWithoutIconInput | Prisma.GameQuestTaskCreateOrConnectWithoutIconInput[]
+  upsert?: Prisma.GameQuestTaskUpsertWithWhereUniqueWithoutIconInput | Prisma.GameQuestTaskUpsertWithWhereUniqueWithoutIconInput[]
+  createMany?: Prisma.GameQuestTaskCreateManyIconInputEnvelope
+  set?: Prisma.GameQuestTaskWhereUniqueInput | Prisma.GameQuestTaskWhereUniqueInput[]
+  disconnect?: Prisma.GameQuestTaskWhereUniqueInput | Prisma.GameQuestTaskWhereUniqueInput[]
+  delete?: Prisma.GameQuestTaskWhereUniqueInput | Prisma.GameQuestTaskWhereUniqueInput[]
+  connect?: Prisma.GameQuestTaskWhereUniqueInput | Prisma.GameQuestTaskWhereUniqueInput[]
+  update?: Prisma.GameQuestTaskUpdateWithWhereUniqueWithoutIconInput | Prisma.GameQuestTaskUpdateWithWhereUniqueWithoutIconInput[]
+  updateMany?: Prisma.GameQuestTaskUpdateManyWithWhereWithoutIconInput | Prisma.GameQuestTaskUpdateManyWithWhereWithoutIconInput[]
   deleteMany?: Prisma.GameQuestTaskScalarWhereInput | Prisma.GameQuestTaskScalarWhereInput[]
 }
 
@@ -564,10 +608,10 @@ export type GameQuestTaskCreateWithoutCreatorInput = {
   id?: string
   name: string
   description?: string | null
-  icon?: string | null
   order: number
   createdAt?: Date | string
   quest: Prisma.GameQuestCreateNestedOneWithoutTasksInput
+  icon?: Prisma.ImageStoreCreateNestedOneWithoutGameQuestTasksInput
   completed?: Prisma.UserQuestTaskCompletionCreateNestedManyWithoutTaskInput
   pinned?: Prisma.UserQuestTaskPinnedCreateNestedManyWithoutTaskInput
 }
@@ -576,7 +620,7 @@ export type GameQuestTaskUncheckedCreateWithoutCreatorInput = {
   id?: string
   name: string
   description?: string | null
-  icon?: string | null
+  iconId?: string | null
   order: number
   questId: string
   createdAt?: Date | string
@@ -617,21 +661,71 @@ export type GameQuestTaskScalarWhereInput = {
   id?: Prisma.UuidFilter<"GameQuestTask"> | string
   name?: Prisma.StringFilter<"GameQuestTask"> | string
   description?: Prisma.StringNullableFilter<"GameQuestTask"> | string | null
-  icon?: Prisma.UuidNullableFilter<"GameQuestTask"> | string | null
+  iconId?: Prisma.UuidNullableFilter<"GameQuestTask"> | string | null
   order?: Prisma.IntFilter<"GameQuestTask"> | number
   questId?: Prisma.UuidFilter<"GameQuestTask"> | string
   creatorId?: Prisma.UuidFilter<"GameQuestTask"> | string
   createdAt?: Prisma.DateTimeFilter<"GameQuestTask"> | Date | string
 }
 
+export type GameQuestTaskCreateWithoutIconInput = {
+  id?: string
+  name: string
+  description?: string | null
+  order: number
+  createdAt?: Date | string
+  quest: Prisma.GameQuestCreateNestedOneWithoutTasksInput
+  creator: Prisma.UserCreateNestedOneWithoutTasksInput
+  completed?: Prisma.UserQuestTaskCompletionCreateNestedManyWithoutTaskInput
+  pinned?: Prisma.UserQuestTaskPinnedCreateNestedManyWithoutTaskInput
+}
+
+export type GameQuestTaskUncheckedCreateWithoutIconInput = {
+  id?: string
+  name: string
+  description?: string | null
+  order: number
+  questId: string
+  creatorId: string
+  createdAt?: Date | string
+  completed?: Prisma.UserQuestTaskCompletionUncheckedCreateNestedManyWithoutTaskInput
+  pinned?: Prisma.UserQuestTaskPinnedUncheckedCreateNestedManyWithoutTaskInput
+}
+
+export type GameQuestTaskCreateOrConnectWithoutIconInput = {
+  where: Prisma.GameQuestTaskWhereUniqueInput
+  create: Prisma.XOR<Prisma.GameQuestTaskCreateWithoutIconInput, Prisma.GameQuestTaskUncheckedCreateWithoutIconInput>
+}
+
+export type GameQuestTaskCreateManyIconInputEnvelope = {
+  data: Prisma.GameQuestTaskCreateManyIconInput | Prisma.GameQuestTaskCreateManyIconInput[]
+  skipDuplicates?: boolean
+}
+
+export type GameQuestTaskUpsertWithWhereUniqueWithoutIconInput = {
+  where: Prisma.GameQuestTaskWhereUniqueInput
+  update: Prisma.XOR<Prisma.GameQuestTaskUpdateWithoutIconInput, Prisma.GameQuestTaskUncheckedUpdateWithoutIconInput>
+  create: Prisma.XOR<Prisma.GameQuestTaskCreateWithoutIconInput, Prisma.GameQuestTaskUncheckedCreateWithoutIconInput>
+}
+
+export type GameQuestTaskUpdateWithWhereUniqueWithoutIconInput = {
+  where: Prisma.GameQuestTaskWhereUniqueInput
+  data: Prisma.XOR<Prisma.GameQuestTaskUpdateWithoutIconInput, Prisma.GameQuestTaskUncheckedUpdateWithoutIconInput>
+}
+
+export type GameQuestTaskUpdateManyWithWhereWithoutIconInput = {
+  where: Prisma.GameQuestTaskScalarWhereInput
+  data: Prisma.XOR<Prisma.GameQuestTaskUpdateManyMutationInput, Prisma.GameQuestTaskUncheckedUpdateManyWithoutIconInput>
+}
+
 export type GameQuestTaskCreateWithoutQuestInput = {
   id?: string
   name: string
   description?: string | null
-  icon?: string | null
   order: number
   createdAt?: Date | string
   creator: Prisma.UserCreateNestedOneWithoutTasksInput
+  icon?: Prisma.ImageStoreCreateNestedOneWithoutGameQuestTasksInput
   completed?: Prisma.UserQuestTaskCompletionCreateNestedManyWithoutTaskInput
   pinned?: Prisma.UserQuestTaskPinnedCreateNestedManyWithoutTaskInput
 }
@@ -640,7 +734,7 @@ export type GameQuestTaskUncheckedCreateWithoutQuestInput = {
   id?: string
   name: string
   description?: string | null
-  icon?: string | null
+  iconId?: string | null
   order: number
   creatorId: string
   createdAt?: Date | string
@@ -678,11 +772,11 @@ export type GameQuestTaskCreateWithoutCompletedInput = {
   id?: string
   name: string
   description?: string | null
-  icon?: string | null
   order: number
   createdAt?: Date | string
   quest: Prisma.GameQuestCreateNestedOneWithoutTasksInput
   creator: Prisma.UserCreateNestedOneWithoutTasksInput
+  icon?: Prisma.ImageStoreCreateNestedOneWithoutGameQuestTasksInput
   pinned?: Prisma.UserQuestTaskPinnedCreateNestedManyWithoutTaskInput
 }
 
@@ -690,7 +784,7 @@ export type GameQuestTaskUncheckedCreateWithoutCompletedInput = {
   id?: string
   name: string
   description?: string | null
-  icon?: string | null
+  iconId?: string | null
   order: number
   questId: string
   creatorId: string
@@ -718,11 +812,11 @@ export type GameQuestTaskUpdateWithoutCompletedInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   quest?: Prisma.GameQuestUpdateOneRequiredWithoutTasksNestedInput
   creator?: Prisma.UserUpdateOneRequiredWithoutTasksNestedInput
+  icon?: Prisma.ImageStoreUpdateOneWithoutGameQuestTasksNestedInput
   pinned?: Prisma.UserQuestTaskPinnedUpdateManyWithoutTaskNestedInput
 }
 
@@ -730,7 +824,7 @@ export type GameQuestTaskUncheckedUpdateWithoutCompletedInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iconId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   questId?: Prisma.StringFieldUpdateOperationsInput | string
   creatorId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -742,11 +836,11 @@ export type GameQuestTaskCreateWithoutPinnedInput = {
   id?: string
   name: string
   description?: string | null
-  icon?: string | null
   order: number
   createdAt?: Date | string
   quest: Prisma.GameQuestCreateNestedOneWithoutTasksInput
   creator: Prisma.UserCreateNestedOneWithoutTasksInput
+  icon?: Prisma.ImageStoreCreateNestedOneWithoutGameQuestTasksInput
   completed?: Prisma.UserQuestTaskCompletionCreateNestedManyWithoutTaskInput
 }
 
@@ -754,7 +848,7 @@ export type GameQuestTaskUncheckedCreateWithoutPinnedInput = {
   id?: string
   name: string
   description?: string | null
-  icon?: string | null
+  iconId?: string | null
   order: number
   questId: string
   creatorId: string
@@ -782,11 +876,11 @@ export type GameQuestTaskUpdateWithoutPinnedInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   quest?: Prisma.GameQuestUpdateOneRequiredWithoutTasksNestedInput
   creator?: Prisma.UserUpdateOneRequiredWithoutTasksNestedInput
+  icon?: Prisma.ImageStoreUpdateOneWithoutGameQuestTasksNestedInput
   completed?: Prisma.UserQuestTaskCompletionUpdateManyWithoutTaskNestedInput
 }
 
@@ -794,7 +888,7 @@ export type GameQuestTaskUncheckedUpdateWithoutPinnedInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iconId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   questId?: Prisma.StringFieldUpdateOperationsInput | string
   creatorId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -806,7 +900,7 @@ export type GameQuestTaskCreateManyCreatorInput = {
   id?: string
   name: string
   description?: string | null
-  icon?: string | null
+  iconId?: string | null
   order: number
   questId: string
   createdAt?: Date | string
@@ -816,10 +910,10 @@ export type GameQuestTaskUpdateWithoutCreatorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   quest?: Prisma.GameQuestUpdateOneRequiredWithoutTasksNestedInput
+  icon?: Prisma.ImageStoreUpdateOneWithoutGameQuestTasksNestedInput
   completed?: Prisma.UserQuestTaskCompletionUpdateManyWithoutTaskNestedInput
   pinned?: Prisma.UserQuestTaskPinnedUpdateManyWithoutTaskNestedInput
 }
@@ -828,7 +922,7 @@ export type GameQuestTaskUncheckedUpdateWithoutCreatorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iconId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   questId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -840,9 +934,53 @@ export type GameQuestTaskUncheckedUpdateManyWithoutCreatorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iconId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   questId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type GameQuestTaskCreateManyIconInput = {
+  id?: string
+  name: string
+  description?: string | null
+  order: number
+  questId: string
+  creatorId: string
+  createdAt?: Date | string
+}
+
+export type GameQuestTaskUpdateWithoutIconInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  quest?: Prisma.GameQuestUpdateOneRequiredWithoutTasksNestedInput
+  creator?: Prisma.UserUpdateOneRequiredWithoutTasksNestedInput
+  completed?: Prisma.UserQuestTaskCompletionUpdateManyWithoutTaskNestedInput
+  pinned?: Prisma.UserQuestTaskPinnedUpdateManyWithoutTaskNestedInput
+}
+
+export type GameQuestTaskUncheckedUpdateWithoutIconInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  questId?: Prisma.StringFieldUpdateOperationsInput | string
+  creatorId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  completed?: Prisma.UserQuestTaskCompletionUncheckedUpdateManyWithoutTaskNestedInput
+  pinned?: Prisma.UserQuestTaskPinnedUncheckedUpdateManyWithoutTaskNestedInput
+}
+
+export type GameQuestTaskUncheckedUpdateManyWithoutIconInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  questId?: Prisma.StringFieldUpdateOperationsInput | string
+  creatorId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -850,7 +988,7 @@ export type GameQuestTaskCreateManyQuestInput = {
   id?: string
   name: string
   description?: string | null
-  icon?: string | null
+  iconId?: string | null
   order: number
   creatorId: string
   createdAt?: Date | string
@@ -860,10 +998,10 @@ export type GameQuestTaskUpdateWithoutQuestInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   creator?: Prisma.UserUpdateOneRequiredWithoutTasksNestedInput
+  icon?: Prisma.ImageStoreUpdateOneWithoutGameQuestTasksNestedInput
   completed?: Prisma.UserQuestTaskCompletionUpdateManyWithoutTaskNestedInput
   pinned?: Prisma.UserQuestTaskPinnedUpdateManyWithoutTaskNestedInput
 }
@@ -872,7 +1010,7 @@ export type GameQuestTaskUncheckedUpdateWithoutQuestInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iconId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   creatorId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -884,7 +1022,7 @@ export type GameQuestTaskUncheckedUpdateManyWithoutQuestInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iconId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   creatorId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -934,13 +1072,14 @@ export type GameQuestTaskSelect<ExtArgs extends runtime.Types.Extensions.Interna
   id?: boolean
   name?: boolean
   description?: boolean
-  icon?: boolean
+  iconId?: boolean
   order?: boolean
   questId?: boolean
   creatorId?: boolean
   createdAt?: boolean
   quest?: boolean | Prisma.GameQuestDefaultArgs<ExtArgs>
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  icon?: boolean | Prisma.GameQuestTask$iconArgs<ExtArgs>
   completed?: boolean | Prisma.GameQuestTask$completedArgs<ExtArgs>
   pinned?: boolean | Prisma.GameQuestTask$pinnedArgs<ExtArgs>
   _count?: boolean | Prisma.GameQuestTaskCountOutputTypeDefaultArgs<ExtArgs>
@@ -950,43 +1089,46 @@ export type GameQuestTaskSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   id?: boolean
   name?: boolean
   description?: boolean
-  icon?: boolean
+  iconId?: boolean
   order?: boolean
   questId?: boolean
   creatorId?: boolean
   createdAt?: boolean
   quest?: boolean | Prisma.GameQuestDefaultArgs<ExtArgs>
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  icon?: boolean | Prisma.GameQuestTask$iconArgs<ExtArgs>
 }, ExtArgs["result"]["gameQuestTask"]>
 
 export type GameQuestTaskSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
   description?: boolean
-  icon?: boolean
+  iconId?: boolean
   order?: boolean
   questId?: boolean
   creatorId?: boolean
   createdAt?: boolean
   quest?: boolean | Prisma.GameQuestDefaultArgs<ExtArgs>
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  icon?: boolean | Prisma.GameQuestTask$iconArgs<ExtArgs>
 }, ExtArgs["result"]["gameQuestTask"]>
 
 export type GameQuestTaskSelectScalar = {
   id?: boolean
   name?: boolean
   description?: boolean
-  icon?: boolean
+  iconId?: boolean
   order?: boolean
   questId?: boolean
   creatorId?: boolean
   createdAt?: boolean
 }
 
-export type GameQuestTaskOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "icon" | "order" | "questId" | "creatorId" | "createdAt", ExtArgs["result"]["gameQuestTask"]>
+export type GameQuestTaskOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "iconId" | "order" | "questId" | "creatorId" | "createdAt", ExtArgs["result"]["gameQuestTask"]>
 export type GameQuestTaskInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   quest?: boolean | Prisma.GameQuestDefaultArgs<ExtArgs>
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  icon?: boolean | Prisma.GameQuestTask$iconArgs<ExtArgs>
   completed?: boolean | Prisma.GameQuestTask$completedArgs<ExtArgs>
   pinned?: boolean | Prisma.GameQuestTask$pinnedArgs<ExtArgs>
   _count?: boolean | Prisma.GameQuestTaskCountOutputTypeDefaultArgs<ExtArgs>
@@ -994,10 +1136,12 @@ export type GameQuestTaskInclude<ExtArgs extends runtime.Types.Extensions.Intern
 export type GameQuestTaskIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   quest?: boolean | Prisma.GameQuestDefaultArgs<ExtArgs>
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  icon?: boolean | Prisma.GameQuestTask$iconArgs<ExtArgs>
 }
 export type GameQuestTaskIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   quest?: boolean | Prisma.GameQuestDefaultArgs<ExtArgs>
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  icon?: boolean | Prisma.GameQuestTask$iconArgs<ExtArgs>
 }
 
 export type $GameQuestTaskPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1005,6 +1149,7 @@ export type $GameQuestTaskPayload<ExtArgs extends runtime.Types.Extensions.Inter
   objects: {
     quest: Prisma.$GameQuestPayload<ExtArgs>
     creator: Prisma.$UserPayload<ExtArgs>
+    icon: Prisma.$ImageStorePayload<ExtArgs> | null
     completed: Prisma.$UserQuestTaskCompletionPayload<ExtArgs>[]
     pinned: Prisma.$UserQuestTaskPinnedPayload<ExtArgs>[]
   }
@@ -1012,7 +1157,7 @@ export type $GameQuestTaskPayload<ExtArgs extends runtime.Types.Extensions.Inter
     id: string
     name: string
     description: string | null
-    icon: string | null
+    iconId: string | null
     order: number
     questId: string
     creatorId: string
@@ -1413,6 +1558,7 @@ export interface Prisma__GameQuestTaskClient<T, Null = never, ExtArgs extends ru
   readonly [Symbol.toStringTag]: "PrismaPromise"
   quest<T extends Prisma.GameQuestDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GameQuestDefaultArgs<ExtArgs>>): Prisma.Prisma__GameQuestClient<runtime.Types.Result.GetResult<Prisma.$GameQuestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   creator<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  icon<T extends Prisma.GameQuestTask$iconArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GameQuestTask$iconArgs<ExtArgs>>): Prisma.Prisma__ImageStoreClient<runtime.Types.Result.GetResult<Prisma.$ImageStorePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   completed<T extends Prisma.GameQuestTask$completedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GameQuestTask$completedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserQuestTaskCompletionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   pinned<T extends Prisma.GameQuestTask$pinnedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GameQuestTask$pinnedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserQuestTaskPinnedPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -1447,7 +1593,7 @@ export interface GameQuestTaskFieldRefs {
   readonly id: Prisma.FieldRef<"GameQuestTask", 'String'>
   readonly name: Prisma.FieldRef<"GameQuestTask", 'String'>
   readonly description: Prisma.FieldRef<"GameQuestTask", 'String'>
-  readonly icon: Prisma.FieldRef<"GameQuestTask", 'String'>
+  readonly iconId: Prisma.FieldRef<"GameQuestTask", 'String'>
   readonly order: Prisma.FieldRef<"GameQuestTask", 'Int'>
   readonly questId: Prisma.FieldRef<"GameQuestTask", 'String'>
   readonly creatorId: Prisma.FieldRef<"GameQuestTask", 'String'>
@@ -1850,6 +1996,25 @@ export type GameQuestTaskDeleteManyArgs<ExtArgs extends runtime.Types.Extensions
    * Limit how many GameQuestTasks to delete.
    */
   limit?: number
+}
+
+/**
+ * GameQuestTask.icon
+ */
+export type GameQuestTask$iconArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ImageStore
+   */
+  select?: Prisma.ImageStoreSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ImageStore
+   */
+  omit?: Prisma.ImageStoreOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ImageStoreInclude<ExtArgs> | null
+  where?: Prisma.ImageStoreWhereInput
 }
 
 /**

@@ -11,7 +11,7 @@
     class: cls,
     ...rest
   }: HTMLInputAttributes & {
-    label: string | false;
+    label?: string;
     description?: string;
     error?: string | true;
     class?: string;

@@ -53,6 +53,7 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   User: 'User',
   Session: 'Session',
+  ImageStore: 'ImageStore',
   Game: 'Game',
   GameSection: 'GameSection',
   GameCategory: 'GameCategory',
@@ -98,10 +99,21 @@ export const SessionScalarFieldEnum = {
 export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
 
 
+export const ImageStoreScalarFieldEnum = {
+  id: 'id',
+  fileName: 'fileName',
+  fileType: 'fileType',
+  creatorId: 'creatorId',
+  createdAt: 'createdAt'
+} as const
+
+export type ImageStoreScalarFieldEnum = (typeof ImageStoreScalarFieldEnum)[keyof typeof ImageStoreScalarFieldEnum]
+
+
 export const GameScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  icon: 'icon',
+  iconId: 'iconId',
   creatorId: 'creatorId',
   createdAt: 'createdAt'
 } as const
@@ -125,7 +137,7 @@ export const GameCategoryScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
-  icon: 'icon',
+  iconId: 'iconId',
   order: 'order',
   sectionId: 'sectionId',
   creatorId: 'creatorId',
@@ -139,7 +151,7 @@ export const GameQuestScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
-  icon: 'icon',
+  iconId: 'iconId',
   order: 'order',
   categoryId: 'categoryId',
   creatorId: 'creatorId',
@@ -172,7 +184,7 @@ export const GameQuestTaskScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
-  icon: 'icon',
+  iconId: 'iconId',
   order: 'order',
   questId: 'questId',
   creatorId: 'creatorId',

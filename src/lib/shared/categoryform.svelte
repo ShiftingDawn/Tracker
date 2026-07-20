@@ -1,24 +1,12 @@
 <script lang="ts">
-  import { enhance } from "$app/forms";
+  import {enhance} from "$app/forms";
   import Button from "$lib/components/button.svelte";
   import Input from "$lib/components/input.svelte";
   import Section from "$lib/components/section.svelte";
   import Select from "$lib/components/select.svelte";
-  import { SaveIcon } from "$lib/icons";
-  import type { GameBoardCategory } from "$lib/server/db/schema";
-  import type { ChangeEventHandler } from "svelte/elements";
-
-  let fileSizeOk: boolean = $state(true);
-
-  const validateFile: ChangeEventHandler<HTMLInputElement> = (e) => {
-    if (!e.currentTarget.files || e.currentTarget.files.length !== 1) return;
-    if (e.currentTarget.files[0].size > 2097152) {
-      e.currentTarget.setCustomValidity("File too large.");
-      fileSizeOk = false;
-    } else {
-      fileSizeOk = true;
-    }
-  };
+  import {SaveIcon} from "$lib/icons";
+  import FormImageSelect from "$lib/components/formimageselect.svelte";
+  import type {GameCategory} from "$lib/server/db";
 
   const {
     title,
@@ -26,9 +14,14 @@
     sections,
   }: {
     title: string;
-    existing?: GameBoardCategory;
+    existing?: GameCategory & (null | { icon: { id: string, fileName: string } });
     sections: Record<string, string>;
   } = $props();
+  let chosenImage = $state<[string, string,] | undefined>(
+    existing?.icon
+      ? [existing.icon.id, existing.icon.fileName,]
+      : undefined
+  );
 </script>
 
 <Section {title} w="md">
@@ -66,21 +59,10 @@
       autocapitalize="sentences"
       defaultValue={existing?.description ?? ""}
     />
-    <Input
-      label="Category icon (optional)"
-      description="Only png, jpg and jpeg, max 2mb. Images that are not 128x128 will be scaled accordingly."
-      error={fileSizeOk ? undefined : "Image exceeds size limit."}
-      name="icon"
-      type="file"
-      accept="image/png,image/jpeg"
-      autocomplete="off"
-      autocapitalize="off"
-      class="px-0 py-0 file:bg-primary file:text-primary-fg file:rounded-lg file:px-2 file:py-1 hover:file:bg-primary/70 file:cursor-pointer"
-      onchange={validateFile}
-    />
+    <FormImageSelect title="Category icon" chosen={chosenImage} onselect={(id, name) => chosenImage = [id, name,]}/>
     <div class="mx-auto">
       <Button type="submit">
-        <SaveIcon />
+        <SaveIcon/>
         Submit
       </Button>
     </div>

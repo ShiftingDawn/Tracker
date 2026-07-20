@@ -1,11 +1,9 @@
 <script lang="ts">
-  import Dot from "$lib/components/dot.svelte";
   import Section from "$lib/components/section.svelte";
-  import Subtext from "$lib/components/subtext.svelte";
   import Gamelistitem from "$lib/shared/gamelistitem.svelte";
-  import type { PageProps } from "./$types";
+  import type {PageProps} from "./$types";
 
-  const { data }: PageProps = $props();
+  const {data,}: PageProps = $props();
 </script>
 
 <div class="flex flex-col gap-4">
@@ -24,7 +22,7 @@
       <ol>
         {#each data.recentGames as game (game.id)}
           <li>
-            <Gamelistitem {game} />
+            <Gamelistitem {game}/>
           </li>
         {/each}
       </ol>

@@ -176,6 +176,7 @@ export type UserWhereInput = {
   tasks?: Prisma.GameQuestTaskListRelationFilter
   completedTasks?: Prisma.UserQuestTaskCompletionListRelationFilter
   pinnedTasks?: Prisma.UserQuestTaskPinnedListRelationFilter
+  images?: Prisma.ImageStoreListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -192,6 +193,7 @@ export type UserOrderByWithRelationInput = {
   tasks?: Prisma.GameQuestTaskOrderByRelationAggregateInput
   completedTasks?: Prisma.UserQuestTaskCompletionOrderByRelationAggregateInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedOrderByRelationAggregateInput
+  images?: Prisma.ImageStoreOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -211,6 +213,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   tasks?: Prisma.GameQuestTaskListRelationFilter
   completedTasks?: Prisma.UserQuestTaskCompletionListRelationFilter
   pinnedTasks?: Prisma.UserQuestTaskPinnedListRelationFilter
+  images?: Prisma.ImageStoreListRelationFilter
 }, "id" | "username">
 
 export type UserOrderByWithAggregationInput = {
@@ -245,6 +248,7 @@ export type UserCreateInput = {
   tasks?: Prisma.GameQuestTaskCreateNestedManyWithoutCreatorInput
   completedTasks?: Prisma.UserQuestTaskCompletionCreateNestedManyWithoutUserInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedCreateNestedManyWithoutUserInput
+  images?: Prisma.ImageStoreCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -261,6 +265,7 @@ export type UserUncheckedCreateInput = {
   tasks?: Prisma.GameQuestTaskUncheckedCreateNestedManyWithoutCreatorInput
   completedTasks?: Prisma.UserQuestTaskCompletionUncheckedCreateNestedManyWithoutUserInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedUncheckedCreateNestedManyWithoutUserInput
+  images?: Prisma.ImageStoreUncheckedCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUpdateInput = {
@@ -277,6 +282,7 @@ export type UserUpdateInput = {
   tasks?: Prisma.GameQuestTaskUpdateManyWithoutCreatorNestedInput
   completedTasks?: Prisma.UserQuestTaskCompletionUpdateManyWithoutUserNestedInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedUpdateManyWithoutUserNestedInput
+  images?: Prisma.ImageStoreUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -293,6 +299,7 @@ export type UserUncheckedUpdateInput = {
   tasks?: Prisma.GameQuestTaskUncheckedUpdateManyWithoutCreatorNestedInput
   completedTasks?: Prisma.UserQuestTaskCompletionUncheckedUpdateManyWithoutUserNestedInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedUncheckedUpdateManyWithoutUserNestedInput
+  images?: Prisma.ImageStoreUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -352,6 +359,20 @@ export type UserUpdateOneRequiredWithoutSessionsNestedInput = {
   upsert?: Prisma.UserUpsertWithoutSessionsInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSessionsInput, Prisma.UserUpdateWithoutSessionsInput>, Prisma.UserUncheckedUpdateWithoutSessionsInput>
+}
+
+export type UserCreateNestedOneWithoutImagesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutImagesInput, Prisma.UserUncheckedCreateWithoutImagesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutImagesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutImagesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutImagesInput, Prisma.UserUncheckedCreateWithoutImagesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutImagesInput
+  upsert?: Prisma.UserUpsertWithoutImagesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutImagesInput, Prisma.UserUpdateWithoutImagesInput>, Prisma.UserUncheckedUpdateWithoutImagesInput>
 }
 
 export type UserCreateNestedOneWithoutGamesInput = {
@@ -493,6 +514,7 @@ export type UserCreateWithoutSessionsInput = {
   tasks?: Prisma.GameQuestTaskCreateNestedManyWithoutCreatorInput
   completedTasks?: Prisma.UserQuestTaskCompletionCreateNestedManyWithoutUserInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedCreateNestedManyWithoutUserInput
+  images?: Prisma.ImageStoreCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -508,6 +530,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   tasks?: Prisma.GameQuestTaskUncheckedCreateNestedManyWithoutCreatorInput
   completedTasks?: Prisma.UserQuestTaskCompletionUncheckedCreateNestedManyWithoutUserInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedUncheckedCreateNestedManyWithoutUserInput
+  images?: Prisma.ImageStoreUncheckedCreateNestedManyWithoutCreatorInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -539,12 +562,94 @@ export type UserUpdateWithoutSessionsInput = {
   tasks?: Prisma.GameQuestTaskUpdateManyWithoutCreatorNestedInput
   completedTasks?: Prisma.UserQuestTaskCompletionUpdateManyWithoutUserNestedInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedUpdateManyWithoutUserNestedInput
+  images?: Prisma.ImageStoreUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   username?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
+  games?: Prisma.GameUncheckedUpdateManyWithoutCreatorNestedInput
+  sections?: Prisma.GameSectionUncheckedUpdateManyWithoutCreatorNestedInput
+  categories?: Prisma.GameCategoryUncheckedUpdateManyWithoutCreatorNestedInput
+  quests?: Prisma.GameQuestUncheckedUpdateManyWithoutCreatorNestedInput
+  completedQuests?: Prisma.UserQuestCompletionUncheckedUpdateManyWithoutUserNestedInput
+  pinnedQuests?: Prisma.UserQuestPinnedUncheckedUpdateManyWithoutUserNestedInput
+  tasks?: Prisma.GameQuestTaskUncheckedUpdateManyWithoutCreatorNestedInput
+  completedTasks?: Prisma.UserQuestTaskCompletionUncheckedUpdateManyWithoutUserNestedInput
+  pinnedTasks?: Prisma.UserQuestTaskPinnedUncheckedUpdateManyWithoutUserNestedInput
+  images?: Prisma.ImageStoreUncheckedUpdateManyWithoutCreatorNestedInput
+}
+
+export type UserCreateWithoutImagesInput = {
+  id?: string
+  username: string
+  password: string
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  games?: Prisma.GameCreateNestedManyWithoutCreatorInput
+  sections?: Prisma.GameSectionCreateNestedManyWithoutCreatorInput
+  categories?: Prisma.GameCategoryCreateNestedManyWithoutCreatorInput
+  quests?: Prisma.GameQuestCreateNestedManyWithoutCreatorInput
+  completedQuests?: Prisma.UserQuestCompletionCreateNestedManyWithoutUserInput
+  pinnedQuests?: Prisma.UserQuestPinnedCreateNestedManyWithoutUserInput
+  tasks?: Prisma.GameQuestTaskCreateNestedManyWithoutCreatorInput
+  completedTasks?: Prisma.UserQuestTaskCompletionCreateNestedManyWithoutUserInput
+  pinnedTasks?: Prisma.UserQuestTaskPinnedCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutImagesInput = {
+  id?: string
+  username: string
+  password: string
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  games?: Prisma.GameUncheckedCreateNestedManyWithoutCreatorInput
+  sections?: Prisma.GameSectionUncheckedCreateNestedManyWithoutCreatorInput
+  categories?: Prisma.GameCategoryUncheckedCreateNestedManyWithoutCreatorInput
+  quests?: Prisma.GameQuestUncheckedCreateNestedManyWithoutCreatorInput
+  completedQuests?: Prisma.UserQuestCompletionUncheckedCreateNestedManyWithoutUserInput
+  pinnedQuests?: Prisma.UserQuestPinnedUncheckedCreateNestedManyWithoutUserInput
+  tasks?: Prisma.GameQuestTaskUncheckedCreateNestedManyWithoutCreatorInput
+  completedTasks?: Prisma.UserQuestTaskCompletionUncheckedCreateNestedManyWithoutUserInput
+  pinnedTasks?: Prisma.UserQuestTaskPinnedUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutImagesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutImagesInput, Prisma.UserUncheckedCreateWithoutImagesInput>
+}
+
+export type UserUpsertWithoutImagesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutImagesInput, Prisma.UserUncheckedUpdateWithoutImagesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutImagesInput, Prisma.UserUncheckedCreateWithoutImagesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutImagesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutImagesInput, Prisma.UserUncheckedUpdateWithoutImagesInput>
+}
+
+export type UserUpdateWithoutImagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  games?: Prisma.GameUpdateManyWithoutCreatorNestedInput
+  sections?: Prisma.GameSectionUpdateManyWithoutCreatorNestedInput
+  categories?: Prisma.GameCategoryUpdateManyWithoutCreatorNestedInput
+  quests?: Prisma.GameQuestUpdateManyWithoutCreatorNestedInput
+  completedQuests?: Prisma.UserQuestCompletionUpdateManyWithoutUserNestedInput
+  pinnedQuests?: Prisma.UserQuestPinnedUpdateManyWithoutUserNestedInput
+  tasks?: Prisma.GameQuestTaskUpdateManyWithoutCreatorNestedInput
+  completedTasks?: Prisma.UserQuestTaskCompletionUpdateManyWithoutUserNestedInput
+  pinnedTasks?: Prisma.UserQuestTaskPinnedUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutImagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   games?: Prisma.GameUncheckedUpdateManyWithoutCreatorNestedInput
   sections?: Prisma.GameSectionUncheckedUpdateManyWithoutCreatorNestedInput
   categories?: Prisma.GameCategoryUncheckedUpdateManyWithoutCreatorNestedInput
@@ -569,6 +674,7 @@ export type UserCreateWithoutGamesInput = {
   tasks?: Prisma.GameQuestTaskCreateNestedManyWithoutCreatorInput
   completedTasks?: Prisma.UserQuestTaskCompletionCreateNestedManyWithoutUserInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedCreateNestedManyWithoutUserInput
+  images?: Prisma.ImageStoreCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUncheckedCreateWithoutGamesInput = {
@@ -584,6 +690,7 @@ export type UserUncheckedCreateWithoutGamesInput = {
   tasks?: Prisma.GameQuestTaskUncheckedCreateNestedManyWithoutCreatorInput
   completedTasks?: Prisma.UserQuestTaskCompletionUncheckedCreateNestedManyWithoutUserInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedUncheckedCreateNestedManyWithoutUserInput
+  images?: Prisma.ImageStoreUncheckedCreateNestedManyWithoutCreatorInput
 }
 
 export type UserCreateOrConnectWithoutGamesInput = {
@@ -615,6 +722,7 @@ export type UserUpdateWithoutGamesInput = {
   tasks?: Prisma.GameQuestTaskUpdateManyWithoutCreatorNestedInput
   completedTasks?: Prisma.UserQuestTaskCompletionUpdateManyWithoutUserNestedInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedUpdateManyWithoutUserNestedInput
+  images?: Prisma.ImageStoreUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGamesInput = {
@@ -630,6 +738,7 @@ export type UserUncheckedUpdateWithoutGamesInput = {
   tasks?: Prisma.GameQuestTaskUncheckedUpdateManyWithoutCreatorNestedInput
   completedTasks?: Prisma.UserQuestTaskCompletionUncheckedUpdateManyWithoutUserNestedInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedUncheckedUpdateManyWithoutUserNestedInput
+  images?: Prisma.ImageStoreUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserCreateWithoutSectionsInput = {
@@ -645,6 +754,7 @@ export type UserCreateWithoutSectionsInput = {
   tasks?: Prisma.GameQuestTaskCreateNestedManyWithoutCreatorInput
   completedTasks?: Prisma.UserQuestTaskCompletionCreateNestedManyWithoutUserInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedCreateNestedManyWithoutUserInput
+  images?: Prisma.ImageStoreCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUncheckedCreateWithoutSectionsInput = {
@@ -660,6 +770,7 @@ export type UserUncheckedCreateWithoutSectionsInput = {
   tasks?: Prisma.GameQuestTaskUncheckedCreateNestedManyWithoutCreatorInput
   completedTasks?: Prisma.UserQuestTaskCompletionUncheckedCreateNestedManyWithoutUserInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedUncheckedCreateNestedManyWithoutUserInput
+  images?: Prisma.ImageStoreUncheckedCreateNestedManyWithoutCreatorInput
 }
 
 export type UserCreateOrConnectWithoutSectionsInput = {
@@ -691,6 +802,7 @@ export type UserUpdateWithoutSectionsInput = {
   tasks?: Prisma.GameQuestTaskUpdateManyWithoutCreatorNestedInput
   completedTasks?: Prisma.UserQuestTaskCompletionUpdateManyWithoutUserNestedInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedUpdateManyWithoutUserNestedInput
+  images?: Prisma.ImageStoreUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSectionsInput = {
@@ -706,6 +818,7 @@ export type UserUncheckedUpdateWithoutSectionsInput = {
   tasks?: Prisma.GameQuestTaskUncheckedUpdateManyWithoutCreatorNestedInput
   completedTasks?: Prisma.UserQuestTaskCompletionUncheckedUpdateManyWithoutUserNestedInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedUncheckedUpdateManyWithoutUserNestedInput
+  images?: Prisma.ImageStoreUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserCreateWithoutCategoriesInput = {
@@ -721,6 +834,7 @@ export type UserCreateWithoutCategoriesInput = {
   tasks?: Prisma.GameQuestTaskCreateNestedManyWithoutCreatorInput
   completedTasks?: Prisma.UserQuestTaskCompletionCreateNestedManyWithoutUserInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedCreateNestedManyWithoutUserInput
+  images?: Prisma.ImageStoreCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUncheckedCreateWithoutCategoriesInput = {
@@ -736,6 +850,7 @@ export type UserUncheckedCreateWithoutCategoriesInput = {
   tasks?: Prisma.GameQuestTaskUncheckedCreateNestedManyWithoutCreatorInput
   completedTasks?: Prisma.UserQuestTaskCompletionUncheckedCreateNestedManyWithoutUserInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedUncheckedCreateNestedManyWithoutUserInput
+  images?: Prisma.ImageStoreUncheckedCreateNestedManyWithoutCreatorInput
 }
 
 export type UserCreateOrConnectWithoutCategoriesInput = {
@@ -767,6 +882,7 @@ export type UserUpdateWithoutCategoriesInput = {
   tasks?: Prisma.GameQuestTaskUpdateManyWithoutCreatorNestedInput
   completedTasks?: Prisma.UserQuestTaskCompletionUpdateManyWithoutUserNestedInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedUpdateManyWithoutUserNestedInput
+  images?: Prisma.ImageStoreUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCategoriesInput = {
@@ -782,6 +898,7 @@ export type UserUncheckedUpdateWithoutCategoriesInput = {
   tasks?: Prisma.GameQuestTaskUncheckedUpdateManyWithoutCreatorNestedInput
   completedTasks?: Prisma.UserQuestTaskCompletionUncheckedUpdateManyWithoutUserNestedInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedUncheckedUpdateManyWithoutUserNestedInput
+  images?: Prisma.ImageStoreUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserCreateWithoutQuestsInput = {
@@ -797,6 +914,7 @@ export type UserCreateWithoutQuestsInput = {
   tasks?: Prisma.GameQuestTaskCreateNestedManyWithoutCreatorInput
   completedTasks?: Prisma.UserQuestTaskCompletionCreateNestedManyWithoutUserInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedCreateNestedManyWithoutUserInput
+  images?: Prisma.ImageStoreCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUncheckedCreateWithoutQuestsInput = {
@@ -812,6 +930,7 @@ export type UserUncheckedCreateWithoutQuestsInput = {
   tasks?: Prisma.GameQuestTaskUncheckedCreateNestedManyWithoutCreatorInput
   completedTasks?: Prisma.UserQuestTaskCompletionUncheckedCreateNestedManyWithoutUserInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedUncheckedCreateNestedManyWithoutUserInput
+  images?: Prisma.ImageStoreUncheckedCreateNestedManyWithoutCreatorInput
 }
 
 export type UserCreateOrConnectWithoutQuestsInput = {
@@ -843,6 +962,7 @@ export type UserUpdateWithoutQuestsInput = {
   tasks?: Prisma.GameQuestTaskUpdateManyWithoutCreatorNestedInput
   completedTasks?: Prisma.UserQuestTaskCompletionUpdateManyWithoutUserNestedInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedUpdateManyWithoutUserNestedInput
+  images?: Prisma.ImageStoreUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutQuestsInput = {
@@ -858,6 +978,7 @@ export type UserUncheckedUpdateWithoutQuestsInput = {
   tasks?: Prisma.GameQuestTaskUncheckedUpdateManyWithoutCreatorNestedInput
   completedTasks?: Prisma.UserQuestTaskCompletionUncheckedUpdateManyWithoutUserNestedInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedUncheckedUpdateManyWithoutUserNestedInput
+  images?: Prisma.ImageStoreUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserCreateWithoutCompletedQuestsInput = {
@@ -873,6 +994,7 @@ export type UserCreateWithoutCompletedQuestsInput = {
   tasks?: Prisma.GameQuestTaskCreateNestedManyWithoutCreatorInput
   completedTasks?: Prisma.UserQuestTaskCompletionCreateNestedManyWithoutUserInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedCreateNestedManyWithoutUserInput
+  images?: Prisma.ImageStoreCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUncheckedCreateWithoutCompletedQuestsInput = {
@@ -888,6 +1010,7 @@ export type UserUncheckedCreateWithoutCompletedQuestsInput = {
   tasks?: Prisma.GameQuestTaskUncheckedCreateNestedManyWithoutCreatorInput
   completedTasks?: Prisma.UserQuestTaskCompletionUncheckedCreateNestedManyWithoutUserInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedUncheckedCreateNestedManyWithoutUserInput
+  images?: Prisma.ImageStoreUncheckedCreateNestedManyWithoutCreatorInput
 }
 
 export type UserCreateOrConnectWithoutCompletedQuestsInput = {
@@ -919,6 +1042,7 @@ export type UserUpdateWithoutCompletedQuestsInput = {
   tasks?: Prisma.GameQuestTaskUpdateManyWithoutCreatorNestedInput
   completedTasks?: Prisma.UserQuestTaskCompletionUpdateManyWithoutUserNestedInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedUpdateManyWithoutUserNestedInput
+  images?: Prisma.ImageStoreUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCompletedQuestsInput = {
@@ -934,6 +1058,7 @@ export type UserUncheckedUpdateWithoutCompletedQuestsInput = {
   tasks?: Prisma.GameQuestTaskUncheckedUpdateManyWithoutCreatorNestedInput
   completedTasks?: Prisma.UserQuestTaskCompletionUncheckedUpdateManyWithoutUserNestedInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedUncheckedUpdateManyWithoutUserNestedInput
+  images?: Prisma.ImageStoreUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserCreateWithoutPinnedQuestsInput = {
@@ -949,6 +1074,7 @@ export type UserCreateWithoutPinnedQuestsInput = {
   tasks?: Prisma.GameQuestTaskCreateNestedManyWithoutCreatorInput
   completedTasks?: Prisma.UserQuestTaskCompletionCreateNestedManyWithoutUserInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedCreateNestedManyWithoutUserInput
+  images?: Prisma.ImageStoreCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUncheckedCreateWithoutPinnedQuestsInput = {
@@ -964,6 +1090,7 @@ export type UserUncheckedCreateWithoutPinnedQuestsInput = {
   tasks?: Prisma.GameQuestTaskUncheckedCreateNestedManyWithoutCreatorInput
   completedTasks?: Prisma.UserQuestTaskCompletionUncheckedCreateNestedManyWithoutUserInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedUncheckedCreateNestedManyWithoutUserInput
+  images?: Prisma.ImageStoreUncheckedCreateNestedManyWithoutCreatorInput
 }
 
 export type UserCreateOrConnectWithoutPinnedQuestsInput = {
@@ -995,6 +1122,7 @@ export type UserUpdateWithoutPinnedQuestsInput = {
   tasks?: Prisma.GameQuestTaskUpdateManyWithoutCreatorNestedInput
   completedTasks?: Prisma.UserQuestTaskCompletionUpdateManyWithoutUserNestedInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedUpdateManyWithoutUserNestedInput
+  images?: Prisma.ImageStoreUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPinnedQuestsInput = {
@@ -1010,6 +1138,7 @@ export type UserUncheckedUpdateWithoutPinnedQuestsInput = {
   tasks?: Prisma.GameQuestTaskUncheckedUpdateManyWithoutCreatorNestedInput
   completedTasks?: Prisma.UserQuestTaskCompletionUncheckedUpdateManyWithoutUserNestedInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedUncheckedUpdateManyWithoutUserNestedInput
+  images?: Prisma.ImageStoreUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserCreateWithoutTasksInput = {
@@ -1025,6 +1154,7 @@ export type UserCreateWithoutTasksInput = {
   pinnedQuests?: Prisma.UserQuestPinnedCreateNestedManyWithoutUserInput
   completedTasks?: Prisma.UserQuestTaskCompletionCreateNestedManyWithoutUserInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedCreateNestedManyWithoutUserInput
+  images?: Prisma.ImageStoreCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUncheckedCreateWithoutTasksInput = {
@@ -1040,6 +1170,7 @@ export type UserUncheckedCreateWithoutTasksInput = {
   pinnedQuests?: Prisma.UserQuestPinnedUncheckedCreateNestedManyWithoutUserInput
   completedTasks?: Prisma.UserQuestTaskCompletionUncheckedCreateNestedManyWithoutUserInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedUncheckedCreateNestedManyWithoutUserInput
+  images?: Prisma.ImageStoreUncheckedCreateNestedManyWithoutCreatorInput
 }
 
 export type UserCreateOrConnectWithoutTasksInput = {
@@ -1071,6 +1202,7 @@ export type UserUpdateWithoutTasksInput = {
   pinnedQuests?: Prisma.UserQuestPinnedUpdateManyWithoutUserNestedInput
   completedTasks?: Prisma.UserQuestTaskCompletionUpdateManyWithoutUserNestedInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedUpdateManyWithoutUserNestedInput
+  images?: Prisma.ImageStoreUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTasksInput = {
@@ -1086,6 +1218,7 @@ export type UserUncheckedUpdateWithoutTasksInput = {
   pinnedQuests?: Prisma.UserQuestPinnedUncheckedUpdateManyWithoutUserNestedInput
   completedTasks?: Prisma.UserQuestTaskCompletionUncheckedUpdateManyWithoutUserNestedInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedUncheckedUpdateManyWithoutUserNestedInput
+  images?: Prisma.ImageStoreUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserCreateWithoutCompletedTasksInput = {
@@ -1101,6 +1234,7 @@ export type UserCreateWithoutCompletedTasksInput = {
   pinnedQuests?: Prisma.UserQuestPinnedCreateNestedManyWithoutUserInput
   tasks?: Prisma.GameQuestTaskCreateNestedManyWithoutCreatorInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedCreateNestedManyWithoutUserInput
+  images?: Prisma.ImageStoreCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUncheckedCreateWithoutCompletedTasksInput = {
@@ -1116,6 +1250,7 @@ export type UserUncheckedCreateWithoutCompletedTasksInput = {
   pinnedQuests?: Prisma.UserQuestPinnedUncheckedCreateNestedManyWithoutUserInput
   tasks?: Prisma.GameQuestTaskUncheckedCreateNestedManyWithoutCreatorInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedUncheckedCreateNestedManyWithoutUserInput
+  images?: Prisma.ImageStoreUncheckedCreateNestedManyWithoutCreatorInput
 }
 
 export type UserCreateOrConnectWithoutCompletedTasksInput = {
@@ -1147,6 +1282,7 @@ export type UserUpdateWithoutCompletedTasksInput = {
   pinnedQuests?: Prisma.UserQuestPinnedUpdateManyWithoutUserNestedInput
   tasks?: Prisma.GameQuestTaskUpdateManyWithoutCreatorNestedInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedUpdateManyWithoutUserNestedInput
+  images?: Prisma.ImageStoreUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCompletedTasksInput = {
@@ -1162,6 +1298,7 @@ export type UserUncheckedUpdateWithoutCompletedTasksInput = {
   pinnedQuests?: Prisma.UserQuestPinnedUncheckedUpdateManyWithoutUserNestedInput
   tasks?: Prisma.GameQuestTaskUncheckedUpdateManyWithoutCreatorNestedInput
   pinnedTasks?: Prisma.UserQuestTaskPinnedUncheckedUpdateManyWithoutUserNestedInput
+  images?: Prisma.ImageStoreUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserCreateWithoutPinnedTasksInput = {
@@ -1177,6 +1314,7 @@ export type UserCreateWithoutPinnedTasksInput = {
   pinnedQuests?: Prisma.UserQuestPinnedCreateNestedManyWithoutUserInput
   tasks?: Prisma.GameQuestTaskCreateNestedManyWithoutCreatorInput
   completedTasks?: Prisma.UserQuestTaskCompletionCreateNestedManyWithoutUserInput
+  images?: Prisma.ImageStoreCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUncheckedCreateWithoutPinnedTasksInput = {
@@ -1192,6 +1330,7 @@ export type UserUncheckedCreateWithoutPinnedTasksInput = {
   pinnedQuests?: Prisma.UserQuestPinnedUncheckedCreateNestedManyWithoutUserInput
   tasks?: Prisma.GameQuestTaskUncheckedCreateNestedManyWithoutCreatorInput
   completedTasks?: Prisma.UserQuestTaskCompletionUncheckedCreateNestedManyWithoutUserInput
+  images?: Prisma.ImageStoreUncheckedCreateNestedManyWithoutCreatorInput
 }
 
 export type UserCreateOrConnectWithoutPinnedTasksInput = {
@@ -1223,6 +1362,7 @@ export type UserUpdateWithoutPinnedTasksInput = {
   pinnedQuests?: Prisma.UserQuestPinnedUpdateManyWithoutUserNestedInput
   tasks?: Prisma.GameQuestTaskUpdateManyWithoutCreatorNestedInput
   completedTasks?: Prisma.UserQuestTaskCompletionUpdateManyWithoutUserNestedInput
+  images?: Prisma.ImageStoreUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPinnedTasksInput = {
@@ -1238,6 +1378,7 @@ export type UserUncheckedUpdateWithoutPinnedTasksInput = {
   pinnedQuests?: Prisma.UserQuestPinnedUncheckedUpdateManyWithoutUserNestedInput
   tasks?: Prisma.GameQuestTaskUncheckedUpdateManyWithoutCreatorNestedInput
   completedTasks?: Prisma.UserQuestTaskCompletionUncheckedUpdateManyWithoutUserNestedInput
+  images?: Prisma.ImageStoreUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
 
@@ -1256,6 +1397,7 @@ export type UserCountOutputType = {
   tasks: number
   completedTasks: number
   pinnedTasks: number
+  images: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1269,6 +1411,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   tasks?: boolean | UserCountOutputTypeCountTasksArgs
   completedTasks?: boolean | UserCountOutputTypeCountCompletedTasksArgs
   pinnedTasks?: boolean | UserCountOutputTypeCountPinnedTasksArgs
+  images?: boolean | UserCountOutputTypeCountImagesArgs
 }
 
 /**
@@ -1351,6 +1494,13 @@ export type UserCountOutputTypeCountPinnedTasksArgs<ExtArgs extends runtime.Type
   where?: Prisma.UserQuestTaskPinnedWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountImagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ImageStoreWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1366,6 +1516,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   tasks?: boolean | Prisma.User$tasksArgs<ExtArgs>
   completedTasks?: boolean | Prisma.User$completedTasksArgs<ExtArgs>
   pinnedTasks?: boolean | Prisma.User$pinnedTasksArgs<ExtArgs>
+  images?: boolean | Prisma.User$imagesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1399,6 +1550,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   tasks?: boolean | Prisma.User$tasksArgs<ExtArgs>
   completedTasks?: boolean | Prisma.User$completedTasksArgs<ExtArgs>
   pinnedTasks?: boolean | Prisma.User$pinnedTasksArgs<ExtArgs>
+  images?: boolean | Prisma.User$imagesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1417,6 +1569,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     tasks: Prisma.$GameQuestTaskPayload<ExtArgs>[]
     completedTasks: Prisma.$UserQuestTaskCompletionPayload<ExtArgs>[]
     pinnedTasks: Prisma.$UserQuestTaskPinnedPayload<ExtArgs>[]
+    images: Prisma.$ImageStorePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1826,6 +1979,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   tasks<T extends Prisma.User$tasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GameQuestTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   completedTasks<T extends Prisma.User$completedTasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$completedTasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserQuestTaskCompletionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   pinnedTasks<T extends Prisma.User$pinnedTasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$pinnedTasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserQuestTaskPinnedPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  images<T extends Prisma.User$imagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$imagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ImageStorePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2488,6 +2642,30 @@ export type User$pinnedTasksArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   distinct?: Prisma.UserQuestTaskPinnedScalarFieldEnum | Prisma.UserQuestTaskPinnedScalarFieldEnum[]
+}
+
+/**
+ * User.images
+ */
+export type User$imagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ImageStore
+   */
+  select?: Prisma.ImageStoreSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ImageStore
+   */
+  omit?: Prisma.ImageStoreOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ImageStoreInclude<ExtArgs> | null
+  where?: Prisma.ImageStoreWhereInput
+  orderBy?: Prisma.ImageStoreOrderByWithRelationInput | Prisma.ImageStoreOrderByWithRelationInput[]
+  cursor?: Prisma.ImageStoreWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ImageStoreScalarFieldEnum | Prisma.ImageStoreScalarFieldEnum[]
 }
 
 /**

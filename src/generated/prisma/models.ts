@@ -10,6 +10,7 @@
  */
 export type * from './models/User'
 export type * from './models/Session'
+export type * from './models/ImageStore'
 export type * from './models/Game'
 export type * from './models/GameSection'
 export type * from './models/GameCategory'

@@ -38,7 +38,7 @@ export type GameCategoryMinAggregateOutputType = {
   id: string | null
   name: string | null
   description: string | null
-  icon: string | null
+  iconId: string | null
   order: number | null
   sectionId: string | null
   creatorId: string | null
@@ -49,7 +49,7 @@ export type GameCategoryMaxAggregateOutputType = {
   id: string | null
   name: string | null
   description: string | null
-  icon: string | null
+  iconId: string | null
   order: number | null
   sectionId: string | null
   creatorId: string | null
@@ -60,7 +60,7 @@ export type GameCategoryCountAggregateOutputType = {
   id: number
   name: number
   description: number
-  icon: number
+  iconId: number
   order: number
   sectionId: number
   creatorId: number
@@ -81,7 +81,7 @@ export type GameCategoryMinAggregateInputType = {
   id?: true
   name?: true
   description?: true
-  icon?: true
+  iconId?: true
   order?: true
   sectionId?: true
   creatorId?: true
@@ -92,7 +92,7 @@ export type GameCategoryMaxAggregateInputType = {
   id?: true
   name?: true
   description?: true
-  icon?: true
+  iconId?: true
   order?: true
   sectionId?: true
   creatorId?: true
@@ -103,7 +103,7 @@ export type GameCategoryCountAggregateInputType = {
   id?: true
   name?: true
   description?: true
-  icon?: true
+  iconId?: true
   order?: true
   sectionId?: true
   creatorId?: true
@@ -201,7 +201,7 @@ export type GameCategoryGroupByOutputType = {
   id: string
   name: string
   description: string | null
-  icon: string | null
+  iconId: string | null
   order: number
   sectionId: string
   creatorId: string
@@ -235,13 +235,14 @@ export type GameCategoryWhereInput = {
   id?: Prisma.UuidFilter<"GameCategory"> | string
   name?: Prisma.StringFilter<"GameCategory"> | string
   description?: Prisma.StringNullableFilter<"GameCategory"> | string | null
-  icon?: Prisma.UuidNullableFilter<"GameCategory"> | string | null
+  iconId?: Prisma.UuidNullableFilter<"GameCategory"> | string | null
   order?: Prisma.IntFilter<"GameCategory"> | number
   sectionId?: Prisma.UuidFilter<"GameCategory"> | string
   creatorId?: Prisma.UuidFilter<"GameCategory"> | string
   createdAt?: Prisma.DateTimeFilter<"GameCategory"> | Date | string
   section?: Prisma.XOR<Prisma.GameSectionScalarRelationFilter, Prisma.GameSectionWhereInput>
   creator?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  icon?: Prisma.XOR<Prisma.ImageStoreNullableScalarRelationFilter, Prisma.ImageStoreWhereInput> | null
   quests?: Prisma.GameQuestListRelationFilter
 }
 
@@ -249,13 +250,14 @@ export type GameCategoryOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
-  icon?: Prisma.SortOrderInput | Prisma.SortOrder
+  iconId?: Prisma.SortOrderInput | Prisma.SortOrder
   order?: Prisma.SortOrder
   sectionId?: Prisma.SortOrder
   creatorId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   section?: Prisma.GameSectionOrderByWithRelationInput
   creator?: Prisma.UserOrderByWithRelationInput
+  icon?: Prisma.ImageStoreOrderByWithRelationInput
   quests?: Prisma.GameQuestOrderByRelationAggregateInput
 }
 
@@ -266,13 +268,14 @@ export type GameCategoryWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.GameCategoryWhereInput | Prisma.GameCategoryWhereInput[]
   name?: Prisma.StringFilter<"GameCategory"> | string
   description?: Prisma.StringNullableFilter<"GameCategory"> | string | null
-  icon?: Prisma.UuidNullableFilter<"GameCategory"> | string | null
+  iconId?: Prisma.UuidNullableFilter<"GameCategory"> | string | null
   order?: Prisma.IntFilter<"GameCategory"> | number
   sectionId?: Prisma.UuidFilter<"GameCategory"> | string
   creatorId?: Prisma.UuidFilter<"GameCategory"> | string
   createdAt?: Prisma.DateTimeFilter<"GameCategory"> | Date | string
   section?: Prisma.XOR<Prisma.GameSectionScalarRelationFilter, Prisma.GameSectionWhereInput>
   creator?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  icon?: Prisma.XOR<Prisma.ImageStoreNullableScalarRelationFilter, Prisma.ImageStoreWhereInput> | null
   quests?: Prisma.GameQuestListRelationFilter
 }, "id">
 
@@ -280,7 +283,7 @@ export type GameCategoryOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
-  icon?: Prisma.SortOrderInput | Prisma.SortOrder
+  iconId?: Prisma.SortOrderInput | Prisma.SortOrder
   order?: Prisma.SortOrder
   sectionId?: Prisma.SortOrder
   creatorId?: Prisma.SortOrder
@@ -299,7 +302,7 @@ export type GameCategoryScalarWhereWithAggregatesInput = {
   id?: Prisma.UuidWithAggregatesFilter<"GameCategory"> | string
   name?: Prisma.StringWithAggregatesFilter<"GameCategory"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"GameCategory"> | string | null
-  icon?: Prisma.UuidNullableWithAggregatesFilter<"GameCategory"> | string | null
+  iconId?: Prisma.UuidNullableWithAggregatesFilter<"GameCategory"> | string | null
   order?: Prisma.IntWithAggregatesFilter<"GameCategory"> | number
   sectionId?: Prisma.UuidWithAggregatesFilter<"GameCategory"> | string
   creatorId?: Prisma.UuidWithAggregatesFilter<"GameCategory"> | string
@@ -310,11 +313,11 @@ export type GameCategoryCreateInput = {
   id?: string
   name: string
   description?: string | null
-  icon?: string | null
   order: number
   createdAt?: Date | string
   section: Prisma.GameSectionCreateNestedOneWithoutCategoriesInput
   creator: Prisma.UserCreateNestedOneWithoutCategoriesInput
+  icon?: Prisma.ImageStoreCreateNestedOneWithoutCategoriesInput
   quests?: Prisma.GameQuestCreateNestedManyWithoutCategoryInput
 }
 
@@ -322,7 +325,7 @@ export type GameCategoryUncheckedCreateInput = {
   id?: string
   name: string
   description?: string | null
-  icon?: string | null
+  iconId?: string | null
   order: number
   sectionId: string
   creatorId: string
@@ -334,11 +337,11 @@ export type GameCategoryUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   section?: Prisma.GameSectionUpdateOneRequiredWithoutCategoriesNestedInput
   creator?: Prisma.UserUpdateOneRequiredWithoutCategoriesNestedInput
+  icon?: Prisma.ImageStoreUpdateOneWithoutCategoriesNestedInput
   quests?: Prisma.GameQuestUpdateManyWithoutCategoryNestedInput
 }
 
@@ -346,7 +349,7 @@ export type GameCategoryUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iconId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   sectionId?: Prisma.StringFieldUpdateOperationsInput | string
   creatorId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -358,7 +361,7 @@ export type GameCategoryCreateManyInput = {
   id?: string
   name: string
   description?: string | null
-  icon?: string | null
+  iconId?: string | null
   order: number
   sectionId: string
   creatorId: string
@@ -369,7 +372,6 @@ export type GameCategoryUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -378,7 +380,7 @@ export type GameCategoryUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iconId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   sectionId?: Prisma.StringFieldUpdateOperationsInput | string
   creatorId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -399,7 +401,7 @@ export type GameCategoryCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  icon?: Prisma.SortOrder
+  iconId?: Prisma.SortOrder
   order?: Prisma.SortOrder
   sectionId?: Prisma.SortOrder
   creatorId?: Prisma.SortOrder
@@ -414,7 +416,7 @@ export type GameCategoryMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  icon?: Prisma.SortOrder
+  iconId?: Prisma.SortOrder
   order?: Prisma.SortOrder
   sectionId?: Prisma.SortOrder
   creatorId?: Prisma.SortOrder
@@ -425,7 +427,7 @@ export type GameCategoryMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  icon?: Prisma.SortOrder
+  iconId?: Prisma.SortOrder
   order?: Prisma.SortOrder
   sectionId?: Prisma.SortOrder
   creatorId?: Prisma.SortOrder
@@ -480,6 +482,48 @@ export type GameCategoryUncheckedUpdateManyWithoutCreatorNestedInput = {
   connect?: Prisma.GameCategoryWhereUniqueInput | Prisma.GameCategoryWhereUniqueInput[]
   update?: Prisma.GameCategoryUpdateWithWhereUniqueWithoutCreatorInput | Prisma.GameCategoryUpdateWithWhereUniqueWithoutCreatorInput[]
   updateMany?: Prisma.GameCategoryUpdateManyWithWhereWithoutCreatorInput | Prisma.GameCategoryUpdateManyWithWhereWithoutCreatorInput[]
+  deleteMany?: Prisma.GameCategoryScalarWhereInput | Prisma.GameCategoryScalarWhereInput[]
+}
+
+export type GameCategoryCreateNestedManyWithoutIconInput = {
+  create?: Prisma.XOR<Prisma.GameCategoryCreateWithoutIconInput, Prisma.GameCategoryUncheckedCreateWithoutIconInput> | Prisma.GameCategoryCreateWithoutIconInput[] | Prisma.GameCategoryUncheckedCreateWithoutIconInput[]
+  connectOrCreate?: Prisma.GameCategoryCreateOrConnectWithoutIconInput | Prisma.GameCategoryCreateOrConnectWithoutIconInput[]
+  createMany?: Prisma.GameCategoryCreateManyIconInputEnvelope
+  connect?: Prisma.GameCategoryWhereUniqueInput | Prisma.GameCategoryWhereUniqueInput[]
+}
+
+export type GameCategoryUncheckedCreateNestedManyWithoutIconInput = {
+  create?: Prisma.XOR<Prisma.GameCategoryCreateWithoutIconInput, Prisma.GameCategoryUncheckedCreateWithoutIconInput> | Prisma.GameCategoryCreateWithoutIconInput[] | Prisma.GameCategoryUncheckedCreateWithoutIconInput[]
+  connectOrCreate?: Prisma.GameCategoryCreateOrConnectWithoutIconInput | Prisma.GameCategoryCreateOrConnectWithoutIconInput[]
+  createMany?: Prisma.GameCategoryCreateManyIconInputEnvelope
+  connect?: Prisma.GameCategoryWhereUniqueInput | Prisma.GameCategoryWhereUniqueInput[]
+}
+
+export type GameCategoryUpdateManyWithoutIconNestedInput = {
+  create?: Prisma.XOR<Prisma.GameCategoryCreateWithoutIconInput, Prisma.GameCategoryUncheckedCreateWithoutIconInput> | Prisma.GameCategoryCreateWithoutIconInput[] | Prisma.GameCategoryUncheckedCreateWithoutIconInput[]
+  connectOrCreate?: Prisma.GameCategoryCreateOrConnectWithoutIconInput | Prisma.GameCategoryCreateOrConnectWithoutIconInput[]
+  upsert?: Prisma.GameCategoryUpsertWithWhereUniqueWithoutIconInput | Prisma.GameCategoryUpsertWithWhereUniqueWithoutIconInput[]
+  createMany?: Prisma.GameCategoryCreateManyIconInputEnvelope
+  set?: Prisma.GameCategoryWhereUniqueInput | Prisma.GameCategoryWhereUniqueInput[]
+  disconnect?: Prisma.GameCategoryWhereUniqueInput | Prisma.GameCategoryWhereUniqueInput[]
+  delete?: Prisma.GameCategoryWhereUniqueInput | Prisma.GameCategoryWhereUniqueInput[]
+  connect?: Prisma.GameCategoryWhereUniqueInput | Prisma.GameCategoryWhereUniqueInput[]
+  update?: Prisma.GameCategoryUpdateWithWhereUniqueWithoutIconInput | Prisma.GameCategoryUpdateWithWhereUniqueWithoutIconInput[]
+  updateMany?: Prisma.GameCategoryUpdateManyWithWhereWithoutIconInput | Prisma.GameCategoryUpdateManyWithWhereWithoutIconInput[]
+  deleteMany?: Prisma.GameCategoryScalarWhereInput | Prisma.GameCategoryScalarWhereInput[]
+}
+
+export type GameCategoryUncheckedUpdateManyWithoutIconNestedInput = {
+  create?: Prisma.XOR<Prisma.GameCategoryCreateWithoutIconInput, Prisma.GameCategoryUncheckedCreateWithoutIconInput> | Prisma.GameCategoryCreateWithoutIconInput[] | Prisma.GameCategoryUncheckedCreateWithoutIconInput[]
+  connectOrCreate?: Prisma.GameCategoryCreateOrConnectWithoutIconInput | Prisma.GameCategoryCreateOrConnectWithoutIconInput[]
+  upsert?: Prisma.GameCategoryUpsertWithWhereUniqueWithoutIconInput | Prisma.GameCategoryUpsertWithWhereUniqueWithoutIconInput[]
+  createMany?: Prisma.GameCategoryCreateManyIconInputEnvelope
+  set?: Prisma.GameCategoryWhereUniqueInput | Prisma.GameCategoryWhereUniqueInput[]
+  disconnect?: Prisma.GameCategoryWhereUniqueInput | Prisma.GameCategoryWhereUniqueInput[]
+  delete?: Prisma.GameCategoryWhereUniqueInput | Prisma.GameCategoryWhereUniqueInput[]
+  connect?: Prisma.GameCategoryWhereUniqueInput | Prisma.GameCategoryWhereUniqueInput[]
+  update?: Prisma.GameCategoryUpdateWithWhereUniqueWithoutIconInput | Prisma.GameCategoryUpdateWithWhereUniqueWithoutIconInput[]
+  updateMany?: Prisma.GameCategoryUpdateManyWithWhereWithoutIconInput | Prisma.GameCategoryUpdateManyWithWhereWithoutIconInput[]
   deleteMany?: Prisma.GameCategoryScalarWhereInput | Prisma.GameCategoryScalarWhereInput[]
 }
 
@@ -547,10 +591,10 @@ export type GameCategoryCreateWithoutCreatorInput = {
   id?: string
   name: string
   description?: string | null
-  icon?: string | null
   order: number
   createdAt?: Date | string
   section: Prisma.GameSectionCreateNestedOneWithoutCategoriesInput
+  icon?: Prisma.ImageStoreCreateNestedOneWithoutCategoriesInput
   quests?: Prisma.GameQuestCreateNestedManyWithoutCategoryInput
 }
 
@@ -558,7 +602,7 @@ export type GameCategoryUncheckedCreateWithoutCreatorInput = {
   id?: string
   name: string
   description?: string | null
-  icon?: string | null
+  iconId?: string | null
   order: number
   sectionId: string
   createdAt?: Date | string
@@ -598,21 +642,69 @@ export type GameCategoryScalarWhereInput = {
   id?: Prisma.UuidFilter<"GameCategory"> | string
   name?: Prisma.StringFilter<"GameCategory"> | string
   description?: Prisma.StringNullableFilter<"GameCategory"> | string | null
-  icon?: Prisma.UuidNullableFilter<"GameCategory"> | string | null
+  iconId?: Prisma.UuidNullableFilter<"GameCategory"> | string | null
   order?: Prisma.IntFilter<"GameCategory"> | number
   sectionId?: Prisma.UuidFilter<"GameCategory"> | string
   creatorId?: Prisma.UuidFilter<"GameCategory"> | string
   createdAt?: Prisma.DateTimeFilter<"GameCategory"> | Date | string
 }
 
+export type GameCategoryCreateWithoutIconInput = {
+  id?: string
+  name: string
+  description?: string | null
+  order: number
+  createdAt?: Date | string
+  section: Prisma.GameSectionCreateNestedOneWithoutCategoriesInput
+  creator: Prisma.UserCreateNestedOneWithoutCategoriesInput
+  quests?: Prisma.GameQuestCreateNestedManyWithoutCategoryInput
+}
+
+export type GameCategoryUncheckedCreateWithoutIconInput = {
+  id?: string
+  name: string
+  description?: string | null
+  order: number
+  sectionId: string
+  creatorId: string
+  createdAt?: Date | string
+  quests?: Prisma.GameQuestUncheckedCreateNestedManyWithoutCategoryInput
+}
+
+export type GameCategoryCreateOrConnectWithoutIconInput = {
+  where: Prisma.GameCategoryWhereUniqueInput
+  create: Prisma.XOR<Prisma.GameCategoryCreateWithoutIconInput, Prisma.GameCategoryUncheckedCreateWithoutIconInput>
+}
+
+export type GameCategoryCreateManyIconInputEnvelope = {
+  data: Prisma.GameCategoryCreateManyIconInput | Prisma.GameCategoryCreateManyIconInput[]
+  skipDuplicates?: boolean
+}
+
+export type GameCategoryUpsertWithWhereUniqueWithoutIconInput = {
+  where: Prisma.GameCategoryWhereUniqueInput
+  update: Prisma.XOR<Prisma.GameCategoryUpdateWithoutIconInput, Prisma.GameCategoryUncheckedUpdateWithoutIconInput>
+  create: Prisma.XOR<Prisma.GameCategoryCreateWithoutIconInput, Prisma.GameCategoryUncheckedCreateWithoutIconInput>
+}
+
+export type GameCategoryUpdateWithWhereUniqueWithoutIconInput = {
+  where: Prisma.GameCategoryWhereUniqueInput
+  data: Prisma.XOR<Prisma.GameCategoryUpdateWithoutIconInput, Prisma.GameCategoryUncheckedUpdateWithoutIconInput>
+}
+
+export type GameCategoryUpdateManyWithWhereWithoutIconInput = {
+  where: Prisma.GameCategoryScalarWhereInput
+  data: Prisma.XOR<Prisma.GameCategoryUpdateManyMutationInput, Prisma.GameCategoryUncheckedUpdateManyWithoutIconInput>
+}
+
 export type GameCategoryCreateWithoutSectionInput = {
   id?: string
   name: string
   description?: string | null
-  icon?: string | null
   order: number
   createdAt?: Date | string
   creator: Prisma.UserCreateNestedOneWithoutCategoriesInput
+  icon?: Prisma.ImageStoreCreateNestedOneWithoutCategoriesInput
   quests?: Prisma.GameQuestCreateNestedManyWithoutCategoryInput
 }
 
@@ -620,7 +712,7 @@ export type GameCategoryUncheckedCreateWithoutSectionInput = {
   id?: string
   name: string
   description?: string | null
-  icon?: string | null
+  iconId?: string | null
   order: number
   creatorId: string
   createdAt?: Date | string
@@ -657,18 +749,18 @@ export type GameCategoryCreateWithoutQuestsInput = {
   id?: string
   name: string
   description?: string | null
-  icon?: string | null
   order: number
   createdAt?: Date | string
   section: Prisma.GameSectionCreateNestedOneWithoutCategoriesInput
   creator: Prisma.UserCreateNestedOneWithoutCategoriesInput
+  icon?: Prisma.ImageStoreCreateNestedOneWithoutCategoriesInput
 }
 
 export type GameCategoryUncheckedCreateWithoutQuestsInput = {
   id?: string
   name: string
   description?: string | null
-  icon?: string | null
+  iconId?: string | null
   order: number
   sectionId: string
   creatorId: string
@@ -695,18 +787,18 @@ export type GameCategoryUpdateWithoutQuestsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   section?: Prisma.GameSectionUpdateOneRequiredWithoutCategoriesNestedInput
   creator?: Prisma.UserUpdateOneRequiredWithoutCategoriesNestedInput
+  icon?: Prisma.ImageStoreUpdateOneWithoutCategoriesNestedInput
 }
 
 export type GameCategoryUncheckedUpdateWithoutQuestsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iconId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   sectionId?: Prisma.StringFieldUpdateOperationsInput | string
   creatorId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -717,7 +809,7 @@ export type GameCategoryCreateManyCreatorInput = {
   id?: string
   name: string
   description?: string | null
-  icon?: string | null
+  iconId?: string | null
   order: number
   sectionId: string
   createdAt?: Date | string
@@ -727,10 +819,10 @@ export type GameCategoryUpdateWithoutCreatorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   section?: Prisma.GameSectionUpdateOneRequiredWithoutCategoriesNestedInput
+  icon?: Prisma.ImageStoreUpdateOneWithoutCategoriesNestedInput
   quests?: Prisma.GameQuestUpdateManyWithoutCategoryNestedInput
 }
 
@@ -738,7 +830,7 @@ export type GameCategoryUncheckedUpdateWithoutCreatorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iconId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   sectionId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -749,9 +841,51 @@ export type GameCategoryUncheckedUpdateManyWithoutCreatorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iconId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   sectionId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type GameCategoryCreateManyIconInput = {
+  id?: string
+  name: string
+  description?: string | null
+  order: number
+  sectionId: string
+  creatorId: string
+  createdAt?: Date | string
+}
+
+export type GameCategoryUpdateWithoutIconInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  section?: Prisma.GameSectionUpdateOneRequiredWithoutCategoriesNestedInput
+  creator?: Prisma.UserUpdateOneRequiredWithoutCategoriesNestedInput
+  quests?: Prisma.GameQuestUpdateManyWithoutCategoryNestedInput
+}
+
+export type GameCategoryUncheckedUpdateWithoutIconInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  sectionId?: Prisma.StringFieldUpdateOperationsInput | string
+  creatorId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  quests?: Prisma.GameQuestUncheckedUpdateManyWithoutCategoryNestedInput
+}
+
+export type GameCategoryUncheckedUpdateManyWithoutIconInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  sectionId?: Prisma.StringFieldUpdateOperationsInput | string
+  creatorId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -759,7 +893,7 @@ export type GameCategoryCreateManySectionInput = {
   id?: string
   name: string
   description?: string | null
-  icon?: string | null
+  iconId?: string | null
   order: number
   creatorId: string
   createdAt?: Date | string
@@ -769,10 +903,10 @@ export type GameCategoryUpdateWithoutSectionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   creator?: Prisma.UserUpdateOneRequiredWithoutCategoriesNestedInput
+  icon?: Prisma.ImageStoreUpdateOneWithoutCategoriesNestedInput
   quests?: Prisma.GameQuestUpdateManyWithoutCategoryNestedInput
 }
 
@@ -780,7 +914,7 @@ export type GameCategoryUncheckedUpdateWithoutSectionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iconId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   creatorId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -791,7 +925,7 @@ export type GameCategoryUncheckedUpdateManyWithoutSectionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iconId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   creatorId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -832,13 +966,14 @@ export type GameCategorySelect<ExtArgs extends runtime.Types.Extensions.Internal
   id?: boolean
   name?: boolean
   description?: boolean
-  icon?: boolean
+  iconId?: boolean
   order?: boolean
   sectionId?: boolean
   creatorId?: boolean
   createdAt?: boolean
   section?: boolean | Prisma.GameSectionDefaultArgs<ExtArgs>
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  icon?: boolean | Prisma.GameCategory$iconArgs<ExtArgs>
   quests?: boolean | Prisma.GameCategory$questsArgs<ExtArgs>
   _count?: boolean | Prisma.GameCategoryCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["gameCategory"]>
@@ -847,53 +982,58 @@ export type GameCategorySelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   id?: boolean
   name?: boolean
   description?: boolean
-  icon?: boolean
+  iconId?: boolean
   order?: boolean
   sectionId?: boolean
   creatorId?: boolean
   createdAt?: boolean
   section?: boolean | Prisma.GameSectionDefaultArgs<ExtArgs>
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  icon?: boolean | Prisma.GameCategory$iconArgs<ExtArgs>
 }, ExtArgs["result"]["gameCategory"]>
 
 export type GameCategorySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
   description?: boolean
-  icon?: boolean
+  iconId?: boolean
   order?: boolean
   sectionId?: boolean
   creatorId?: boolean
   createdAt?: boolean
   section?: boolean | Prisma.GameSectionDefaultArgs<ExtArgs>
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  icon?: boolean | Prisma.GameCategory$iconArgs<ExtArgs>
 }, ExtArgs["result"]["gameCategory"]>
 
 export type GameCategorySelectScalar = {
   id?: boolean
   name?: boolean
   description?: boolean
-  icon?: boolean
+  iconId?: boolean
   order?: boolean
   sectionId?: boolean
   creatorId?: boolean
   createdAt?: boolean
 }
 
-export type GameCategoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "icon" | "order" | "sectionId" | "creatorId" | "createdAt", ExtArgs["result"]["gameCategory"]>
+export type GameCategoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "iconId" | "order" | "sectionId" | "creatorId" | "createdAt", ExtArgs["result"]["gameCategory"]>
 export type GameCategoryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   section?: boolean | Prisma.GameSectionDefaultArgs<ExtArgs>
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  icon?: boolean | Prisma.GameCategory$iconArgs<ExtArgs>
   quests?: boolean | Prisma.GameCategory$questsArgs<ExtArgs>
   _count?: boolean | Prisma.GameCategoryCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type GameCategoryIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   section?: boolean | Prisma.GameSectionDefaultArgs<ExtArgs>
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  icon?: boolean | Prisma.GameCategory$iconArgs<ExtArgs>
 }
 export type GameCategoryIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   section?: boolean | Prisma.GameSectionDefaultArgs<ExtArgs>
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  icon?: boolean | Prisma.GameCategory$iconArgs<ExtArgs>
 }
 
 export type $GameCategoryPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -901,13 +1041,14 @@ export type $GameCategoryPayload<ExtArgs extends runtime.Types.Extensions.Intern
   objects: {
     section: Prisma.$GameSectionPayload<ExtArgs>
     creator: Prisma.$UserPayload<ExtArgs>
+    icon: Prisma.$ImageStorePayload<ExtArgs> | null
     quests: Prisma.$GameQuestPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
     description: string | null
-    icon: string | null
+    iconId: string | null
     order: number
     sectionId: string
     creatorId: string
@@ -1308,6 +1449,7 @@ export interface Prisma__GameCategoryClient<T, Null = never, ExtArgs extends run
   readonly [Symbol.toStringTag]: "PrismaPromise"
   section<T extends Prisma.GameSectionDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GameSectionDefaultArgs<ExtArgs>>): Prisma.Prisma__GameSectionClient<runtime.Types.Result.GetResult<Prisma.$GameSectionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   creator<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  icon<T extends Prisma.GameCategory$iconArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GameCategory$iconArgs<ExtArgs>>): Prisma.Prisma__ImageStoreClient<runtime.Types.Result.GetResult<Prisma.$ImageStorePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   quests<T extends Prisma.GameCategory$questsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GameCategory$questsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GameQuestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1341,7 +1483,7 @@ export interface GameCategoryFieldRefs {
   readonly id: Prisma.FieldRef<"GameCategory", 'String'>
   readonly name: Prisma.FieldRef<"GameCategory", 'String'>
   readonly description: Prisma.FieldRef<"GameCategory", 'String'>
-  readonly icon: Prisma.FieldRef<"GameCategory", 'String'>
+  readonly iconId: Prisma.FieldRef<"GameCategory", 'String'>
   readonly order: Prisma.FieldRef<"GameCategory", 'Int'>
   readonly sectionId: Prisma.FieldRef<"GameCategory", 'String'>
   readonly creatorId: Prisma.FieldRef<"GameCategory", 'String'>
@@ -1744,6 +1886,25 @@ export type GameCategoryDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
    * Limit how many GameCategories to delete.
    */
   limit?: number
+}
+
+/**
+ * GameCategory.icon
+ */
+export type GameCategory$iconArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ImageStore
+   */
+  select?: Prisma.ImageStoreSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ImageStore
+   */
+  omit?: Prisma.ImageStoreOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ImageStoreInclude<ExtArgs> | null
+  where?: Prisma.ImageStoreWhereInput
 }
 
 /**

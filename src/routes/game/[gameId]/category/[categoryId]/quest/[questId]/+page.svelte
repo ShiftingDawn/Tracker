@@ -1,7 +1,7 @@
 <script lang="ts">
   import {enhance} from "$app/forms";
   import Button from "$lib/components/button.svelte";
-  import Image from "$lib/components/image.svelte";
+  import IconImage from "$lib/components/iconimage.svelte";
   import Section from "$lib/components/section.svelte";
   import Subtext from "$lib/components/subtext.svelte";
   import Toggleswitch from "$lib/components/toggleswitch.svelte";
@@ -43,8 +43,8 @@
     </Button>
   {/snippet}
   <div class="flex gap-4">
-    {#if data.quest.icon}
-      <Image size={128} src={`/img/${data.quest.icon}`} alt="quest logo"/>
+    {#if data.quest.iconId}
+      <IconImage id={data.quest.iconId} alt="quest logo"/>
     {/if}
     <div>
       <h1 class="text-xl font-bold">{data.quest.name}</h1>

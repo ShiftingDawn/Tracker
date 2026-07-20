@@ -1,4 +1,5 @@
 <script lang="ts">
+  import IconImage from "$lib/components/iconimage.svelte";
   import Dot from "$lib/components/dot.svelte";
   import Subtext from "$lib/components/subtext.svelte";
 
@@ -21,11 +22,7 @@
 >
   <div class="w-[64px] h-[64px]">
     {#if image}
-      <img
-        src={`/img/${image.id}`}
-        alt={image.alt}
-        class="w-full h-full overflow-hidden object-scale-down"
-      />
+      <IconImage size={64} id={image.id} alt={image.alt}/>
     {/if}
   </div>
   <div class="flex flex-col">
@@ -33,7 +30,7 @@
     {#if text}
       {#each text as line, i (i)}
         <Subtext>
-          <Dot />
+          <Dot/>
           {line}
         </Subtext>
       {/each}

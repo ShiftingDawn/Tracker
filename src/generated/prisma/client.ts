@@ -52,6 +52,11 @@ export type User = Prisma.UserModel
  */
 export type Session = Prisma.SessionModel
 /**
+ * Model ImageStore
+ * 
+ */
+export type ImageStore = Prisma.ImageStoreModel
+/**
  * Model Game
  * 
  */

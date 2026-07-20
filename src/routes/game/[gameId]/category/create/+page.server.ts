@@ -1,8 +1,6 @@
 import {requireAuth} from "$lib/server/auth";
-import {writeFile} from "$lib/server/fileservices";
-import {getError, getScaledSizes} from "$lib/server/util";
+import {getError} from "$lib/server/util";
 import {type Actions, error, fail, redirect} from "@sveltejs/kit";
-import sharp from "sharp";
 import z from "zod";
 import {zfd} from "zod-form-data";
 import type {PageServerLoad} from "./$types";
@@ -41,8 +39,6 @@ export const actions: Actions = {
     }
     let categoryId: string;
     try {
-      let img = data.icon ? sharp(await data.icon.bytes()) : undefined;
-      if (img) img = img.resize(await getScaledSizes(128, img));
       categoryId = await prisma.$transaction(async tx => {
         const orderCount = await tx.gameCategory.count({where: {sectionId: data.section,},});
         const category = await tx.gameCategory.create({
@@ -50,12 +46,11 @@ export const actions: Actions = {
             name: data.name,
             description: data.description || null,
             sectionId: data.section,
-            icon: img ? undefined : null,
+            iconId: data?.icon,
             order: orderCount,
             creatorId: user.id,
           },
         });
-        if (img && category.icon) await writeFile(category.icon, await img.png().toBuffer());
         return category.id;
       });
     } catch (error) {
@@ -70,6 +65,6 @@ const schema = zfd.formData({
   name: zfd.text(z.string().trim().min(3).max(64)),
   description: zfd.text(z.string().trim().max(255).optional()),
   section: zfd.text(z.uuidv4()),
-  icon: zfd.file(z.instanceof(File).optional()),
+  icon: zfd.text(z.uuid().optional()),
 });
 

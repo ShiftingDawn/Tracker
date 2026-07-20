@@ -22,6 +22,7 @@ model User {
   tasks           GameQuestTask[]
   completedTasks  UserQuestTaskCompletion[]
   pinnedTasks     UserQuestTaskPinned[]
+  images          ImageStore[]
 
   @@map("user")
 }
@@ -36,14 +37,31 @@ model Session {
   @@map("session")
 }
 
+model ImageStore {
+  id        String   @id @default(uuid()) @map("id") @db.Uuid
+  fileName  String   @map("file_name") @db.VarChar(64)
+  fileType  String   @map("file_type") @db.VarChar(32)
+  creatorId String   @map("creator_id") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+
+  creator        User            @relation(fields: [creatorId], references: [id])
+  categories     GameCategory[]
+  games          Game[]
+  gameQuests     GameQuest[]
+  gameQuestTasks GameQuestTask[]
+
+  @@map("images")
+}
+
 model Game {
   id        String   @id @default(uuid()) @map("id") @db.Uuid
   name      String   @map("name") @db.VarChar(64)
-  icon      String   @default(uuid()) @map("icon") @db.Uuid
+  iconId    String   @map("icon_id") @db.Uuid
   creatorId String   @map("creator_id") @db.Uuid
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
 
   creator  User          @relation(fields: [creatorId], references: [id])
+  icon     ImageStore    @relation(fields: [iconId], references: [id])
   sections GameSection[]
 
   @@map("game")
@@ -68,7 +86,7 @@ model GameCategory {
   id          String   @id @default(uuid()) @map("id") @db.Uuid
   name        String   @map("name") @db.VarChar(64)
   description String?  @map("description")
-  icon        String?  @map("icon") @db.Uuid
+  iconId      String?  @map("icon_id") @db.Uuid
   order       Int      @map("order") @db.SmallInt
   sectionId   String   @map("section_id") @db.Uuid
   creatorId   String   @map("creator_id") @db.Uuid
@@ -76,6 +94,7 @@ model GameCategory {
 
   section GameSection @relation(fields: [sectionId], references: [id])
   creator User        @relation(fields: [creatorId], references: [id])
+  icon    ImageStore? @relation(fields: [iconId], references: [id])
   quests  GameQuest[]
 
   @@map("game_category")
@@ -85,7 +104,7 @@ model GameQuest {
   id          String   @id @default(uuid()) @map("id") @db.Uuid
   name        String   @map("name") @db.VarChar(64)
   description String   @map("description")
-  icon        String?  @map("icon") @db.Uuid
+  iconId      String?  @map("icon_id") @db.Uuid
   order       Int      @map("order") @db.SmallInt
   categoryId  String   @map("category_id") @db.Uuid
   creatorId   String   @map("creator_id") @db.Uuid
@@ -93,6 +112,7 @@ model GameQuest {
 
   category  GameCategory          @relation(fields: [categoryId], references: [id])
   creator   User                  @relation(fields: [creatorId], references: [id])
+  icon      ImageStore?           @relation(fields: [iconId], references: [id])
   completed UserQuestCompletion[]
   pinned    UserQuestPinned[]
   tasks     GameQuestTask[]
@@ -131,7 +151,7 @@ model GameQuestTask {
   id          String   @id @default(uuid()) @map("id") @db.Uuid
   name        String   @map("name") @db.VarChar(64)
   description String?  @map("description")
-  icon        String?  @map("icon") @db.Uuid
+  iconId      String?  @map("icon_id") @db.Uuid
   order       Int      @map("order") @db.SmallInt
   questId     String   @map("quest_id") @db.Uuid
   creatorId   String   @map("creator_id") @db.Uuid
@@ -139,6 +159,7 @@ model GameQuestTask {
 
   quest     GameQuest                 @relation(fields: [questId], references: [id])
   creator   User                      @relation(fields: [creatorId], references: [id])
+  icon      ImageStore?               @relation(fields: [iconId], references: [id])
   completed UserQuestTaskCompletion[]
   pinned    UserQuestTaskPinned[]
 

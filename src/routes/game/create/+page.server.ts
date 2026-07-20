@@ -1,8 +1,6 @@
 import {requireAuth} from "$lib/server/auth";
-import {writeFile} from "$lib/server/fileservices";
-import {getError, getScaledSizes, isImage} from "$lib/server/util";
+import {getError} from "$lib/server/util";
 import {type Actions, fail, redirect} from "@sveltejs/kit";
-import sharp from "sharp";
 import z from "zod";
 import {zfd} from "zod-form-data";
 import type {PageServerLoad} from "./$types";
@@ -27,26 +25,16 @@ export const actions: Actions = {
         icon: getError(errs.properties?.icon),
       });
     }
-    if (!isImage(data.icon)) {
-      return fail(400, {
-        success: false,
-        icon: "Not an image",
-      });
-    }
-    let gameId: string;
+    let gameId;
     try {
-      let img = sharp(await data.icon.bytes());
-      img = img.resize(await getScaledSizes(128, img));
-      gameId = await prisma.$transaction(async tx => {
-        const game = await tx.game.create({
-          data: {
-            name: data.name,
-            creatorId: user.id,
-          },
-        });
-        await writeFile(game.icon, await img.png().toBuffer());
-        return game.id;
+      const game = await prisma.game.create({
+        data: {
+          name: data.name,
+          creatorId: user.id,
+          iconId: data.icon,
+        },
       });
+      gameId = game.id;
     } catch (error) {
       console.error(error);
       return fail(500, {message: "Internal server error",});
@@ -57,5 +45,5 @@ export const actions: Actions = {
 
 const schema = zfd.formData({
   name: zfd.text(z.string().trim().min(3).max(64)),
-  icon: zfd.file(),
+  icon: zfd.text(z.uuid()),
 });

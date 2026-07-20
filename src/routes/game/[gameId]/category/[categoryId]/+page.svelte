@@ -1,6 +1,6 @@
 <script lang="ts">
   import Button from "$lib/components/button.svelte";
-  import Image from "$lib/components/image.svelte";
+  import IconImage from "$lib/components/iconimage.svelte";
   import Section from "$lib/components/section.svelte";
   import Subtext from "$lib/components/subtext.svelte";
   import {
@@ -38,38 +38,38 @@
   {#snippet actions()}
     <Button href={`/game/${data.game.id}`} variant="text" class="w-full">
       <div class="text-[1.5rem]">
-        <ChevronLeftIcon />
+        <ChevronLeftIcon/>
       </div>
       {data.game.name}
     </Button>
   {/snippet}
   <div class="flex gap-4">
-    <div class="w-[128px] h-[128px]">
-      {#if data.category.icon}
-        <Image size={128} src={`/img/${data.category.icon}`} alt="game logo" />
+    <div class="w-[128px] h-[128px] shrink-0">
+      {#if data.category.iconId}
+        <IconImage id={data.category.iconId} alt="game logo"/>
       {/if}
     </div>
     <div>
       <h1 class="text-xl font-bold">{data.category.name}</h1>
       <p>{data.category.description}</p>
-      <Subtext>Added by {data.categoryCreator!.username}</Subtext>
+      <Subtext>Added by {data.categoryCreator.username}</Subtext>
     </div>
   </div>
   {#if data.isCategoryOwner}
     <div class="mt-4 flex gap-2">
       <Button href={`/game/${data.game.id}/category/${data.category.id}/edit`}>
-        <EditIcon />
+        <EditIcon/>
         Edit
       </Button>
       <Button href={`/game/${data.game.id}/category/${data.category.id}/order`}>
-        <MenuIcon />
+        <MenuIcon/>
         Order
       </Button>
       <Button
         variant="outline"
         href={`/game/${data.game.id}/category/${data.category.id}/delete`}
       >
-        <DeleteIcon />
+        <DeleteIcon/>
         Delete
       </Button>
     </div>
@@ -94,7 +94,7 @@
   <Button
     href={`/game/${data.game.id}/category/${data.category.id}/quest/create`}
   >
-    <AddIcon />
+    <AddIcon/>
     Add new quest
   </Button>
 {/snippet}
