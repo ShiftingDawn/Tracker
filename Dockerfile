@@ -20,8 +20,8 @@ ENV NODE_ENV=production
 COPY --from=builder /app/build ./build
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./
-COPY --from=builder /app/drizzle ./drizzle
-COPY --from=builder /app/drizzle.config.ts ./
+COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/prisma.config.ts ./
 
 ENV DATABASE_URL=postgres://root:mysecretpassword@localhost:5432/local
 ENV REDIS_URL=redis://192.168.1.2:6379/1
