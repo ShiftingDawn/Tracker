@@ -33,6 +33,12 @@
   }
 
   onMount(() => refetch());
+  $effect(() => {
+    if (open) {
+      const searchBar = document.querySelector("#imagesearch")!;
+      (searchBar as HTMLInputElement).focus();
+    }
+  });
 
   const validateFile: ChangeEventHandler<HTMLInputElement> = (e) => {
     if (!e.currentTarget.files || e.currentTarget.files.length !== 1) return;
@@ -71,7 +77,7 @@
       </form>
     </div>
     <div class="max-w-md">
-      <Input type="text" oninput={e => filter = e.currentTarget.value} placeholder="Search..."/>
+      <Input id="imagesearch" type="text" oninput={e => filter = e.currentTarget.value} placeholder="Search..."/>
     </div>
     <div class="flex gap-4 flex-wrap">
       {#if !imagesFiltered}
