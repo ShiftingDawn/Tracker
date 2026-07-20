@@ -1,12 +1,12 @@
 <script lang="ts">
   import {enhance} from "$app/forms";
-  import Image from "$lib/components/image.svelte";
+  import IconImage from "$lib/components/iconimage.svelte";
   import Section from "$lib/components/section.svelte";
   import Subtext from "$lib/components/subtext.svelte";
   import Toggleswitch from "$lib/components/toggleswitch.svelte";
-  import {PinIcon, CompleteIcon} from "$lib/icons";
-  import type {GameQuestTask} from "$lib/server/db/schema";
+  import {CompleteIcon, PinIcon} from "$lib/icons";
   import type {Snippet} from "svelte";
+  import type {GameQuestTask} from "$lib/server/db";
 
   const {
     title,
@@ -55,12 +55,8 @@
             href={`/game/${gameId}/category/${categoryId}/quest/${questId}/task/${task.id}`}
             class="w-full flex flex-row gap-2"
           >
-            {#if task.icon}
-              <Image
-                size={64}
-                src={`/img/${task.icon}`}
-                alt={`${task.name} task icon`}
-              />
+            {#if task.iconId}
+              <IconImage size={64} id={task.iconId} alt={`${task.name} task icon`}/>
             {:else}
               <div class="h-[64px]" aria-hidden="true"></div>
             {/if}

@@ -1,17 +1,29 @@
 import {requireAuth} from "$lib/server/auth";
-import {deleteFile, writeFile} from "$lib/server/fileservices";
-import {getError, getScaledSizes} from "$lib/server/util";
+import {getError} from "$lib/server/util";
 import {type Actions, error, fail, redirect} from "@sveltejs/kit";
-import sharp from "sharp";
 import z from "zod";
 import {zfd} from "zod-form-data";
 import type {PageServerLoad} from "./$types";
 import {prisma} from "$lib/server/db";
-import {randomUUID} from "node:crypto";
 
 export const load: PageServerLoad = async (event) => {
   const parent = await event.parent();
   if (!parent.isTaskOwner) error(403);
+
+  const task = await prisma.gameQuestTask.findFirst({
+    where: {id: event.params.taskId,},
+    include: {
+      creator: true,
+      icon: {select: {id: true, fileName: true,},},
+      pinned: event.locals.user ? {
+        where: {userId: event.locals.user.id,},
+        take: 1,
+      } : undefined,
+    },
+  });
+  if (!task) return error(404);
+
+  return {task,};
 };
 
 export const actions: Actions = {
@@ -38,21 +50,13 @@ export const actions: Actions = {
     if (!task) error(404);
 
     try {
-      let img = data.icon ? sharp(await data.icon.bytes()) : undefined;
-      if (img) img = img.resize(await getScaledSizes(128, img));
-      await prisma.$transaction(async tx => {
-        const updated = await tx.gameQuestTask.update({
-          data: {
-            name: data.name,
-            description: data.description,
-            icon: img ? randomUUID() : undefined,
-          },
-          where: {id: task.id,},
-        });
-        if (img) {
-          if (task.icon) await deleteFile(task.icon);
-          if (updated.icon) await writeFile(updated.icon, await img.png().toBuffer());
-        }
+      await prisma.gameQuestTask.update({
+        data: {
+          name: data.name,
+          description: data.description,
+          iconId: data.icon,
+        },
+        where: {id: task.id,},
       });
     } catch (error) {
       console.error(error);
@@ -65,6 +69,6 @@ export const actions: Actions = {
 const schema = zfd.formData({
   name: zfd.text(z.string().trim().min(3).max(64)),
   description: zfd.text(z.string().trim().min(3)),
-  icon: zfd.file(z.instanceof(File).optional()),
+  icon: zfd.text(z.uuid().optional()),
 });
 

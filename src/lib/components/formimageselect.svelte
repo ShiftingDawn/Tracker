@@ -1,6 +1,7 @@
 <script lang="ts">
   import Button from "$lib/components/button.svelte";
   import Imageselect from "$lib/components/imageselect.svelte";
+  import IconImage from "$lib/components/iconimage.svelte";
 
   const {
     chosen,
@@ -28,7 +29,7 @@
   <div class="flex gap-2 items-center">
     <div class="w-32 h-32 bg-primary-alt rounded-md shadow-md">
       {#if chosen}
-        <img class="w-32 aspect-square" src={`/img/${chosen[0]}`} alt={chosen[1]}/>
+        <IconImage id={chosen[0]} alt={chosen[1]}/>
       {/if}
     </div>
     <div>

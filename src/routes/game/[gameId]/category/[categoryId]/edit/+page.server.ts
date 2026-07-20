@@ -13,7 +13,15 @@ export const load: PageServerLoad = async (event) => {
       id: event.params.categoryId,
       creatorId: user.id,
     },
-    include: {section: true,},
+    include: {
+      section: true,
+      icon: {
+        select: {
+          id: true,
+          fileName: true,
+        },
+      },
+    },
   });
   if (!category) error(404);
   const sections = await prisma.gameSection.findMany({

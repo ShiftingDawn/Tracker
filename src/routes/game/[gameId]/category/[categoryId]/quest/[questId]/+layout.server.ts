@@ -9,6 +9,7 @@ export const load: LayoutServerLoad = async (event) => {
     where: {id: questId,},
     include: {
       creator: true,
+      icon: true,
       pinned: event.locals.user ? {
         where: {userId: event.locals.user.id,},
         take: 1,

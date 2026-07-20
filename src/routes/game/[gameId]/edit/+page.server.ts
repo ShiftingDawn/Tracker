@@ -13,6 +13,7 @@ export const load: PageServerLoad = async (event) => {
       id: event.params.gameId,
       creatorId: user.id,
     },
+    include: {icon: {select: {id: true, fileName: true,},},},
   });
   if (!game) error(404);
   return {game,};
