@@ -12,14 +12,15 @@
     open,
     onclose,
     onselect,
-    //
   }: {
     open: boolean,
     onclose: () => void,
     onselect: (id: string, name: string) => void,
-    //
   } = $props();
   let fileSizeOk: boolean = $state(true);
+  let images = $state<ImageStore[]>();
+  let filter = $state("");
+  let imagesFiltered = $derived(images?.filter(img => img.fileName.indexOf(filter) !== -1));
 
   async function fetchImages() {
     const response = await fetch("/api/img/fetch");
@@ -27,8 +28,11 @@
     return json as ImageStore[];
   }
 
-  let fetchImagePromise: Promise<ImageStore[]> | undefined = $state();
-  onMount(() => fetchImagePromise = fetchImages());
+  function refetch() {
+    fetchImages().then(fetchedImages => images = fetchedImages);
+  }
+
+  onMount(() => refetch());
 
   const validateFile: ChangeEventHandler<HTMLInputElement> = (e) => {
     if (!e.currentTarget.files || e.currentTarget.files.length !== 1) return;
@@ -45,7 +49,7 @@
   <div class="flex flex-col gap-4">
     <div class="max-w-md">
       <form method="post" use:enhance={({formElement,}) => () => {
-        fetchImagePromise = fetchImages();
+        refetch();
         formElement.reset();
       }} action="/api/img/upload" enctype="multipart/form-data">
         <Input
@@ -66,11 +70,14 @@
         </Button>
       </form>
     </div>
+    <div class="max-w-md">
+      <Input type="text" oninput={e => filter = e.currentTarget.value} placeholder="Search..."/>
+    </div>
     <div class="flex gap-4 flex-wrap">
-      {#await fetchImagePromise}
+      {#if !imagesFiltered}
         <span>LOADING</span>
-      {:then images}
-        {#each images as image(image.id)}
+      {:else}
+        {#each imagesFiltered as image(image.id)}
           <button class="cursor-pointer" onclick={(e) => {
             e.preventDefault();
             onselect(image.id, image.fileName);
@@ -78,7 +85,7 @@
             <img class="w-32 aspect-square" src={`/img/${image.id}`} alt={image.fileName}/>
           </button>
         {/each}
-      {/await}
+      {/if}
     </div>
   </div>
 </Modal>
