@@ -1,33 +1,27 @@
-import { requireAuth } from "$lib/server/auth";
-import { db } from "$lib/server/db";
-import { gameBoardCategoryTable, gameBoardSectionTable } from "$lib/server/db/schema";
-import { deleteFile, writeFile } from "$lib/server/fileservices";
-import { getError, getScaledSizes } from "$lib/server/util";
-import { error, fail, redirect, type Actions } from "@sveltejs/kit";
-import { and, asc, eq, sql } from "drizzle-orm";
+import {requireAuth} from "$lib/server/auth";
+import {prisma} from "$lib/server/db";
+import {deleteFile, writeFile} from "$lib/server/fileservices";
+import {getError, getScaledSizes} from "$lib/server/util";
+import {type Actions, error, fail, redirect} from "@sveltejs/kit";
 import sharp from "sharp";
 import z from "zod";
-import { zfd } from "zod-form-data";
-import type { PageServerLoad } from "./$types";
+import {zfd} from "zod-form-data";
+import type {PageServerLoad} from "./$types";
+import {randomUUID} from "node:crypto";
 
 export const load: PageServerLoad = async (event) => {
   const {user,} = requireAuth(event);
-  const category = await db.query.gameBoardCategoryTable.findFirst({
-    where: and(
-      eq(gameBoardCategoryTable.id, event.params.categoryId),
-      eq(gameBoardCategoryTable.creatorId, user.id)
-    ),
-    with: {
-      section: {
-      //@ts-expect-error "where" does not exist on type
-        where: eq(gameBoardSectionTable.gameId, event.params.gameId),
-      },
+  const category = await prisma.gameCategory.findFirst({
+    where: {
+      id: event.params.categoryId,
+      creatorId: user.id,
     },
+    include: {section: true,},
   });
   if (!category) error(404);
-  const sections = await db.query.gameBoardSectionTable.findMany({
-    where: eq(gameBoardSectionTable.gameId, event.params.gameId),
-    orderBy: asc(gameBoardSectionTable.order),
+  const sections = await prisma.gameSection.findMany({
+    where: {gameId: event.params.gameId,},
+    orderBy: {order: "asc",},
   });
   return {category, sections,};
 };
@@ -47,29 +41,27 @@ export const actions: Actions = {
         icon: getError(errs.properties?.icon),
       });
     }
-
-    const category = await db.query.gameBoardCategoryTable.findFirst({
-      where: and(
-        eq(gameBoardCategoryTable.id, event.params.categoryId!),
-        eq(gameBoardCategoryTable.creatorId, user.id)
-      ),
-      with: {
-        section: {
-          //@ts-expect-error "where" does not exist on type
-          where: eq(gameBoardSectionTable.gameId, event.params.gameId),
-        },
+    const category = await prisma.gameCategory.findFirst({
+      where: {
+        id: event.params.categoryId,
+        creatorId: user.id,
       },
+      include: {section: true,},
     });
+
     if (!category) error(404);
     try {
       let img = data.icon ? sharp(await data.icon.bytes()) : undefined;
       if (img) img = img.resize(await getScaledSizes(128, img));
-      const [updated,] = await db.update(gameBoardCategoryTable).set({
-        name: data.name,
-        description: data.description || null,
-        sectionId: data.section,
-        icon: img ? sql`gen_random_uuid()` : undefined,
-      }).where(eq(gameBoardCategoryTable.id, category.id)).returning();
+      const updated = await prisma.gameCategory.update({
+        data: {
+          name: data.name,
+          description: data.description || null,
+          sectionId: data.section,
+          icon: img ? randomUUID() : undefined,
+        },
+        where: {id: category.id,},
+      });
       if (img) {
         if (category.icon) await deleteFile(category.icon);
         if (updated.icon) await writeFile(updated.icon, await img.png().toBuffer());

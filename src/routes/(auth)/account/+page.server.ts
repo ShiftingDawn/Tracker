@@ -1,15 +1,7 @@
-import { requireAuth } from "$lib/server/auth";
-import { db } from "$lib/server/db";
-import { keySectionCollapse, rGetBool } from "$lib/server/db/redis";
-import {
-  gameBoardCategoryTable,
-  gameBoardSectionTable,
-  gameQuestTable,
-  gameQuestTaskTable,
-  gameTable
-} from "$lib/server/db/schema";
-import { and, countDistinct, desc, eq, not } from "drizzle-orm";
-import type { PageServerLoad } from "./$types";
+import {requireAuth} from "$lib/server/auth";
+import {keySectionCollapse, rGetBool} from "$lib/server/db/redis";
+import type {PageServerLoad} from "./$types";
+import {prisma} from "$lib/server/db";
 
 export const load: PageServerLoad = async (event) => {
   const {user,} = requireAuth(event);
@@ -21,83 +13,155 @@ export const load: PageServerLoad = async (event) => {
     contribTasks: await rGetBool(keySectionCollapse("profile.contribtasks", user)),
   };
 
-  const games = await db.select({
-    id: gameTable.id,
-    name: gameTable.name,
-    icon: gameTable.icon,
-    sectionCount: countDistinct(gameBoardSectionTable.id),
-    categoryCount: countDistinct(gameBoardCategoryTable.id),
-  }).from(gameTable)
-    .leftJoin(gameBoardSectionTable, eq(gameBoardSectionTable.gameId, gameTable.id))
-    .leftJoin(gameBoardCategoryTable, eq(gameBoardCategoryTable.sectionId, gameBoardSectionTable.id))
-    .groupBy(gameTable.id)
-    .where(eq(gameTable.creatorId, user.id))
-    .orderBy(desc(gameTable.createdAt));
+  const gamesResult = await prisma.game.findMany({
+    orderBy: {createdAt: "desc",},
+    where: {creatorId: user.id,},
+    select: {
+      id: true,
+      name: true,
+      icon: true,
+      _count: {select: {sections: true,},},
+      sections: {select: {_count: {select: {categories: true,},},},},
+    },
+  });
+  const games = gamesResult.map((game) => ({
+    id: game.id,
+    name: game.name,
+    icon: game.icon,
+    sectionCount: game._count.sections,
+    categoryCount: game.sections.reduce(
+      (sum, section) => sum + section._count.categories,
+      0
+    ),
+  }));
 
-  const contribCategories = await db.select({
-    id: gameBoardCategoryTable.id,
-    name: gameBoardCategoryTable.name,
-    icon: gameBoardCategoryTable.icon,
-    gameId: gameTable.id,
-    gameName: gameTable.name,
-    questCount: countDistinct(gameQuestTable.id),
-  }).from(gameBoardCategoryTable)
-    .innerJoin(gameBoardSectionTable, eq(gameBoardCategoryTable.sectionId, gameBoardSectionTable.id))
-    .innerJoin(gameTable, eq(gameBoardSectionTable.gameId, gameTable.id))
-    .innerJoin(gameQuestTable, eq(gameQuestTable.categoryId, gameBoardCategoryTable.id))
-    .groupBy(gameTable.id, gameBoardCategoryTable.id)
-    .where(and(
-      eq(gameBoardCategoryTable.creatorId, user.id),
-      not(eq(gameTable.creatorId, user.id))
-    ))
-    .orderBy(desc(gameBoardCategoryTable.createdAt));
+  const contribCategoriesResult = await prisma.gameCategory.findMany({
+    orderBy: {createdAt: "desc",},
+    where: {
+      creatorId: user.id,
+      section: {game: {creatorId: {not: user.id,},},},
+    },
+    select: {
+      id: true,
+      name: true,
+      icon: true,
+      section: {
+        select: {
+          game: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      },
+      _count: {select: {quests: true,},},
+    },
+  });
+  const contribCategories = contribCategoriesResult.map((category) => ({
+    id: category.id,
+    name: category.name,
+    icon: category.icon,
+    gameId: category.section.game.id,
+    gameName: category.section.game.name,
+    questCount: category._count.quests,
+  }));
 
-  const contribQuests = await db.select({
-    id: gameQuestTable.id,
-    name: gameQuestTable.name,
-    icon: gameQuestTable.icon,
-    gameId: gameTable.id,
-    gameName: gameTable.name,
-    categoryId: gameBoardCategoryTable.id,
-    categoryName: gameBoardCategoryTable.name,
-  }).from(gameQuestTable)
-    .innerJoin(gameBoardCategoryTable, eq(gameBoardCategoryTable.id, gameQuestTable.categoryId))
-    .innerJoin(gameBoardSectionTable, eq(gameBoardSectionTable.id, gameBoardCategoryTable.sectionId))
-    .innerJoin(gameTable, eq(gameTable.id, gameBoardSectionTable.gameId))
-    .groupBy(gameTable.id, gameBoardCategoryTable.id, gameQuestTable.id)
-    .where(and(
-      eq(gameQuestTable.creatorId, user.id),
-      not(eq(gameTable.creatorId, user.id)),
-      not(eq(gameBoardCategoryTable.creatorId, user.id))
-    ))
-    .orderBy(desc(gameQuestTable.createdAt));
+  const contribQuestsResult = await prisma.gameQuest.findMany({
+    orderBy: {createdAt: "desc",},
+    where: {
+      creatorId: user.id,
+      category: {
+        creatorId: {not: user.id,},
+        section: {game: {creatorId: {not: user.id,},},},
+      },
+    },
+    select: {
+      id: true,
+      name: true,
+      icon: true,
+      category: {
+        select: {
+          id: true,
+          name: true,
+          section: {
+            select: {
+              game: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+  const contribQuests = contribQuestsResult.map((quest) => ({
+    id: quest.id,
+    name: quest.name,
+    icon: quest.icon,
+    gameId: quest.category.section.game.id,
+    gameName: quest.category.section.game.name,
+    categoryId: quest.category.id,
+    categoryName: quest.category.name,
+  }));
 
-  const contribTasks = await db.select({
-    id: gameQuestTaskTable.id,
-    name: gameQuestTaskTable.name,
-    icon: gameQuestTaskTable.icon,
-    gameId: gameTable.id,
-    gameName: gameTable.name,
-    categoryId: gameBoardCategoryTable.id,
-    categoryName: gameBoardCategoryTable.name,
-    questId: gameQuestTable.id,
-    questName: gameQuestTable.name,
-  }).from(gameQuestTaskTable)
-    .innerJoin(gameQuestTable, eq(gameQuestTable.id, gameQuestTaskTable.questId))
-    .innerJoin(gameBoardCategoryTable, eq(gameBoardCategoryTable.id, gameQuestTable.categoryId))
-    .innerJoin(gameBoardSectionTable, eq(gameBoardSectionTable.id, gameBoardCategoryTable.sectionId))
-    .innerJoin(gameTable, eq(gameTable.id, gameBoardSectionTable.gameId))
-    .groupBy(gameQuestTaskTable.id, gameTable.id, gameBoardCategoryTable.id, gameQuestTable.id)
-    .where(and(
-      eq(gameQuestTable.creatorId, user.id),
-      not(eq(gameTable.creatorId, user.id)),
-      not(eq(gameBoardCategoryTable.creatorId, user.id))
-    ))
-    .orderBy(desc(gameQuestTable.createdAt));
+  const contribTasksResult = await prisma.gameQuestTask.findMany({
+    orderBy: {createdAt: "desc",},
+    where: {
+      creatorId: user.id,
+      quest: {
+        category: {
+          creatorId: {not: user.id,},
+          section: {game: {creatorId: {not: user.id,},},},
+        },
+      },
+    },
+    select: {
+      id: true,
+      name: true,
+      icon: true,
+      quest: {
+        select: {
+          id: true,
+          name: true,
+          category: {
+            select: {
+              id: true,
+              name: true,
+              section: {
+                select: {
+                  game: {
+                    select: {
+                      id: true,
+                      name: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+  const contribTasks = contribTasksResult.map((task) => ({
+    id: task.id,
+    name: task.name,
+    icon: task.icon,
+    gameId: task.quest.category.section.game.id,
+    gameName: task.quest.category.section.game.name,
+    categoryId: task.quest.category.id,
+    categoryName: task.quest.category.name,
+    questId: task.quest.id,
+    questName: task.quest.name,
+  }));
 
   return {
     collapseData,
-    games,
+    games: gamesResult,
     contribCategories,
     contribQuests,
     contribTasks,

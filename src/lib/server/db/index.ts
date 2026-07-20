@@ -1,15 +1,27 @@
 import {env} from "$env/dynamic/private";
-import {drizzle} from "drizzle-orm/postgres-js";
 import Redis from "ioredis";
-import postgres from "postgres";
-import * as schema from "./schema";
+import {Prisma, PrismaClient} from "../../../generated/prisma/client";
+import {PrismaPg} from "@prisma/adapter-pg";
 
-if (env.IS_BUILD_ENV !== "true") {
-  if (!env.DATABASE_URL) throw new Error("DATABASE_URL is not set");
-  if (!env.REDIS_URL) throw new Error("REDIS_URL is not set");
+const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
+
+const adapter = new PrismaPg(env.DATABASE_URL);
+export const prisma = globalForPrisma.prisma ?? new PrismaClient({adapter,});
+
+if (process.env.NODE_ENV !== "production") {
+  globalForPrisma.prisma = prisma;
 }
 
-const client = postgres(env.DATABASE_URL);
-
-export const db = drizzle(client, {schema,});
 export const redis = new Redis(env.REDIS_URL);
+
+export type User = Prisma.UserGetPayload<object>;
+export type Session = Prisma.SessionGetPayload<object>;
+export type Game = Prisma.GameGetPayload<object>;
+export type GameSection = Prisma.GameSectionGetPayload<object>;
+export type GameCategory = Prisma.GameCategoryGetPayload<object>;
+export type GameQuest = Prisma.GameQuestGetPayload<object>;
+export type UserQuestCompletion = Prisma.UserQuestCompletionGetPayload<object>;
+export type UserQuestPinned = Prisma.UserQuestPinnedGetPayload<object>;
+export type GameQuestTask = Prisma.GameQuestTaskGetPayload<object>;
+export type UserQuestTaskCompletion = Prisma.UserQuestTaskCompletionGetPayload<object>;
+export type UserQuestTaskPinned = Prisma.UserQuestTaskPinnedGetPayload<object>;

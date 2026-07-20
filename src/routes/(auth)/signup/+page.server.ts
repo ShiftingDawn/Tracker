@@ -1,9 +1,8 @@
 import * as auth from "$lib/server/auth";
-import { db } from "$lib/server/db";
-import { userTable } from "$lib/server/db/schema";
-import { fail, redirect } from "@sveltejs/kit";
-import { hashSync } from "bcrypt";
-import type { Actions, PageServerLoad } from "./$types";
+import {fail, redirect} from "@sveltejs/kit";
+import {hashSync} from "bcrypt";
+import type {Actions, PageServerLoad} from "./$types";
+import {prisma} from "$lib/server/db";
 
 export const load: PageServerLoad = async (event) => {
   if (event.locals.user) {
@@ -20,21 +19,26 @@ export const actions: Actions = {
     const password2 = formData.get("password2");
 
     if (!validateUsername(username)) {
-      return fail(400, { message: "Invalid username", });
+      return fail(400, {message: "Invalid username",});
     }
     if (!validatePassword(password)) {
-      return fail(400, { message: "Invalid password", });
+      return fail(400, {message: "Invalid password",});
     }
-    if (password !== password2 ) {
-      return fail(400, { message: "Passwords do not match", });
+    if (password !== password2) {
+      return fail(400, {message: "Passwords do not match",});
     }
     try {
-      const [user,] = await db.insert(userTable).values({ username, password: hashSync(password, 12), }).returning();
+      const user = await prisma.user.create({
+        data: {
+          username,
+          password: hashSync(password, 12),
+        },
+      });
       const session = await auth.createSession(event, user.id);
       auth.setSessionTokenCookie(event, session.id, session.expiresAt);
-    } catch(error) {
+    } catch (error) {
       console.error(error);
-      return fail(500, { message: "An error has occurred", });
+      return fail(500, {message: "An error has occurred",});
     }
     return redirect(302, "/");
   },

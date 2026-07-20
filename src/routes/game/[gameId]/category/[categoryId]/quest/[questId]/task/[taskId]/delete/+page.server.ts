@@ -1,9 +1,7 @@
 import {requireAuth} from "$lib/server/auth";
-import {db} from "$lib/server/db";
-import {gameQuestTaskTable} from "$lib/server/db/schema";
 import {type Actions, error, fail, redirect} from "@sveltejs/kit";
-import {and, eq} from "drizzle-orm";
 import type {PageServerLoad} from "./$types";
+import {prisma} from "$lib/server/db";
 
 export const load: PageServerLoad = async (event) => {
   const parent = await event.parent();
@@ -13,15 +11,15 @@ export const load: PageServerLoad = async (event) => {
 export const actions: Actions = {
   default: async (event) => {
     const {user,} = requireAuth(event);
-    const task = await db.query.gameQuestTaskTable.findFirst({
-      where: and(
-        eq(gameQuestTaskTable.id, event.params.taskId!),
-        eq(gameQuestTaskTable.creatorId, user.id)
-      ),
+    const task = await prisma.gameQuestTask.findFirst({
+      where: {
+        id: event.params.taskId,
+        creatorId: user.id,
+      },
     });
     if (!task) error(404);
     try {
-      await db.delete(gameQuestTaskTable).where(eq(gameQuestTaskTable.id, task.id));
+      await prisma.gameQuestTask.delete({where: {id: task.id,},});
     } catch (error) {
       console.error(error);
       return fail(500, {msg: "Internal Server Error",});

@@ -1,0 +1,173 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id       String @id @default(uuid()) @map("id") @db.Uuid
+  username String @unique @map("username")
+  password String @map("password")
+
+  sessions        Session[]
+  games           Game[]
+  sections        GameSection[]
+  categories      GameCategory[]
+  quests          GameQuest[]
+  completedQuests UserQuestCompletion[]
+  pinnedQuests    UserQuestPinned[]
+  tasks           GameQuestTask[]
+  completedTasks  UserQuestTaskCompletion[]
+  pinnedTasks     UserQuestTaskPinned[]
+
+  @@map("user")
+}
+
+model Session {
+  id        String   @id @default(uuid()) @map("id") @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  expiresAt DateTime @map("expires_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("session")
+}
+
+model Game {
+  id        String   @id @default(uuid()) @map("id") @db.Uuid
+  name      String   @map("name") @db.VarChar(64)
+  icon      String   @default(uuid()) @map("icon") @db.Uuid
+  creatorId String   @map("creator_id") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+
+  creator  User          @relation(fields: [creatorId], references: [id])
+  sections GameSection[]
+
+  @@map("game")
+}
+
+model GameSection {
+  id        String   @id @default(uuid()) @map("id") @db.Uuid
+  name      String   @map("name") @db.VarChar(64)
+  order     Int      @map("order") @db.SmallInt
+  gameId    String   @map("game_id") @db.Uuid
+  creatorId String   @map("creator_id") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+
+  game       Game           @relation(fields: [gameId], references: [id])
+  creator    User           @relation(fields: [creatorId], references: [id])
+  categories GameCategory[]
+
+  @@map("game_section")
+}
+
+model GameCategory {
+  id          String   @id @default(uuid()) @map("id") @db.Uuid
+  name        String   @map("name") @db.VarChar(64)
+  description String?  @map("description")
+  icon        String?  @map("icon") @db.Uuid
+  order       Int      @map("order") @db.SmallInt
+  sectionId   String   @map("section_id") @db.Uuid
+  creatorId   String   @map("creator_id") @db.Uuid
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz()
+
+  section GameSection @relation(fields: [sectionId], references: [id])
+  creator User        @relation(fields: [creatorId], references: [id])
+  quests  GameQuest[]
+
+  @@map("game_category")
+}
+
+model GameQuest {
+  id          String   @id @default(uuid()) @map("id") @db.Uuid
+  name        String   @map("name") @db.VarChar(64)
+  description String   @map("description")
+  icon        String?  @map("icon") @db.Uuid
+  order       Int      @map("order") @db.SmallInt
+  categoryId  String   @map("category_id") @db.Uuid
+  creatorId   String   @map("creator_id") @db.Uuid
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz()
+
+  category  GameCategory          @relation(fields: [categoryId], references: [id])
+  creator   User                  @relation(fields: [creatorId], references: [id])
+  completed UserQuestCompletion[]
+  pinned    UserQuestPinned[]
+  tasks     GameQuestTask[]
+
+  @@map("game_quest")
+}
+
+model UserQuestCompletion {
+  userId      String   @map("user_id") @db.Uuid
+  questId     String   @map("quest_id") @db.Uuid
+  completedAt DateTime @default(now()) @map("completed_at") @db.Timestamptz()
+
+  user  User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  quest GameQuest @relation(fields: [questId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@id([userId, questId])
+  @@unique([userId, questId])
+  @@map("user_quest_completion")
+}
+
+model UserQuestPinned {
+  userId    String   @map("user_id") @db.Uuid
+  questId   String   @map("quest_id") @db.Uuid
+  order     Int      @map("order") @db.SmallInt
+  createdAt DateTime @default(now()) @map("createdAt") @db.Timestamptz()
+
+  user  User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  quest GameQuest @relation(fields: [questId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@id([userId, questId])
+  @@unique([userId, questId])
+  @@map("user_quest_pinned")
+}
+
+model GameQuestTask {
+  id          String   @id @default(uuid()) @map("id") @db.Uuid
+  name        String   @map("name") @db.VarChar(64)
+  description String?  @map("description")
+  icon        String?  @map("icon") @db.Uuid
+  order       Int      @map("order") @db.SmallInt
+  questId     String   @map("quest_id") @db.Uuid
+  creatorId   String   @map("creator_id") @db.Uuid
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz()
+
+  quest     GameQuest                 @relation(fields: [questId], references: [id])
+  creator   User                      @relation(fields: [creatorId], references: [id])
+  completed UserQuestTaskCompletion[]
+  pinned    UserQuestTaskPinned[]
+
+  @@map("game_quest_task")
+}
+
+model UserQuestTaskCompletion {
+  userId      String   @map("user_id") @db.Uuid
+  taskId      String   @map("task_id") @db.Uuid
+  completedAt DateTime @default(now()) @map("completed_at") @db.Timestamptz()
+
+  user User          @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  task GameQuestTask @relation(fields: [taskId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@id([userId, taskId])
+  @@unique([userId, taskId])
+  @@map("user_quest_task_completion")
+}
+
+model UserQuestTaskPinned {
+  userId    String   @map("user_id") @db.Uuid
+  taskId    String   @map("task_id") @db.Uuid
+  order     Int      @map("order") @db.SmallInt
+  createdAt DateTime @default(now()) @map("createdAt") @db.Timestamptz()
+
+  user User          @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  task GameQuestTask @relation(fields: [taskId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@id([userId, taskId])
+  @@unique([userId, taskId])
+  @@map("user_quest_task_pinned")
+}

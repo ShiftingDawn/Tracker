@@ -1,13 +1,12 @@
-import { requireAuth } from "$lib/server/auth";
-import { db } from "$lib/server/db";
-import { gameTable } from "$lib/server/db/schema";
-import { writeFile } from "$lib/server/fileservices";
-import { getError, getScaledSizes, isImage } from "$lib/server/util";
-import { fail, redirect, type Actions } from "@sveltejs/kit";
+import {requireAuth} from "$lib/server/auth";
+import {writeFile} from "$lib/server/fileservices";
+import {getError, getScaledSizes, isImage} from "$lib/server/util";
+import {type Actions, fail, redirect} from "@sveltejs/kit";
 import sharp from "sharp";
 import z from "zod";
-import { zfd } from "zod-form-data";
-import type { PageServerLoad } from "./$types";
+import {zfd} from "zod-form-data";
+import type {PageServerLoad} from "./$types";
+import {prisma} from "$lib/server/db";
 
 export const load: PageServerLoad = async (event) => {
   requireAuth(event);
@@ -38,11 +37,13 @@ export const actions: Actions = {
     try {
       let img = sharp(await data.icon.bytes());
       img = img.resize(await getScaledSizes(128, img));
-      gameId = await db.transaction(async tx => {
-        const [game,] = await tx.insert(gameTable).values({
-          name: data.name,
-          creatorId: user.id,
-        }).returning();
+      gameId = await prisma.$transaction(async tx => {
+        const game = await tx.game.create({
+          data: {
+            name: data.name,
+            creatorId: user.id,
+          },
+        });
         await writeFile(game.icon, await img.png().toBuffer());
         return game.id;
       });

@@ -8,28 +8,29 @@
     ChevronLeftIcon,
     DeleteIcon,
     EditIcon,
-    MenuIcon,
+    MenuIcon
   } from "$lib/icons";
   import type { PageProps } from "./$types";
   import Questlist from "./questlist.svelte";
 
-  const { data }: PageProps = $props();
+  const { data, }: PageProps = $props();
+
   const pinned = $derived(
     data.isLoggedIn
       ? data.quests
-          .filter((quest) => quest.pinnedQuests.length > 0)
-          .sort((a, b) => a.pinnedQuests[0].order - b.pinnedQuests[0].order)
-      : null,
+        .filter((quest) => quest.pinned.length > 0)
+        .sort((a, b) => a.pinned[0].order - b.pinned[0].order)
+      : null
   );
   const incomplete = $derived(
     data.isLoggedIn
-      ? data.quests.filter((quest) => quest.completedQuests.length === 0)
-      : data.quests,
+      ? data.quests.filter((quest) => quest.completed.length === 0)
+      : data.quests
   );
   const completed = $derived(
     data.isLoggedIn
-      ? data.quests.filter((quest) => quest.completedQuests.length > 0)
-      : null,
+      ? data.quests.filter((quest) => quest.completed.length > 0)
+      : null
   );
 </script>
 
@@ -51,7 +52,7 @@
     <div>
       <h1 class="text-xl font-bold">{data.category.name}</h1>
       <p>{data.category.description}</p>
-      <Subtext>Added by {data.categoryCreator.username}</Subtext>
+      <Subtext>Added by {data.categoryCreator!.username}</Subtext>
     </div>
   </div>
   {#if data.isCategoryOwner}

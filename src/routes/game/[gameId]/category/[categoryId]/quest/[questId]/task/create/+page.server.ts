@@ -1,22 +1,20 @@
 import {requireAuth} from "$lib/server/auth";
-import {db} from "$lib/server/db";
-import {gameQuestTable, gameQuestTaskTable} from "$lib/server/db/schema";
 import {writeFile} from "$lib/server/fileservices";
 import {getError, getScaledSizes} from "$lib/server/util";
 import {type Actions, error, fail, redirect} from "@sveltejs/kit";
-import {and, eq, sql} from "drizzle-orm";
 import sharp from "sharp";
 import z from "zod";
 import {zfd} from "zod-form-data";
 import type {PageServerLoad} from "./$types";
+import {prisma} from "$lib/server/db";
 
 export const load: PageServerLoad = async (event) => {
   const {user,} = requireAuth(event);
-  const quest = await db.query.gameQuestTable.findFirst({
-    where: and(
-      eq(gameQuestTable.id, event.params.questId),
-      eq(gameQuestTable.creatorId, user.id)
-    ),
+  const quest = await prisma.gameQuest.findFirst({
+    where: {
+      id: event.params.questId,
+      creatorId: user.id,
+    },
   });
   if (!quest) error(404);
   return {quest,};
@@ -41,19 +39,18 @@ export const actions: Actions = {
     try {
       let img = data.icon ? sharp(await data.icon.bytes()) : undefined;
       if (img) img = img.resize(await getScaledSizes(128, img));
-      taskId = await db.transaction(async tx => {
-        const orderCount = db.$with("order_count").as(
-          db.select({value: sql`count(*)`.as("value"),}).from(gameQuestTaskTable)
-            .where(eq(gameQuestTaskTable.questId, event.params.questId!))
-        );
-        const [task,] = await tx.with(orderCount).insert(gameQuestTaskTable).values({
-          name: data.name,
-          description: data.description || null,
-          icon: img ? undefined : null,
-          questId: event.params.questId!,
-          order: sql`(select * from ${orderCount})`,
-          creatorId: user.id,
-        }).returning();
+      taskId = await prisma.$transaction(async tx => {
+        const orderCount = await tx.gameQuestTask.count({where: {questId: event.params.questId,},});
+        const task = await tx.gameQuestTask.create({
+          data: {
+            name: data.name,
+            description: data.description || null,
+            icon: img ? undefined : null,
+            questId: event.params.questId!,
+            order: orderCount,
+            creatorId: user.id,
+          },
+        });
         if (img && task.icon) await writeFile(task.icon, await img.png().toBuffer());
         return task.id;
       });

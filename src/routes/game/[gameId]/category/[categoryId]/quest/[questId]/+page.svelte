@@ -13,18 +13,18 @@
   const pinned = $derived(
     data.isLoggedIn
       ? data.tasks
-        .filter((task) => task.pinnedTasks.length > 0)
-        .sort((a, b) => a.pinnedTasks[0].order - b.pinnedTasks[0].order)
+        .filter((task) => task.pinned.length > 0)
+        .sort((a, b) => a.pinned[0].order - b.pinned[0].order)
       : null
   );
   const incomplete = $derived(
     data.isLoggedIn
-      ? data.tasks.filter((task) => task.completedTasks.length === 0)
+      ? data.tasks.filter((task) => task.completed.length === 0)
       : data.tasks
   );
   const completed = $derived(
     data.isLoggedIn
-      ? data.tasks.filter((task) => task.completedTasks.length > 0)
+      ? data.tasks.filter((task) => task.completed.length > 0)
       : null
   );
 </script>
@@ -55,7 +55,7 @@
           <form method="post" use:enhance action="?/togglepin">
             <Toggleswitch
               label="Pin"
-              checked={data.quest.pinnedQuests.length > 0}
+              checked={data.quest.pinned.length > 0}
               name="pinned"
               onchange={(e) => e.currentTarget.closest("form")!.submit()}
             />

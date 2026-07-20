@@ -1,43 +1,36 @@
 import {requireAuth} from "$lib/server/auth";
-import {db} from "$lib/server/db";
-import {
-  gameQuestTaskTable,
-  userQuestCompletionTable,
-  userQuestTaskCompletionTable,
-  userQuestTaskPinnedTable
-} from "$lib/server/db/schema";
 import {toggleQuestPin} from "$lib/server/questutils";
 import {getError} from "$lib/server/util";
 import {fail} from "@sveltejs/kit";
-import {and, asc, eq} from "drizzle-orm";
 import z from "zod";
 import {zfd} from "zod-form-data";
 import type {Actions, PageServerLoad} from "./$types";
 import {keySectionCollapse, rGetBool} from "$lib/server/db/redis";
 import {toggleTaskComplete, toggleTaskPin} from "$lib/server/taskutils";
+import {prisma} from "$lib/server/db";
 
 export const load: PageServerLoad = async (event) => {
   const quest = (await event.parent()).quest;
-  const tasks = await db.query.gameQuestTaskTable.findMany({
-    where: eq(gameQuestTaskTable.questId, quest.id),
-    orderBy: asc(gameQuestTaskTable.order),
-    with: {
-      creator: {columns: {username: true,},},
-      completedTasks: event.locals.user ? {
-        where: eq(userQuestTaskCompletionTable.userId, event.locals.user.id),
-        limit: 1,
+  const tasks = await prisma.gameQuestTask.findMany({
+    where: {questId: quest.id,},
+    orderBy: {order: "asc",},
+    include: {
+      creator: {select: {username: true,},},
+      completed: event.locals.user ? {
+        where: {userId: event.locals.user.id,},
+        take: 1,
       } : undefined,
-      pinnedTasks: event.locals.user ? {
-        where: eq(userQuestTaskPinnedTable.userId, event.locals.user.id),
-        limit: 1,
+      pinned: event.locals.user ? {
+        where: {userId: event.locals.user.id,},
+        take: 1,
       } : undefined,
     },
   });
-  const completionData = event.locals.user ? await db.query.userQuestCompletionTable.findFirst({
-    where: and(
-      eq(userQuestCompletionTable.userId, event.locals.user.id),
-      eq(userQuestCompletionTable.questId, event.params.questId)
-    ),
+  const completionData = event.locals.user ? await prisma.userQuestCompletion.findFirst({
+    where: {
+      userId: event.locals.user.id,
+      questId: event.params.questId,
+    },
   }) : null;
   const collapseData = event.locals.user ? {
     pin: await rGetBool(keySectionCollapse(`pnd${quest.id}`, event)),
@@ -64,22 +57,26 @@ export const actions: Actions = {
       });
     }
     try {
-      const completed = await db.query.userQuestCompletionTable.findFirst({
-        where: and(
-          eq(userQuestCompletionTable.userId, user.id),
-          eq(userQuestCompletionTable.questId, event.params.questId)
-        ),
+      const completed = await prisma.userQuestCompletion.findFirst({
+        where: {
+          userId: user.id,
+          questId: event.params.questId,
+        },
       });
       if (Boolean(completed) === data.completed) return fail(400);
       if (completed) {
-        await db.delete(userQuestCompletionTable).where(and(
-          eq(userQuestCompletionTable.userId, user.id),
-          eq(userQuestCompletionTable.questId, event.params.questId)
-        ));
+        await prisma.userQuestCompletion.deleteMany({
+          where: {
+            userId: user.id,
+            questId: event.params.questId,
+          },
+        });
       } else {
-        await db.insert(userQuestCompletionTable).values({
-          userId: user.id,
-          questId: event.params.questId,
+        await prisma.userQuestCompletion.create({
+          data: {
+            userId: user.id,
+            questId: event.params.questId,
+          },
         });
       }
     } catch (error) {

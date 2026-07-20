@@ -1,31 +1,34 @@
-import { db } from "$lib/server/db";
-import { gameBoardCategoryTable, gameBoardSectionTable, gameTable } from "$lib/server/db/schema";
-import { addBreadcrumb } from "$lib/server/util";
-import { error } from "@sveltejs/kit";
-import { asc, eq } from "drizzle-orm";
-import type { LayoutServerLoad } from "./$types";
+import {addBreadcrumb} from "$lib/server/util";
+import {error} from "@sveltejs/kit";
+import type {LayoutServerLoad} from "./$types";
+import {prisma} from "$lib/server/db";
 
 export const load: LayoutServerLoad = async (event) => {
-  const game = await db.query.gameTable.findFirst({
-    where: eq(gameTable.id, event.params.gameId),
-    with: {
-      creator: {columns: {username: true,},},
+  const game = await prisma.game.findFirst({
+    where: {id: event.params.gameId,},
+    include: {
+      creator: {select: {username: true,},},
       sections: {
-        orderBy: asc(gameBoardSectionTable.order),
-        with: {
-          creator: {columns: {username: true,},},
+        orderBy: {order: "asc",},
+        include: {
+          creator: {select: {username: true,},},
           categories: {
-            with: {creator: {columns: {username: true,},},},
-            orderBy: asc(gameBoardCategoryTable.order),
+            orderBy: {order: "asc",},
+            include: {creator: {select: {username: true,},},},
           },
         },
       },
     },
   });
   if (!game) error(404);
-  return await addBreadcrumb({
-    game,
-    gameCreator: game.creator,
-    isGameOwner: game.creatorId === event.locals.user?.id,
-  }, event, game.name, `/game/${game.id}`);
+  return await addBreadcrumb(
+    {
+      game,
+      gameCreator: game.creator,
+      isGameOwner: game.creatorId === event.locals.user?.id,
+    },
+    event,
+    game.name,
+    `/game/${game.id}`
+  );
 };

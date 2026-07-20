@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { enhance } from "$app/forms";
+  import {enhance} from "$app/forms";
   import Button from "$lib/components/button.svelte";
   import Section from "$lib/components/section.svelte";
-  import type { PageProps } from "./$types";
+  import type {PageProps} from "./$types";
 
-  const { data, params }: PageProps = $props();
+  const {data, params,}: PageProps = $props();
 </script>
 
 <Section title={`Delete category: ${data.category.name}`} w="md">

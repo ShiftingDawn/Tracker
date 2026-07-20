@@ -1,9 +1,7 @@
-import { requireAuth } from "$lib/server/auth";
-import { db } from "$lib/server/db";
-import { gameQuestTable } from "$lib/server/db/schema";
-import { error, fail, redirect, type Actions } from "@sveltejs/kit";
-import { and, eq } from "drizzle-orm";
-import type { PageServerLoad } from "./$types";
+import {requireAuth} from "$lib/server/auth";
+import {type Actions, error, fail, redirect} from "@sveltejs/kit";
+import type {PageServerLoad} from "./$types";
+import {prisma} from "$lib/server/db";
 
 export const load: PageServerLoad = async (event) => {
   const parent = await event.parent();
@@ -13,16 +11,16 @@ export const load: PageServerLoad = async (event) => {
 export const actions: Actions = {
   default: async (event) => {
     const {user,} = requireAuth(event);
-    const quest = await db.query.gameQuestTable.findFirst({
-      where: and(
-        eq(gameQuestTable.id, event.params.questId!),
-        eq(gameQuestTable.creatorId, user.id)
-      ),
+    const quest = await prisma.gameQuest.findFirst({
+      where: {
+        id: event.params.questId,
+        creatorId: user.id,
+      },
     });
     if (!quest) error(404);
     try {
-      await db.delete(gameQuestTable).where(eq(gameQuestTable.id, quest.id));
-    } catch(error) {
+      await prisma.gameQuest.delete({where: {id: quest.id,},});
+    } catch (error) {
       console.error(error);
       return fail(500, {msg: "Internal Server Error",});
     }

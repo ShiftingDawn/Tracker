@@ -4,7 +4,7 @@
   import Input from "$lib/components/input.svelte";
   import Section from "$lib/components/section.svelte";
   import { SaveIcon } from "$lib/icons";
-  import type { Game } from "$lib/server/db/schema";
+  import type { Game } from "$lib/server/db";
   import type { ChangeEventHandler } from "svelte/elements";
 
   let fileSizeOk: boolean = $state(true);

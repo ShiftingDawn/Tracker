@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { enhance } from "$app/forms";
+  import {enhance} from "$app/forms";
   import Button from "$lib/components/button.svelte";
   import Section from "$lib/components/section.svelte";
-  import { ChevronDownIcon, ChevronUpIcon, SaveIcon } from "$lib/icons";
-  import type { PageProps } from "./$types";
+  import {ChevronDownIcon, ChevronUpIcon, SaveIcon} from "$lib/icons";
+  import type {PageProps} from "./$types";
 
-  const { data }: PageProps = $props();
+  const {data,}: PageProps = $props();
   const quests = $state<string[]>(
-    data.category.quests.map((quest) => quest.id),
+    data.category.quests.map((quest) => quest.id)
   );
 
   function moveUp(id: string) {
@@ -17,6 +17,7 @@
     quests[index - 1] = id;
     quests[index] = cur;
   }
+
   function moveDown(id: string) {
     const index = quests.indexOf(id);
     if (index === quests.length - 1) return;
@@ -30,10 +31,10 @@
   {#snippet actions()}
     <form method="post" use:enhance>
       {#each quests as questId (questId)}
-        <input type="hidden" name="order" value={questId} />
+        <input type="hidden" name="order" value={questId}/>
       {/each}
       <Button type="submit">
-        <SaveIcon />
+        <SaveIcon/>
         Save
       </Button>
     </form>
@@ -51,14 +52,14 @@
             disabled={index === 0}
             variant="text"
           >
-            <ChevronUpIcon />
+            <ChevronUpIcon/>
           </Button>
           <Button
             onclick={() => moveDown(questId)}
             disabled={index === quests.length - 1}
             variant="text"
           >
-            <ChevronDownIcon />
+            <ChevronDownIcon/>
           </Button>
         </div>
       </li>

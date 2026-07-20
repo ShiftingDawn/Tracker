@@ -1,29 +1,27 @@
 import { requireAuth } from "$lib/server/auth";
-import { db } from "$lib/server/db";
-import { gameQuestTable, userQuestCompletionTable, userQuestPinnedTable } from "$lib/server/db/schema";
 import { toggleQuestPin } from "$lib/server/questutils";
 import { getError } from "$lib/server/util";
 import { fail } from "@sveltejs/kit";
-import { asc, eq } from "drizzle-orm";
 import z from "zod";
 import { zfd } from "zod-form-data";
 import type { Actions, PageServerLoad } from "./$types";
 import { keySectionCollapse, rGetBool } from "$lib/server/db/redis";
+import {prisma} from "$lib/server/db";
 
 export const load: PageServerLoad = async (event) => {
   const category = (await event.parent()).category;
-  const quests = await db.query.gameQuestTable.findMany({
-    where: eq(gameQuestTable.categoryId, category.id),
-    orderBy: asc(gameQuestTable.order),
-    with: {
-      creator: {columns: {username: true,},},
-      completedQuests: event.locals.user ? {
-        where: eq(userQuestCompletionTable.userId, event.locals.user.id),
-        limit: 1,
+  const quests = await prisma.gameQuest.findMany({
+    where: {categoryId: category.id,},
+    orderBy: {order: "asc",},
+    include: {
+      creator: {select: {username: true,},},
+      completed: event.locals.user ? {
+        where: {userId: event.locals.user.id,},
+        take:1,
       } : undefined,
-      pinnedQuests: event.locals.user ? {
-        where: eq(userQuestPinnedTable.userId, event.locals.user.id),
-        limit: 1,
+      pinned: event.locals.user ? {
+        where: {userId: event.locals.user.id,},
+        take:1,
       } : undefined,
     },
   });

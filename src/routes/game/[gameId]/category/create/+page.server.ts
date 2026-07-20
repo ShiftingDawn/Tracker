@@ -1,22 +1,25 @@
-import { requireAuth } from "$lib/server/auth";
-import { db } from "$lib/server/db";
-import { gameBoardCategoryTable, gameBoardSectionTable, gameTable } from "$lib/server/db/schema";
-import { writeFile } from "$lib/server/fileservices";
-import { getError, getScaledSizes } from "$lib/server/util";
-import { error, fail, redirect, type Actions } from "@sveltejs/kit";
-import { and, asc, eq, sql } from "drizzle-orm";
+import {requireAuth} from "$lib/server/auth";
+import {writeFile} from "$lib/server/fileservices";
+import {getError, getScaledSizes} from "$lib/server/util";
+import {type Actions, error, fail, redirect} from "@sveltejs/kit";
 import sharp from "sharp";
 import z from "zod";
-import { zfd } from "zod-form-data";
-import type { PageServerLoad } from "./$types";
+import {zfd} from "zod-form-data";
+import type {PageServerLoad} from "./$types";
+import {prisma} from "$lib/server/db";
 
 export const load: PageServerLoad = async (event) => {
   const {user,} = requireAuth(event);
-  const game = await db.query.gameTable.findFirst({where: and(eq(gameTable.id, event.params.gameId), eq(gameTable.creatorId, user.id)),});
+  const game = await prisma.game.findFirst({
+    where: {
+      id: event.params.gameId,
+      creatorId: user.id,
+    },
+  });
   if (!game) error(404);
-  const sections = await db.query.gameBoardSectionTable.findMany({
-    where: eq(gameBoardSectionTable.gameId, event.params.gameId),
-    orderBy: asc(gameBoardSectionTable.order),
+  const sections = await prisma.gameSection.findMany({
+    where: {gameId: game.id,},
+    orderBy: {order: "asc",},
   });
   return {game, sections,};
 };
@@ -40,19 +43,18 @@ export const actions: Actions = {
     try {
       let img = data.icon ? sharp(await data.icon.bytes()) : undefined;
       if (img) img = img.resize(await getScaledSizes(128, img));
-      categoryId = await db.transaction(async tx => {
-        const orderCount = db.$with("order_count").as(
-          db.select({value: sql`count(*)`.as("value"),}).from(gameBoardCategoryTable)
-            .where(eq(gameBoardCategoryTable.sectionId, data.section!))
-        );
-        const [category,] = await tx.with(orderCount).insert(gameBoardCategoryTable).values({
-          name: data.name,
-          description: data.description || null,
-          sectionId: data.section,
-          icon: img ? undefined : null,
-          order: sql`(select * from ${orderCount})`,
-          creatorId: user.id,
-        }).returning();
+      categoryId = await prisma.$transaction(async tx => {
+        const orderCount = await tx.gameCategory.count({where: {sectionId: data.section,},});
+        const category = await tx.gameCategory.create({
+          data: {
+            name: data.name,
+            description: data.description || null,
+            sectionId: data.section,
+            icon: img ? undefined : null,
+            order: orderCount,
+            creatorId: user.id,
+          },
+        });
         if (img && category.icon) await writeFile(category.icon, await img.png().toBuffer());
         return category.id;
       });

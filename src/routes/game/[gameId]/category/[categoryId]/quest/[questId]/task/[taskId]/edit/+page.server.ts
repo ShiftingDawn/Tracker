@@ -1,14 +1,13 @@
 import {requireAuth} from "$lib/server/auth";
-import {db} from "$lib/server/db";
-import {gameQuestTaskTable} from "$lib/server/db/schema";
 import {deleteFile, writeFile} from "$lib/server/fileservices";
 import {getError, getScaledSizes} from "$lib/server/util";
 import {type Actions, error, fail, redirect} from "@sveltejs/kit";
-import {and, eq, sql} from "drizzle-orm";
 import sharp from "sharp";
 import z from "zod";
 import {zfd} from "zod-form-data";
 import type {PageServerLoad} from "./$types";
+import {prisma} from "$lib/server/db";
+import {randomUUID} from "node:crypto";
 
 export const load: PageServerLoad = async (event) => {
   const parent = await event.parent();
@@ -30,23 +29,26 @@ export const actions: Actions = {
       });
     }
 
-    const task = await db.query.gameQuestTaskTable.findFirst({
-      where: and(
-        eq(gameQuestTaskTable.id, event.params.taskId!),
-        eq(gameQuestTaskTable.creatorId, user.id)
-      ),
+    const task = await prisma.gameQuestTask.findFirst({
+      where: {
+        id: event.params.taskId,
+        creatorId: user.id,
+      },
     });
     if (!task) error(404);
 
     try {
       let img = data.icon ? sharp(await data.icon.bytes()) : undefined;
       if (img) img = img.resize(await getScaledSizes(128, img));
-      await db.transaction(async tx => {
-        const [updated,] = await tx.update(gameQuestTaskTable).set({
-          name: data.name,
-          description: data.description,
-          icon: img ? sql`gen_random_uuid()` : undefined,
-        }).where(eq(gameQuestTaskTable.id, task.id)).returning();
+      await prisma.$transaction(async tx => {
+        const updated = await tx.gameQuestTask.update({
+          data: {
+            name: data.name,
+            description: data.description,
+            icon: img ? randomUUID() : undefined,
+          },
+          where: {id: task.id,},
+        });
         if (img) {
           if (task.icon) await deleteFile(task.icon);
           if (updated.icon) await writeFile(updated.icon, await img.png().toBuffer());

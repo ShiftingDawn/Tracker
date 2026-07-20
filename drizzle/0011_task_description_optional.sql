@@ -1,1 +1,0 @@
-ALTER TABLE "game_quest_task" ALTER COLUMN "description" DROP NOT NULL;

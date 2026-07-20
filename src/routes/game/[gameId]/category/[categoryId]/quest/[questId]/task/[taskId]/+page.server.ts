@@ -1,20 +1,18 @@
 import {requireAuth} from "$lib/server/auth";
-import {db} from "$lib/server/db";
-import {userQuestTaskCompletionTable} from "$lib/server/db/schema";
 import {getError} from "$lib/server/util";
 import {fail} from "@sveltejs/kit";
-import {and, eq} from "drizzle-orm";
 import z from "zod";
 import {zfd} from "zod-form-data";
 import type {Actions, PageServerLoad} from "./$types";
 import {toggleTaskComplete, toggleTaskPin} from "$lib/server/taskutils";
+import {prisma} from "$lib/server/db";
 
 export const load: PageServerLoad = async (event) => {
-  const completionData = event.locals.user ? await db.query.userQuestTaskCompletionTable.findFirst({
-    where: and(
-      eq(userQuestTaskCompletionTable.userId, event.locals.user.id),
-      eq(userQuestTaskCompletionTable.questTaskId, event.params.taskId)
-    ),
+  const completionData = event.locals.user ? await prisma.userQuestTaskCompletion.findFirst({
+    where: {
+      userId: event.locals.user.id,
+      taskId: event.params.taskId,
+    },
   }) : null;
   return {completionData,};
 };

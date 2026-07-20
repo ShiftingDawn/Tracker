@@ -39,7 +39,7 @@
           <form method="post" use:enhance action="?/togglepin">
             <Toggleswitch
               label="Pin"
-              checked={data.task.pinnedTasks.length > 0}
+              checked={data.task.pinned.length > 0}
               name="pinned"
               onchange={(e) => e.currentTarget.closest("form")!.submit()}
             />

@@ -1,10 +1,8 @@
 import * as auth from "$lib/server/auth";
-import { db } from "$lib/server/db";
-import { userTable } from "$lib/server/db/schema";
-import { fail, redirect } from "@sveltejs/kit";
-import { compareSync } from "bcrypt";
-import { eq } from "drizzle-orm";
-import type { Actions, PageServerLoad } from "./$types";
+import {fail, redirect} from "@sveltejs/kit";
+import {compareSync} from "bcrypt";
+import type {Actions, PageServerLoad} from "./$types";
+import {prisma} from "$lib/server/db";
 
 export const load: PageServerLoad = async (event) => {
   if (event.locals.user) {
@@ -20,15 +18,15 @@ export const actions: Actions = {
     const password = formData.get("password");
 
     if (!validateUsername(username)) {
-      return fail(400, { message: "Invalid username (min 3, max 24 characters, alphanumeric only)", });
+      return fail(400, {message: "Invalid username (min 3, max 24 characters, alphanumeric only)",});
     }
     if (!validatePassword(password)) {
-      return fail(400, { message: "Invalid password (min 8, max 255 characters)", });
+      return fail(400, {message: "Invalid password (min 8, max 255 characters)",});
     }
 
-    const user = await db.query.userTable.findFirst({where: eq(userTable.username, username),});
+    const user = await prisma.user.findFirst({where: {username,},});
     if (!user || !compareSync(password, user.password)) {
-      return fail(400, { message: "Incorrect username or password", });
+      return fail(400, {message: "Incorrect username or password",});
     }
 
     const session = await auth.createSession(event, user.id);
