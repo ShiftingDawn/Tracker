@@ -55,7 +55,7 @@ export const actions: Actions = {
         data: {
           name: data.name,
           description: data.description,
-          iconId: data.icon,
+          iconId: data.icon ?? null,
         },
         where: {id: task.id,},
       });

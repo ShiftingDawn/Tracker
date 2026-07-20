@@ -38,8 +38,8 @@
       autocapitalize="off"
       defaultValue={existing?.name}
     />
-    <FormImageSelect title="Game icon" chosen={chosenImage} onselect={(id, name) => chosenImage = [id,name,]}
-                     required={!existing}/>
+    <FormImageSelect title="Game icon" chosen={chosenImage} required
+                     onselect={(id, name) => chosenImage = [id,name,]} onclear={() =>{}}/>
     <div class="mx-auto">
       <Button type="submit">
         <SaveIcon/>

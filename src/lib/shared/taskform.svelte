@@ -47,7 +47,8 @@
       defaultValue={existing?.description ?? ""}
     />
     <FormImageSelect title="Task icon (optional)" chosen={chosenImage}
-                     onselect={(id, name) => chosenImage = [id,name,]}/>
+                     onselect={(id, name) => chosenImage = [id,name,]}
+                     onclear={() => chosenImage = undefined}/>
     <div class="mx-auto">
       <Button type="submit">
         <SaveIcon/>

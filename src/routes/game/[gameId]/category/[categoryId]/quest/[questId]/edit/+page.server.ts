@@ -61,7 +61,7 @@ export const actions: Actions = {
           name: data.name,
           description: data.description,
           categoryId: data.category,
-          iconId: data.icon,
+          iconId: data.icon ?? null,
         },
       });
     } catch (error) {

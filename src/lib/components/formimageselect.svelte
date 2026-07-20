@@ -6,15 +6,17 @@
   const {
     chosen,
     onselect,
+    onclear,
     required,
     title,
     name,
   }: {
     chosen: [string, string,] | undefined,
     onselect: (id: string, name: string) => void,
-    required?: boolean,
+    onclear: () => void;
     title: string,
     name?: string,
+    required?: boolean,
   } = $props();
   let imageModalOpen = $state(false);
 
@@ -32,13 +34,21 @@
         <IconImage id={chosen[0]} alt={chosen[1]}/>
       {/if}
     </div>
-    <div>
+    <div class="flex flex-row gap-2">
       <Button type="button" onclick={(e) => {
         e.preventDefault();
         imageModalOpen = true;
       }}>
         Select
       </Button>
+      {#if !required }
+        <Button type="button" onclick={(e) => {
+          e.preventDefault();
+          onclear();
+        }}>
+          Clear
+        </Button>
+      {/if}
     </div>
   </div>
   <Imageselect open={imageModalOpen} onclose={() => imageModalOpen = false} onselect={handleSelect}/>

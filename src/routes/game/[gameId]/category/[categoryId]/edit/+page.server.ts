@@ -61,7 +61,7 @@ export const actions: Actions = {
           name: data.name,
           description: data.description || null,
           sectionId: data.section,
-          iconId: data?.icon,
+          iconId: data.icon ?? null,
         },
         where: {id: category.id,},
       });

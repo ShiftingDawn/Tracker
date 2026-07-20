@@ -59,7 +59,8 @@
       autocapitalize="sentences"
       defaultValue={existing?.description ?? ""}
     />
-    <FormImageSelect title="Category icon" chosen={chosenImage} onselect={(id, name) => chosenImage = [id, name,]}/>
+    <FormImageSelect title="Category icon" chosen={chosenImage} onselect={(id, name) => chosenImage = [id, name,]}
+                     onclear={() =>{}}/>
     <div class="mx-auto">
       <Button type="submit">
         <SaveIcon/>

@@ -65,7 +65,8 @@
       defaultValue={existing?.description}
     />
     <FormImageSelect title="Quest icon (optional)" chosen={chosenImage}
-                     onselect={(id, name) => chosenImage = [id,name,]} required={!existing}/>
+                     onselect={(id, name) => chosenImage = [id,name,]}
+                     onclear={() => chosenImage = undefined}/>
     <div class="mx-auto">
       <Button type="submit">
         <SaveIcon/>
