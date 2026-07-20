@@ -30,6 +30,7 @@ export const actions: Actions = {
   default: async (event) => {
     const {user,} = requireAuth(event);
     const formData = await event.request.formData();
+    console.log(formData);
     const {success, data, error: parseError,} = schema.safeParse(formData);
     if (!success) {
       const errs = z.treeifyError(parseError);
@@ -68,7 +69,7 @@ export const actions: Actions = {
 
 const schema = zfd.formData({
   name: zfd.text(z.string().trim().min(3).max(64)),
-  description: zfd.text(z.string().trim().min(3)),
+  description: zfd.text(z.string().trim().min(3).optional()),
   icon: zfd.text(z.uuid().optional()),
 });
 
