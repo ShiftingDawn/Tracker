@@ -47,6 +47,7 @@ export const POST: RequestHandler = async (event) => {
 };
 
 const uploadFileSchema = zfd.formData({
-  image: zfd.file().array(),
+  image: z.union([zfd.file(), zfd.file().array(),])
+    .transform(value => (Array.isArray(value) ? value : [value,])),
   //
 });
