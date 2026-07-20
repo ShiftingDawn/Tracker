@@ -20,7 +20,7 @@
   let fileSizeOk: boolean = $state(true);
   let images = $state<ImageStore[]>();
   let filter = $state("");
-  let imagesFiltered = $derived(images?.filter(img => img.fileName.indexOf(filter) !== -1));
+  let imagesFiltered = $derived(images?.filter(img => img.fileName.toLowerCase().indexOf(filter) !== -1));
 
   async function fetchImages() {
     const response = await fetch("/api/img/fetch");
